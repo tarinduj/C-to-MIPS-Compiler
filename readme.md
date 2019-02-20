@@ -1,3 +1,5 @@
+image:https://travis-ci.com/adamurban98/langproc-2018-cw-4b825dc642cb6eb9a060e54bf8d69288fbee4904.svg?token=qLnpjKRfRdRW4ZVxWv9Q&branch=master["Build Status", link="https://travis-ci.com/adamurban98/langproc-2018-cw-4b825dc642cb6eb9a060e54bf8d69288fbee4904"]
+
 2018/2019 Compilers Coursework
 ==============================
 
