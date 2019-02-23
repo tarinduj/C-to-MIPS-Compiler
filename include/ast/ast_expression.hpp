@@ -1,22 +1,24 @@
 #ifndef ast_expression_hpp
 #define ast_expression_hpp
 
+#include "ast_node.hpp"
 #include <string>
 
 class Expression;
 
 typedef const Expression* ExpressionPtr;
-typedef const Node* NodePtr;
 
 
 class Expression : public Node
 {
 protected:
-    std::string operator;
+    std::string op;
     ExpressionPtr _left;
     ExpressionPtr _right;    
 public:
-    Expression(std::string* op) {operator = *op;}
+    Expression(std::string* in_op): op(*in_op){}
+    Expression(ExpressionPtr left, std::string* in_op, ExpressionPtr right): _left(left), op(*in_op), _right(right){}
+    virtual void pyprint(std::ostream& outfile) const;
 };
 
 class unaryExpression : public Expression
@@ -87,9 +89,14 @@ class conditionalExpression : public Expression
 class assignmentExpression : public Expression
 {
     protected:
-        ExpressionPtr
+        
     public:
-        assignmentExpression(NodePtr unaryExp, std::string* op, NodePtr assignmentExp);
+        assignmentExpression(ExpressionPtr unaryExp, std::string* in_op, ExpressionPtr assignmentExp): Expression(unaryExp, in_op, assignmentExp) {}
+        void pyprint(std::ostream& outfile) const {
+            if(_left != NULL) _left->pyprint(outfile);
+            outfile << op;
+            if(_right != NULL) _right->pyprint(outfile);
+        }
 };
 
 #endif

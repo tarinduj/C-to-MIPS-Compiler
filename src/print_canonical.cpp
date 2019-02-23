@@ -1,10 +1,11 @@
-#include "include/ast.hpp"
+#include "../include/ast.hpp"
+#include <iostream>
 
 int main()
 {
-    const Expression *ast=parseAST();
+    const Node *ast=parseAST();
 
-    ast->print(std::cout);
+    ast->pyprint(std::cout);
     std::cout<<std::endl;
 
     return 0;

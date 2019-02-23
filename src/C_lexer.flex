@@ -13,7 +13,7 @@ intSuffix [([uU][lL]?)|([lL][uU]?)]
 %%
 
 
-/* "auto"      {return T_AUTO;}
+ /* "auto"      {return T_AUTO;}
 "break"     {return T_BREAK;}
 "case"      {return T_CASE;}
 "char"      {return T_CHAR;}
@@ -30,10 +30,10 @@ intSuffix [([uU][lL]?)|([lL][uU]?)]
 "goto"      {return T_GOTO;}
 "if"        {return T_IF;} */
 "int"       {return makeToken(T_INT);}
-/* "long"      {return T_LONG;}
+ /* "long"      {return T_LONG;}
 "register"  {return T_REGISTER;} */
 "return"    {return makeToken(T_RETURN);}
-/* "short"     {return T_SHORT;}
+ /* "short"     {return T_SHORT;}
 "signed"    {return T_SIGNED;}
 "sizeof"    {return T_SIZEOF;}
 "static"    {return T_STATIC;}
@@ -43,7 +43,7 @@ intSuffix [([uU][lL]?)|([lL][uU]?)]
 "union"     {return T_UNION;}
 "unsigned"  {return T_UNSIGNED;} */
 "void"      {return makeToken(T_VOID);}
-/* "volatile"  {return T_VOLITAILE;}
+ /* "volatile"  {return T_VOLITAILE;}
 "while"     {return T_WHILE;} */
 
 "//".*              { /* DO NOTHING */ }

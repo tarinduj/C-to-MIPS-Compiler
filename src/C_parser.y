@@ -1,5 +1,5 @@
 %code requires{
-  #include "ast.hpp"
+  #include "../include/ast.hpp"
 
   #include <cassert>
 
@@ -16,6 +16,7 @@
 %union{
   const Node* node;
   const Expression* expression;
+  const Statement* statement;
   //double number;
   int32_t integer;
   std::string* string;
@@ -23,18 +24,42 @@
 }
 
 %token <string> T_IDENTIFIER
+%token <string> T_SEMICOLON
 %token <integer> T_INTCONST
 %token <string_lit> T_STRINGLIT
 
-%token T_PLUS T_MINUT T_MLT T_DIV T_MOD
+%token <string> T_PLUS T_MINUT T_MLT T_DIV T_MOD
+
+
+%type <expression> postfix_expression
+%type <expression> unary_expression
+%type <expression> cast_expression
+%type <expression> multiplicative_expression
+%type <expression> additive_expression
+%type <expression> shift_expression
+%type <expression> relational_expression
+%type <expression> equality_expression
+%type <expression> and_expression
+%type <expression> xor_expression
+%type <expression> or_expression
+%type <expression> logical_and_expression
+%type <expression> logical_or_expression
+%type <expression> conditional_expression
+%type <expression> assignment_expression
+%type <expression> expression
+%type <expression> constant_expression
+%type <statement> statement
+%type <statement> expression_statement
+
+%type <integer> constant
 
 %start root
 
 %%
 
 primary_expression
-    : T_IDENTIFIER
-    | constant
+    : T_IDENTIFIER {$$ = new Identifier();}
+    | constant {$$ = new Constant();}
     | T_STRINGLIT
     | '(' expression ')'
     ;
@@ -155,7 +180,7 @@ expression_statement
 
 const Node* g_root; // Definition of variable (to match declaration earlier)
 
-const Expression *parseAST(){
+const Node* parseAST(){
     g_root=0;
     yyparse();
     return g_root;
