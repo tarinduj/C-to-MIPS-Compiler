@@ -1,4 +1,4 @@
-class Context_manager{
+class Context{
     public:
         void order(std::string id, int& out_reg);
         std::pair<unsigned int, unsigned int> order(std::string id1, std::string id2);
