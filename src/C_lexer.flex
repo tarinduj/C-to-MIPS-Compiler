@@ -4,6 +4,7 @@
 %{
 #include "../include/ast.hpp"
 #include "C_parser.tab.hpp"
+#include <string>
 extern FILE *yyin;
 
 extern "C" int fileno(FILE *stream);
@@ -16,7 +17,7 @@ void yyerror (char const *s);
 %}
 
 D [0-9]
-N [a-zA-Z_]
+L [a-zA-Z_]
  //intSuffix [([uU][lL])?|[lL][uU]?]
 intSuffix [uUlL][uUlL]?
 
@@ -55,16 +56,12 @@ intSuffix [uUlL][uUlL]?
 (void)     {return makeToken(T_VOID);}
  /* "volatile"  {return T_VOLITAILE;}
 "while"     {return T_WHILE;} */
-
 (\/).*              { /* DO NOTHING */; }
 (\/\*)[^*]*|[*]*(\*\/)  { /* DO NOTHING */; }
 [ \t\v\n\f]         { /* DO NOTHING */; }
 {D}+{intSuffix}?                        {return makeIntToken(T_INTCONST); /*dec*/}
-[0][0-7]*{intSuffix}?                   {return makeIntToken(T_INTCONST); /*octal*/}
-[0x|0X][0-9a-fA-F]+{intSuffix}?         {return makeIntToken(T_INTCONST); /*hex*/}
 
 {L}({L}|{D})* {return T_IDENTIFIER /*check type of variable it refers to!*/}
-
 (\=)         {return makeToken(T_EQUALS);}
 (\;)         {return makeToken(T_SEMICOLON);}
 (\+)         {return makeToken(T_PLUS);}
@@ -74,30 +71,24 @@ intSuffix [uUlL][uUlL]?
 (\*)         {return makeToken(T_STAR);}
 (\))         {return ')';}
 (\()         {return '(';}
-
-
-
-. {yyerror(yytext);}
+(.) {yyerror(yytext);}
 
 %%
-
-/* Error handler. This will get called if none of the rules match. */
-void yyerror (char const *s){
+void yyerror (char const* s){
     fprintf (stderr, "Flex Error on line: %s\n", s); /* s is the text that wasn't matched */
     exit(1);
 }
-
 int makeToken (int T){
     yylval.string = new std::string(yytext);
     return T;
 }
-
 int makeIntToken (int T){
-    yylval.int_val = stoi(yytext, 0);
+    yylval.int_val = std::stoi(yytext, 0);
     return T;
 }
-
 int makeFloatToken (int T){
-    yylval.float_val = strtod(yytext, 0);
+    yylval.float_val = std::stod(yytext, 0);
     return T;
+     // [0][0-7]*{intSuffix}?                   {return makeIntToken(T_INTCONST); /*octal*/}
+    //[0x|0X][0-9a-fA-F]+{intSuffix}?         {return makeIntToken(T_INTCONST); /*hex*/}
 }
