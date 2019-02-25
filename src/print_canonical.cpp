@@ -3,7 +3,7 @@
 
 int main()
 {
-    const Node *ast=parseAST();
+    Node *ast=parseAST("test.c");
 
     ast->pyprint(std::cout);
     std::cout<<std::endl;

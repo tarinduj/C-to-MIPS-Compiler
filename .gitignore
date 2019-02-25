@@ -1,2 +1,5 @@
 .idea/
 settings.json
+.vscode/
+*.tab.*
+*.output

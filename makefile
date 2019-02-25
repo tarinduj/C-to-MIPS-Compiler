@@ -18,7 +18,11 @@ bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o 
 	g++ $(CPPFLAGS) -o bin/print_canonical $^
 
 clean :
-	rm src/*.o
-	rm bin/*
-	rm src/*.tab.cpp
-	rm src/*.yy.cpp
+	rm -f src/*.o
+	rm -f bin/*
+	rm -f src/*.tab.cpp
+	rm -f src/*.yy.cpp
+
+parser : src/C_parser.tab.cpp src/C_parser.tab.hpp
+lexer : src/C_lexer.yy.cpp
+

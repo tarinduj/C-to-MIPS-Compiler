@@ -1,9 +1,8 @@
 #ifndef AST_BINOP_HPP
 #define AST_BINOP_HPP
 #include <string>
+#include "../declarations.hpp"
 
-class Node;
-typedef Node* NodePtr;
 
 class BinaryOperation
 {

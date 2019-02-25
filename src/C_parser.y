@@ -1,12 +1,13 @@
 %code requires{
   #include "../include/ast.hpp"
-
-  #include <cassert>
+  #include <fstream>
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
   extern Node* g_root;
+	extern FILE* yyin;
+
   int yylex(void);
   void yyerror(const char *);
 }
@@ -20,29 +21,18 @@
   std::string* string;
 }
 
+%token T_IDENTIFIER T_STRINGLIT T_SIZEOF T_FLOATCONST T_INTCONST T_INC T_DEC T_LEFT_OP T_RIGHT_OP T_LE T_GE T_EQ T_NE T_ARROW T_AND T_OR T_MUL_ASSIGN T_DIV_ASSIGN T_MOD_ASSIGN T_ADD_ASSIGN T_ASSIGN T_OR_ASSIGN T_SUB_ASSIGN T_LEFT_ASSIGN T_RIGHT_ASSIGN T_AND_ASSIGN T_AND_L T_OR_L T_DOT XOR_ASSIGN OR_ASSIGN T_TYPEDEF T_EXTERN T_STATIC T_AUTO T_REGISTER T_CHAR T_INT T_UNSIGNED T_VOID T_LONG T_SIGNED T_VOLATILE T_FLOAT T_DOUBLE T_STRUCT T_ENUM T_UNION T_ELLIPSIS T_CASE T_DEFAULT T_IF T_ELSE T_SWITCH T_WHILE T_DO T_FOR T_GOTO T_CONTINUE T_BREAK T_RETURN T_PLUS T_STAR T_DIV T_MOD T_CONST T_CHARCONST T_G T_L T_MINUS T_SHORT T_TILDE T_TYPE_NAME T_XOR T_XOR_ASSIGN T_EXCL
+
+%type<node> program primary_expression postfix_expression argument_expression_list unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list init_declarator storage_class_specifier struct_or_union_specifier struct_or_union struct_declaration_list struct_declaration struct_declarator_list struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration identifier_list abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement compound_statement declaration_list statement_list expression_statement selection_statement iteration_statement jump_statement translation_unit external_declaration function_definition 
+%type<string> T_IDENTIFIER T_SIZEOF T_INC T_DEC T_LEFT_OP T_RIGHT_OP T_LE T_GE T_EQ T_NE T_ARROW T_AND T_OR T_MUL_ASSIGN T_DIV_ASSIGN T_MOD_ASSIGN T_ADD_ASSIGN T_ASSIGN T_OR_ASSIGN T_SUB_ASSIGN T_LEFT_ASSIGN T_RIGHT_ASSIGN T_AND_ASSIGN T_AND_L T_OR_L T_DOT XOR_ASSIGN OR_ASSIGN T_TYPEDEF T_EXTERN T_STATIC T_AUTO T_REGISTER T_CHAR T_INT T_UNSIGNED T_VOID T_LONG T_SIGNED T_VOLATILE T_FLOAT T_DOUBLE T_STRUCT T_ENUM T_UNION T_ELLIPSIS T_CASE T_DEFAULT T_IF T_ELSE T_SWITCH T_WHILE T_DO T_FOR T_GOTO T_CONTINUE T_BREAK T_RETURN T_PLUS T_STAR T_DIV T_MOD T_CONST T_STRINGLIT T_G T_L T_MINUS T_SHORT T_TILDE T_TYPE_NAME T_XOR T_XOR_ASSIGN T_EXCL
+%type<string> unary_operator assignment_operator type_specifier specifier_qualifier_list type_qualifier type_qualifier_list type_name
+
+%type<float_val> T_FLOATCONST
+%type<int_val> T_INTCONST T_CHARCONST
+
 %right "then" T_ELSE
 
 
-%token T_IDENTIFIER T_STRINGLIT T_SIZEOF
-%token T_INC T_DEC T_LEFT_OP T_RIGHT_OP T_LE T_GE T_EQ T_NE T_ARROW
-%token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
-%token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
-%token XOR_ASSIGN OR_ASSIGN TYPE_NAME
-
-%token T_TYPEDEF T_EXTERN T_STATIC T_AUTO T_REGISTER
-%token T_CHAR T_INT T_UNSIGNED T_VOID T_LONG T_SIGNED T_VOLATILE T_CONST 
-%token T_FLOAT T_DOUBLE
-%token T_STRUCT T_ENUM T_UNION T_ELLIPSIS T_DOT
-
-%token T_CASE T_DEFAULT T_IF T_ELSE T_SWITCH T_WHILE T_DO T_FOR T_GOTO T_CONTINUE T_BREAK T_RETURN
-
-%token T_PLUS T_MINUT T_STAR T_DIV T_MOD
-
-
-%type<node> translation_unit primary_expression postfix_expression argument_expression_list assignment_expression unary_expression cast_expression compound_statement conditional_expression declaration decla
-%type<string> T_STRINGLIT assignment_operator specifier_qualifier_list T_AND T_AND_L T_ARROW T_CHAR T_CONST T_DIV T_DIV_ASSIGN T_ELLIPSIS T_DOUBLE T_DOT T_EQ T_ASSIGN T_NE T_EXCL T_FLOAT T_IDENTIFIER T_INT T_L T_G T_LE T_GE T_LONG T_MINUS T_SUB_ASSIGN T_DEC T_MOD T_MOD_ASSIGN T_RIGHT_ASSIGN T_LEFT_ASSIGN T_STAR T_MUL_ASSIGN T_PLUS T_ADD_ASSIGN T_INC T_SHORT T_SIGNED T_SIZEOF T_TILDE T_UNSIGNED T_VOID T_VOLATILE T_XOR T_XOR_ASSIGN type_qualifier type_specifier unary_operator
-%type<float_val> T_FLOATCONST
-%type<int_val> T_INTCONST
 
 %start program
 %%
@@ -53,8 +43,8 @@ program
 primary_expression
 	: T_IDENTIFIER {$$ = new Variable(*$1);}
 	| T_INTCONST {$$ = new IntConst($1);}
-    | T_FLOATCONST {$$ = new FloatConst($1);}
-    | T_CHARCONST {$$ = new CharConst($1;}
+  | T_FLOATCONST {$$ = new FloatConst($1);}
+  | T_CHARCONST {$$ = new CharConst($1;}
 	| T_STRINGLIT {$$ = new String(*$1);}
 	| '(' expression ')' {$$ = $2;}
 	;
@@ -80,7 +70,7 @@ unary_expression
 	: postfix_expression {$$ = $1}
 	| T_INC unary_expression {$$ = new BinaryOperation($2, *$1, Null);}
 	| T_DEC unary_expression {$$ = new BinaryOperation($2, *$1, Null);}
-	| unary_operator cast_expression {; //needs to be done}
+	| unary_operator cast_expression {;/*needs to be done*/}
 	| T_SIZEOF unary_expression
 	| T_SIZEOF '(' type_name ')'
 	;
@@ -96,7 +86,7 @@ unary_operator
 
 cast_expression
 	: unary_expression {$$ = $1;}
-	| '(' type_name ')' cast_expression {$$ = new Cast($2, $4); //?}
+	| '(' type_name ')' cast_expression {$$ = new Cast($2, $4);}
 	;
 
 multiplicative_expression
@@ -159,7 +149,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression {$$ = $1;}
-	| logical_or_expression '?' expression ':' conditional_expression {$$ = new BinaryOperation($1, *$2, $3);}
+	| logical_or_expression '?' expression ':' conditional_expression {;}
 	;
 
 assignment_expression
@@ -234,7 +224,7 @@ type_specifier
 	| T_UNSIGNED {$$ = $1;}
 	| struct_or_union_specifier
 	| enum_specifier
-	| T_TYPE_NAME {$$ = $1; //maybe new typename?}
+	| T_TYPE_NAME {$$ = $1; /*maybe new typename*/}
 	;
 
 struct_or_union_specifier
@@ -326,7 +316,6 @@ type_qualifier_list
 
 parameter_type_list
 	: parameter_list
-	| parameter_list ',' ELLIPSIS
 	;
 
 parameter_list
@@ -380,7 +369,7 @@ initializer_list
 	;
 
 statement
-	: labeled_statement {$$ = new Statement($1); //maybe}
+	: labeled_statement {$$ = new Statement($1); /*maybe*/}
 	| compound_statement
 	| expression_statement
 	| selection_statement
@@ -417,7 +406,7 @@ expression_statement
 	;
 
 selection_statement
-	: T_IF '(' expression ')' statement
+	: T_IF '(' expression ')' statement %prec "then" 
 	| T_IF '(' expression ')' statement T_ELSE statement
 	| T_SWITCH '(' expression ')' statement
 	;
@@ -437,7 +426,7 @@ jump_statement
 	;
 
 translation_unit
-	: external_declaration {$$->add()}
+	: external_declaration {$$->add($1);}
 	| translation_unit external_declaration
 	;
 
@@ -447,17 +436,21 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement {$$ = new function()}
+	: declaration_specifiers declarator declaration_list compound_statement {$$ = new function();}
 	| declaration_specifiers declarator compound_statement {$$ = new function(); /* most important!*/}
-	| declarator declaration_list compound_statement {$$ = new function()}
-	| declarator compound_statement {$$ = new function()}
+	| declarator declaration_list compound_statement {$$ = new function();}
+	| declarator compound_statement {$$ = new function();}
 	;
 
 %%
 
 Node* g_root;
-Node *parseAST(){
+Node *parseAST(char* name){
   g_root = Null;
-  yyparse();
+	yyin = fopen(name, "r");
+	  if(yyin) { 
+	  yyparse();
+  }
+  fclose(yyin);
   return g_root;
 }
