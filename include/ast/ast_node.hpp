@@ -6,6 +6,7 @@
 class Node
 {
     public:
+        
         Node();
         virtual ~Node() {}
         virtual void pyprint(std::ostream& outfile) const = 0;
