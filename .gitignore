@@ -3,3 +3,6 @@ settings.json
 .vscode/
 *.tab.*
 *.output
+*.yy.cpp
+*.yy.*
+

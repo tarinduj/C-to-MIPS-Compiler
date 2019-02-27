@@ -288,11 +288,11 @@ type_qualifier
 
 declarator
 	: pointer direct_declarator
-	| direct_declarator
+	| direct_declarator {$$ = $1;}
 	;
 
 direct_declarator
-	: T_IDENTIFIER
+	: T_IDENTIFIER {$$ = $1;}
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
@@ -437,7 +437,7 @@ external_declaration
 
 function_definition
 	: declaration_specifiers declarator declaration_list compound_statement {$$ = new function();}
-	| declaration_specifiers declarator compound_statement {$$ = new function(); /* most important!*/}
+	| declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, $3); /* most important!*/}
 	| declarator declaration_list compound_statement {$$ = new function();}
 	| declarator compound_statement {$$ = new function();}
 	;

@@ -4,7 +4,7 @@
 #include "../declarations.hpp"
 
 
-class BinaryOperation
+class BinaryOperation: public Node
 {
 private:
     NodePtr _left;

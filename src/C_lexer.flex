@@ -7,13 +7,13 @@
 #include <string>
 extern FILE *yyin;
 
+
 extern "C" int fileno(FILE *stream);
 
 int makeToken (int T);
 int makeIntToken (int T);
 int makeFloatToken (int T);
 void yyerror (char const *s);
-
 %}
 
 D [0-9]
@@ -24,12 +24,12 @@ intSuffix [uUlL][uUlL]?
 %%
 
 
- /* "auto"      {return T_AUTO;}
+"auto"      {return T_AUTO;}
 "break"     {return T_BREAK;}
 "case"      {return T_CASE;}
 "char"      {return T_CHAR;}
 "const"     {return T_CONST;}
-"continue"  {return T_CONTINIUE;}
+"continue"  {return T_CONTINUE;}
 "default"   {return T_DEFAULT;}
 "do"        {return T_DO;}
 "double"    {return T_DOUBLE;}
@@ -39,12 +39,12 @@ intSuffix [uUlL][uUlL]?
 "float"     {return T_FLOAT;}
 "for"       {return T_FOR;}
 "goto"      {return T_GOTO;}
-"if"        {return T_IF;} */
+"if"        {return T_IF;}
 (int)       {return makeToken(T_INT);}
- /* "long"      {return T_LONG;}
-"register"  {return T_REGISTER;} */
+"long"      {return T_LONG;}
+"register"  {return T_REGISTER;}
 (return)    {return makeToken(T_RETURN);}
- /* "short"     {return T_SHORT;}
+"short"     {return T_SHORT;}
 "signed"    {return T_SIGNED;}
 "sizeof"    {return T_SIZEOF;}
 "static"    {return T_STATIC;}
@@ -52,18 +52,18 @@ intSuffix [uUlL][uUlL]?
 "typedef"   {return T_TYPEDEF;}
 "switch"    {return T_SWITCH;}
 "union"     {return T_UNION;}
-"unsigned"  {return T_UNSIGNED;} */
+"unsigned"  {return T_UNSIGNED;}
 (void)     {return makeToken(T_VOID);}
- /* "volatile"  {return T_VOLITAILE;}
-"while"     {return T_WHILE;} */
-(\/).*              { /* DO NOTHING */; }
-(\/\*)[^*]*|[*]*(\*\/)  { /* DO NOTHING */; }
-[ \t\v\n\f]         { /* DO NOTHING */; }
-{D}+{intSuffix}?                        {return makeIntToken(T_INTCONST); /*dec*/}
+"volatile"  {return T_VOLATILE;}
+"while"     {return T_WHILE;}
+(\/).*              { ; }
+(\/\*)[^*]*|[*]*(\*\/)  { ; }
+[ \t\v\n\f]         { ; }
+{D}+{intSuffix}?                        {return makeIntToken(T_INTCONST);}
 
-{L}({L}|{D})* {return T_IDENTIFIER /*check type of variable it refers to!*/}
-(\=)         {return makeToken(T_EQUALS);}
-(\;)         {return makeToken(T_SEMICOLON);}
+{L}({L}|{D})* {return makeToken(T_IDENTIFIER); /*check type of variable it refers to!*/}
+(\=)         {return makeToken(T_EQ);}
+(\;)         {return ';';}
 (\+)         {return makeToken(T_PLUS);}
 (\-)         {return makeToken(T_MINUS);}
 (\%)         {return makeToken(T_MOD);}
@@ -72,12 +72,10 @@ intSuffix [uUlL][uUlL]?
 (\))         {return ')';}
 (\()         {return '(';}
 (.) {yyerror(yytext);}
-
 %%
 void yyerror (char const* s){
     fprintf (stderr, "Flex Error on line: %s\n", s); /* s is the text that wasn't matched */
-    exit(1);
-}
+    exit(1);}
 int makeToken (int T){
     yylval.string = new std::string(yytext);
     return T;
@@ -89,6 +87,6 @@ int makeIntToken (int T){
 int makeFloatToken (int T){
     yylval.float_val = std::stod(yytext, 0);
     return T;
-     // [0][0-7]*{intSuffix}?                   {return makeIntToken(T_INTCONST); /*octal*/}
-    //[0x|0X][0-9a-fA-F]+{intSuffix}?         {return makeIntToken(T_INTCONST); /*hex*/}
+    //[0][0-7]*{intSuffix}?                   {return makeIntToken(T_INTCONST); }
+    //[0x|0X][0-9a-fA-F]+{intSuffix}?         {return makeIntToken(T_INTCONST); }
 }

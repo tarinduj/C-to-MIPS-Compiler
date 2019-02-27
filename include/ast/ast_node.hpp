@@ -10,9 +10,9 @@ class Node
 
         Node();
         virtual ~Node() {}
-        virtual void pyprint(std::ostream& outfile) const = 0;
-        virtual void codegen(std::ostream& outfile) const = 0;
-        virtual void preetyprint() const = 0;
+        virtual void pyprint(std::ostream& o) const = 0;
+        virtual void codegen(std::ostream& o) const = 0;
+        virtual void print(std::ostream& o) const = 0;
 };
 
 #endif

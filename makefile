@@ -10,8 +10,8 @@ bin/% : src/%.cpp
 src/C_parser.tab.cpp src/C_parser.tab.hpp : src/C_parser.y
 	bison -v -d src/C_parser.y -o src/C_parser.tab.cpp
 
-src/C_lexer.yy.cpp : src/C_lexer.flex src/C_parser.tab.hpp
-	flex -o src/C_lexer.yy.cpp  src/C_lexer.flex
+src/C_lexer.yy.cpp : src/C_lexer.flex src/C_parser.tab.cpp
+	flex -o src/C_lexer.yy.cpp src/C_lexer.flex
 
 bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o src/C_parser.tab.o
 	mkdir -p bin
@@ -20,9 +20,14 @@ bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o 
 clean :
 	rm -f src/*.o
 	rm -f bin/*
-	rm -f src/*.tab.cpp
+	rm -f src/*.tab.*
 	rm -f src/*.yy.cpp
+	rm -f src/*.output
 
 parser : src/C_parser.tab.cpp src/C_parser.tab.hpp
 lexer : src/C_parser.tab.hpp src/C_lexer.yy.cpp
+test_lex: src/test_lexer.o src/C_lexer.yy.o
+	mkdir -p bin
+	g++ $(CPPFLAGS) -o bin/test_lexer $^
+
 
