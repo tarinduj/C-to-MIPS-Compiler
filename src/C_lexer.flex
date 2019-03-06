@@ -2,7 +2,7 @@
 %option yylineno
 
 %{
-#include "../include/ast.hpp"
+//#include "../include/ast.hpp"
 #include "C_parser.tab.hpp"
 #include <string>
 extern FILE *yyin;
@@ -10,10 +10,13 @@ extern FILE *yyin;
 
 extern "C" int fileno(FILE *stream);
 
-int makeToken (int T);
-int makeIntToken (int T);
-int makeFloatToken (int T);
+// int makeToken (int T);
+// int makeIntToken (int T);
+// int makeFloatToken (int T);
 void yyerror (char const *s);
+int makeToken (int T);
+int makeIntToken(int T);
+int makeDoubleToken(int T);
 %}
 
 D [0-9]
@@ -87,6 +90,4 @@ int makeIntToken (int T){
 int makeFloatToken (int T){
     yylval.float_val = std::stod(yytext, 0);
     return T;
-    //[0][0-7]*{intSuffix}?                   {return makeIntToken(T_INTCONST); }
-    //[0x|0X][0-9a-fA-F]+{intSuffix}?         {return makeIntToken(T_INTCONST); }
 }

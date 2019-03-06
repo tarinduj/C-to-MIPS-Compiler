@@ -5,7 +5,7 @@
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
-  extern Node* g_root;
+  extern NodePtr g_root;
 	extern FILE* yyin;
 
   int yylex(void);
@@ -35,10 +35,12 @@
 
 
 %start program
+
 %%
 
 program
-    : translation_unit {g_root = $1}
+  : translation_unit {g_root = $1}
+	;
 
 primary_expression
 	: T_IDENTIFIER {$$ = new Variable(*$1);}
@@ -53,12 +55,12 @@ primary_expression
 postfix_expression
 	: primary_expression {$$ = $1;}
 	| postfix_expression '[' expression ']' {$$ = new Array($1, $3);}
-	| postfix_expression '(' ')' {$$ = new FunctionCall(Null);}
-	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($3);}
+	| postfix_expression '(' ')' {$$ = new FunctionCall($1, NULL);}
+	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
 	| postfix_expression T_DOT T_IDENTIFIER {$$ = new BinaryOperation($1, *$2, $3);}
 	| postfix_expression T_ARROW T_IDENTIFIER {$$ = new BinaryOperation($1, *$2, $3);}
-	| postfix_expression T_INC {$$ = new BinaryOperation($1, *$2, Null);}
-	| postfix_expression T_DEC {$$ = new BinaryOperation($1, *$2, Null);}
+	| postfix_expression T_INC {$$ = new BinaryOperation($1, *$2, NULL);}
+	| postfix_expression T_DEC {$$ = new BinaryOperation($1, *$2, NULL);}
 	;
 
 argument_expression_list
@@ -68,11 +70,11 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1}
-	| T_INC unary_expression {$$ = new BinaryOperation($2, *$1, Null);}
-	| T_DEC unary_expression {$$ = new BinaryOperation($2, *$1, Null);}
+	| T_INC unary_expression {$$ = new BinaryOperation($2, *$1, NULL);}
+	| T_DEC unary_expression {$$ = new BinaryOperation($2, *$1, NULL);}
 	| unary_operator cast_expression {;/*needs to be done*/}
-	| T_SIZEOF unary_expression
-	| T_SIZEOF '(' type_name ')'
+	| T_SIZEOF unary_expression {}
+	| T_SIZEOF '(' type_name ')' {}
 	;
 
 unary_operator
@@ -86,7 +88,7 @@ unary_operator
 
 cast_expression
 	: unary_expression {$$ = $1;}
-	| '(' type_name ')' cast_expression {$$ = new Cast($2, $4);}
+	| '(' type_name ')' cast_expression {}
 	;
 
 multiplicative_expression
@@ -282,8 +284,8 @@ enumerator
 	;
 
 type_qualifier
-	: T_CONST
-	| T_VOLATILE
+	: T_CONST {}
+	| T_VOLATILE {}
 	;
 
 declarator
@@ -358,23 +360,23 @@ direct_abstract_declarator
 	;
 
 initializer
-	: assignment_expression
-	| '{' initializer_list '}'
-	| '{' initializer_list ',' '}'
+	: assignment_expression {$$ = $1;}
+	| '{' initializer_list '}' {$$ = $2;}
+	| '{' initializer_list ',' '}' {$$ = $2;}
 	;
 
 initializer_list
-	: initializer
+	: initializer {$$ = new List();}
 	| initializer_list ',' initializer
 	;
 
 statement
-	: labeled_statement {$$ = new Statement($1); /*maybe*/}
-	| compound_statement
-	| expression_statement
-	| selection_statement
-	| iteration_statement
-	| jump_statement
+	: labeled_statement {$$ = $1; /*maybe*/}
+	| compound_statement {$$ = $1;}
+	| expression_statement {$$ = $1;}
+	| selection_statement {$$ = $1;}
+	| iteration_statement {$$ = $1;}
+	| jump_statement {$$ = $1;}
 	;
 
 labeled_statement
@@ -396,8 +398,8 @@ declaration_list
 	;
 
 statement_list
-	: statement
-	| statement_list statement
+	: statement {$$ = new StatementList(); $$->add($1);}
+	| statement_list statement {$1->add($2); $$ = $1;}
 	;
 
 expression_statement
@@ -421,7 +423,7 @@ iteration_statement
 jump_statement
 	: T_CONTINUE ';' {$$ = new Continue();}
 	| T_BREAK ';' {$$ = new Break();}
-	| T_RETURN ';' {$$ = new Return(Null);}
+	| T_RETURN ';' {$$ = new Return(NULL);}
 	| T_RETURN expression ';'{$$ = new Return($2);}
 	;
 
@@ -436,17 +438,17 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement {$$ = new function();}
+	: declaration_specifiers declarator declaration_list compound_statement {}
 	| declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, $3); /* most important!*/}
-	| declarator declaration_list compound_statement {$$ = new function();}
-	| declarator compound_statement {$$ = new function();}
+	| declarator declaration_list compound_statement {}
+	| declarator compound_statement {}
 	;
 
 %%
 
-Node* g_root;
-Node *parseAST(char* name){
-  g_root = Null;
+NodePtr g_root;
+NodePtr parseAST(char* name){
+  g_root = NULL;
 	yyin = fopen(name, "r");
 	  if(yyin) { 
 	  yyparse();

@@ -2,9 +2,8 @@
 #define AST_FUNCTION_HPP
 #include <vector>
 #include <string>
-#include "../declarations.hpp"
-
-class FunctionDeclaration: public Node
+#include "ast_node.hpp"
+class Function: public Node
 {
 private:
     NodePtr arguments;
@@ -18,7 +17,7 @@ public:
 };
 
 
-class FunctionCall
+class FunctionCall: public Node
 {
 private:
     /* data */
@@ -26,5 +25,15 @@ public:
     FunctionCall(/* args */);
     ~FunctionCall();
 };
+
+class FunctionDeclaration: public Node
+{
+private:
+    /* data */
+public:
+    Function(/* args */) { }
+    ~Function() { }
+};
+
 
 #endif

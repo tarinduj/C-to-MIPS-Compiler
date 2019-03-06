@@ -26,7 +26,7 @@ clean :
 
 parser : src/C_parser.tab.cpp src/C_parser.tab.hpp
 lexer : src/C_parser.tab.hpp src/C_lexer.yy.cpp
-test_lex: src/test_lexer.o src/C_lexer.yy.o
+test_lex: src/test_lexer.o src/C_lexer.yy.o src/C_parser.tab.o src/implementation/ast_function.o
 	mkdir -p bin
 	g++ $(CPPFLAGS) -o bin/test_lexer $^
 

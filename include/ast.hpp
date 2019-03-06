@@ -6,6 +6,6 @@
 #include "ast/ast_function.hpp"
 
 
-extern Node* parseAST(char* name);
+extern NodePtr parseAST(char* name);
 
 #endif

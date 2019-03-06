@@ -1,6 +1,5 @@
 #ifndef NODE_HPP
 #define NODE_HPP
-#include "../declarations.hpp"
 
 #include <iostream>
 
@@ -14,5 +13,8 @@ class Node
         virtual void codegen(std::ostream& o) const = 0;
         virtual void print(std::ostream& o) const = 0;
 };
+
+typedef Node* NodePtr;
+
 
 #endif
