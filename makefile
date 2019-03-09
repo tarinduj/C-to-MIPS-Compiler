@@ -1,33 +1,38 @@
-CXXFLAGS += -std=c++11 -w -Wall -g
+CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
+CXX = g++-8
 
-all: bin/print_canonical
+OBJECT_FILES = obj/run.o
 
-bin/% : src/%.cpp
+bin/test: parser lexer $(OBJECT_FILES) obj/test.o
 	mkdir -p bin
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o bin/test
 
-src/C_parser.tab.cpp src/C_parser.tab.hpp : src/C_parser.y
-	bison -v -d src/C_parser.y -o src/C_parser.tab.cpp
+bin/test: parser lexer $(OBJECT_FILES) obj/compiler.o
+	mkdir -p bin
+	bin/test
 
-src/C_lexer.yy.cpp : src/C_lexer.flex src/C_parser.tab.cpp
+obj/%.o : src/%.cpp include/%.hpp
+	mkdir -p obj
+	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
+
+
+parser: src/C_parser.y
+	bison -v -d src/C_parser.y -o src/C_parser.tab.cpp 
+	mv src/C_parser.tab.hpp include
+
+lexer : src/C_lexer.flex parser
 	flex -o src/C_lexer.yy.cpp src/C_lexer.flex
+	touch include/C_lexer.yy.hpp
 
 bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o src/C_parser.tab.o
 	mkdir -p bin
 	g++ $(CPPFLAGS) -o bin/print_canonical $^
 
 clean :
+	rm -f obj/*.o
 	rm -f src/*.o
 	rm -f bin/*
 	rm -f src/*.tab.*
 	rm -f src/*.yy.cpp
 	rm -f src/*.output
-
-parser : src/C_parser.tab.cpp src/C_parser.tab.hpp
-lexer : src/C_parser.tab.hpp src/C_lexer.yy.cpp
-test_lex: src/test_lexer.o src/C_lexer.yy.o src/C_parser.tab.o src/implementation/ast_function.o
-	mkdir -p bin
-	g++ $(CPPFLAGS) -o bin/test_lexer $^
-
-
