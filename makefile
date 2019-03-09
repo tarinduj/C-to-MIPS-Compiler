@@ -3,14 +3,16 @@ CXXFLAGS += -I include
 CXX = g++-8
 
 OBJECT_FILES = obj/run.o
+TEST_OBJECT_FILES = obj/test.o
 
-bin/test: parser lexer $(OBJECT_FILES) obj/test.o
+bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
 	mkdir -p bin
-	$(CXX) $(CXXFLAGS) -o bin/test
+	$(CXX) $(CXXFLAGS) -o bin/test $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 
-bin/test: parser lexer $(OBJECT_FILES) obj/compiler.o
+bin/compiler: parser lexer $(OBJECT_FILES) obj/compiler.o
 	mkdir -p bin
-	bin/test
+	$(CXX) $(CXXFLAGS) -o bin/compiler $(OBJECT_FILES) obj/compiler.o 
+	
 
 obj/%.o : src/%.cpp include/%.hpp
 	mkdir -p obj
