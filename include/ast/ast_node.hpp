@@ -1,17 +1,20 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <iostream>
+#include <ostream>
 
 class Node
 {
     public:
-
         Node();
-        virtual ~Node() {}
-        virtual void pyprint(std::ostream& o) const = 0;
-        virtual void codegen(std::ostream& o) const = 0;
-        virtual void print(std::ostream& o) const = 0;
+        ~Node(){}
+        virtual void pyPrint(std::ostream& _o) const = 0;
+        virtual void mipsPrint(std::ostream& _o) const = 0;
+        virtual void insert(NodePtr _n) = 0;
+        //virtual std::string getType() const = 0;
+        //virtual void setType(const std::string& s) = 0;
+        //virtual std::string getVal() const = 0;
+        //virtual unsigned int getSize() const = 0;
 };
 
 typedef Node* NodePtr;

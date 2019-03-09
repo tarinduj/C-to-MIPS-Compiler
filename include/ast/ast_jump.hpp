@@ -24,12 +24,13 @@ public:
 class Return: public Node
 {
 private:
-    /* data */
+    NodePtr returnExp;
 public:
-    Return(/* args */) { }
-    ~Return() { }
+    Return(NodePtr _r);
+    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    void mipsPrint(std::ostream& _o){}//;
+    void insert(NodePtr _n){}//;
 };
 
-class 
 
 #endif

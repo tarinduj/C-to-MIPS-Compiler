@@ -12,8 +12,24 @@ private:
     NodePtr _right;
     std::string op;
 public:
-    BinaryOperation(NodePtr left, std::string* opPtr, NodePtr right): _left(left), _right(right), op(*opPtr) {; }
-    ~BinaryOperation() {; }
+    BinaryOperation(NodePtr left, std::string* opPtr, NodePtr right);
+    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    void mipsPrint(std::ostream& _o){}//;
+    void insert(NodePtr _n){}//;
+};
+
+class SizeOfOp: public Node
+{
+private:
+    int size;
+    NodePtr _exp;
+    std::string typeName;
+public:
+    SizeOfOp(NodePtr exp);
+    SizeOfOp(std::string* t);
+    void pyPrint(std::ostream& _o){}//;
+    void mipsPrint(std::ostream& _o){}//;
+    void insert(NodePtr _n){}//;
 };
 
 #endif

@@ -9,30 +9,38 @@ private:
     NodePtr arguments;
     NodePtr statements;
     std::string returnType;
-    std::string name;
+    std::string functionName;
 public:
-    FunctionDeclaration(std::string* _n, std::string* _r, NodePtr _arg, NodePtr _s): name(*_n), returnType(*_r), arguments(_arg), statements(_s) {};
-    ~FunctionDeclaration();
-    void print(std::ostream& o);
+    Function(std::string* _r, std::string* _n, NodePtr _arg, NodePtr _s);
+    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    void mipsPrint(std::ostream& _o){}//;
+    void insert(NodePtr _n){}//;
 };
 
 
 class FunctionCall: public Node
 {
 private:
-    /* data */
+    NodePtr arguments;
+    std::string callName;  
 public:
-    FunctionCall(/* args */);
-    ~FunctionCall();
+    FunctionCall(std::string* _n, NodePtr _arg);
+    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    void mipsPrint(std::ostream& _o){}//;
+    void insert(NodePtr _n){}//;
 };
 
 class FunctionDeclaration: public Node
 {
 private:
-    /* data */
+    NodePtr arguments;
+    std::string returnType;
+    std::string functionName;
 public:
-    Function(/* args */) { }
-    ~Function() { }
+    FunctionDeclaration(NodePtr _ret, std::string* _n, NodePtr _arg);
+    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    void mipsPrint(std::ostream& _o){}//;
+    void insert(NodePtr _n){}//;
 };
 
 
