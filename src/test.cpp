@@ -3,5 +3,5 @@
 
 
 TEST_CASE ("General test") {	
-	Succed("Hello");
+	SUCCEED("Hello");
 }
