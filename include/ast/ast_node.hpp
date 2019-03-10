@@ -2,6 +2,7 @@
 #define NODE_HPP
 
 #include <ostream>
+#include <string>
 
 class Node
 {
@@ -10,7 +11,7 @@ class Node
         ~Node(){}
         virtual void pyPrint(std::ostream& _o) const = 0;
         virtual void mipsPrint(std::ostream& _o) const = 0;
-        virtual void insert(NodePtr _n) = 0;
+        virtual void insert(NodePtr _n);
         //virtual std::string getType() const = 0;
         //virtual void setType(const std::string& s) = 0;
         //virtual std::string getVal() const = 0;
@@ -18,6 +19,5 @@ class Node
 };
 
 typedef Node* NodePtr;
-
 
 #endif

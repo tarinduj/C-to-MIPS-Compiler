@@ -38,3 +38,10 @@ clean :
 	rm -f src/*.tab.*
 	rm -f src/*.yy.cpp
 	rm -f src/*.output
+
+test: bin/test
+	bin/test
+
+format: 
+	clang-format-6.0 -i $$(echo include/*.hpp | sed "s/include\/catch.hpp//g;s/include\/clara.hpp//g;s/include\/C_parser.tab.hpp//g;s/include\/C_lexer.yy.hpp//g") -verbose
+	clang-format-6.0 -i $$(echo src/*.cpp | sed "s/src\/C_parser.tab.cpp//g;s/src\/C_lexer.yy.cpp//g") -verbose

@@ -25,7 +25,7 @@
 
 %type<node> program primary_expression postfix_expression argument_expression_list unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression equality_expression and_expression exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers init_declarator_list init_declarator storage_class_specifier struct_or_union_specifier struct_or_union struct_declaration_list struct_declaration struct_declarator_list struct_declarator enum_specifier enumerator_list enumerator declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration identifier_list abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement compound_statement declaration_list statement_list expression_statement selection_statement iteration_statement jump_statement translation_unit external_declaration function_definition 
 %type<string> T_IDENTIFIER T_SIZEOF T_INC T_DEC T_LEFT_OP T_RIGHT_OP T_LE T_GE T_EQ T_NE T_ARROW T_AND T_OR T_MUL_ASSIGN T_DIV_ASSIGN T_MOD_ASSIGN T_ADD_ASSIGN T_ASSIGN T_OR_ASSIGN T_SUB_ASSIGN T_LEFT_ASSIGN T_RIGHT_ASSIGN T_AND_ASSIGN T_AND_L T_OR_L T_DOT XOR_ASSIGN OR_ASSIGN T_TYPEDEF T_EXTERN T_STATIC T_AUTO T_REGISTER T_CHAR T_INT T_UNSIGNED T_VOID T_LONG T_SIGNED T_VOLATILE T_FLOAT T_DOUBLE T_STRUCT T_ENUM T_UNION T_ELLIPSIS T_CASE T_DEFAULT T_IF T_ELSE T_SWITCH T_WHILE T_DO T_FOR T_GOTO T_CONTINUE T_BREAK T_RETURN T_PLUS T_STAR T_DIV T_MOD T_CONST T_STRINGLIT T_G T_L T_MINUS T_SHORT T_TILDE T_TYPE_NAME T_XOR T_XOR_ASSIGN T_EXCL
-%type<string> unary_operator assignment_operator type_specifier specifier_qualifier_list type_qualifier type_qualifier_list type_name declaration_statement
+%type<string> unary_operator assignment_operator type_specifier specifier_qualifier_list type_qualifier type_qualifier_list type_name
 
 %type<float_val> T_FLOATCONST
 %type<int_val> T_INTCONST T_CHARCONST
@@ -53,8 +53,8 @@ postfix_expression
 	| postfix_expression '[' expression ']' {$$ = new Array($1, $3);}
 	| postfix_expression '(' ')' {$$ = new FunctionCall($1, NULL);}
 	| postfix_expression '(' argument_expression_list ')' {$$ = new FunctionCall($1, $3);}
-	| postfix_expression T_DOT T_IDENTIFIER {$$ = new BinaryOperation($1, *$2, $3);}
-	| postfix_expression T_ARROW T_IDENTIFIER {$$ = new BinaryOperation($1, *$2, $3);}
+	| postfix_expression T_DOT T_IDENTIFIER //{$$ = new BinaryOperation($1, *$2, $3);}
+	| postfix_expression T_ARROW T_IDENTIFIER //{$$ = new BinaryOperation($1, *$2, $3);}
 	| postfix_expression T_INC {$$ = new BinaryOperation($1, *$2, NULL);}
 	| postfix_expression T_DEC {$$ = new BinaryOperation($1, *$2, NULL);}
 	;
@@ -84,7 +84,7 @@ unary_operator
 
 cast_expression
 	: unary_expression {$$ = $1;}
-	| '(' type_name ')' cast_expression {}
+	| '(' type_name ')' cast_expression {;}
 	;
 
 multiplicative_expression
@@ -179,16 +179,15 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';' {;}
-	| declaration_specifiers init_declarator_list ';' {$$ = $2; /*add type of $1*/}
+	: declaration_specifiers ';' {$$ = $1;}
+	| declaration_specifiers init_declarator_list ';'
 	;
 
 declaration_specifiers
-	: specifier_qualifier_list {$$ = $1;}
-	| storage_class_specifier {$$ = new std::string(*$1);}
-	| storage_class_specifier declaration_specifiers {$$ = new std::string(*$1 + " " + $2);}
-	| type_specifier {$$ = new std::string(*$2);}
-	| type_specifier declaration_specifiers {$$ = new std::string(*$1 + " " + $2);}
+	: storage_class_specifier {$$ = $1;}
+	| storage_class_specifier declaration_specifiers {$$ = new std::string(*$1 + " " + *$2);}
+	| type_specifier {$$ = $1;}
+	| type_specifier declaration_specifiers {$$ = new std::string(*$1 + " " + *$2);}
 	;
 
 init_declarator_list
@@ -197,8 +196,8 @@ init_declarator_list
 	;
 
 init_declarator
-	: declarator {$$ = $1;}
-	| declarator T_ASSIGN initializer {$$ = new BinaryOperation($1, *$2, $3);}
+	: declarator {$$ = new InitDeclarator($1, NULL);}
+	| declarator T_ASSIGN initializer {$$ = new InitDeclarator($1, $3);}
 	;
 
 storage_class_specifier
@@ -219,15 +218,47 @@ type_specifier
 	| T_DOUBLE {$$ = $1;}
 	| T_SIGNED {$$ = $1;}
 	| T_UNSIGNED {$$ = $1;}
+	| struct_or_union_specifier
 	| enum_specifier
 	| T_TYPE_NAME {$$ = $1; /*maybe new typename*/}
 	;
 
+struct_or_union_specifier
+	: struct_or_union T_IDENTIFIER '{' struct_declaration_list '}'
+	| struct_or_union '{' struct_declaration_list '}'
+	| struct_or_union T_IDENTIFIER
+	;
+
+struct_or_union
+	: T_STRUCT
+	| T_UNION
+	;
+
+struct_declaration_list
+	: struct_declaration
+	| struct_declaration_list struct_declaration
+	;
+
+struct_declaration
+	: specifier_qualifier_list struct_declarator_list ';'
+	;
+
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list {$$ = new std::string(*$1 + " " + *$2)}
+	: type_specifier specifier_qualifier_list {$$ = new std::string(*$1 + " " + *$2);}
 	| type_specifier {$$ = $1;}
-	| type_qualifier specifier_qualifier_list {$$ = $2;}
-	| type_qualifier {;}
+	| type_qualifier specifier_qualifier_list {$$ = new std::string(*$1 + " " + *$2);}
+	| type_qualifier {$$ = $1;}
+	;
+
+struct_declarator_list
+	: struct_declarator
+	| struct_declarator_list ',' struct_declarator
+	;
+
+struct_declarator
+	: declarator
+	| ':' constant_expression
+	| declarator ':' constant_expression
 	;
 
 enum_specifier
@@ -252,30 +283,41 @@ type_qualifier
 	;
 
 declarator
-	: pointer direct_declarator //{$$ = new Pointer($2);}
-	| direct_declarator '(' T_INT ')' //{$$ = new Array($1, $3);}
+	: pointer direct_declarator
 	| direct_declarator {$$ = $1;}
 	;
 
 direct_declarator
-	: T_IDENTIFIER {$$ = new Variable(*$1);}
+	: T_IDENTIFIER {$$ = new std::string(*$1);}
 	| '(' declarator ')' {$$ = $2;}
-
+	| direct_declarator '[' constant_expression ']'
+	| direct_declarator '[' ']'
+	| direct_declarator '(' parameter_type_list ')'
+	| direct_declarator '(' identifier_list ')' {$$ = new DirectDeclarator($1, $3);}
+	| direct_declarator '(' ')' {$$ = new DirectDeclarator($1, NULL);}
+	;
 
 pointer
 	: T_STAR
+	| T_STAR type_qualifier_list
 	| T_STAR pointer
+	| T_STAR type_qualifier_list pointer
 	;
 
-params
-	: '(' ')' {$$ = new ParameterList();}
-	| '(' parameter_list ')' {$$ = $2;}
+type_qualifier_list
+	: type_qualifier {}
+	| type_qualifier_list type_qualifier {}
+	;
+
+
+parameter_type_list
+	: parameter_list
+	;
 
 parameter_list
-	: declaration_specifiers T_IDENTIFIER {$$ = new ParameterList(); $$->insert($2, $1); /*to set type of parameter*/}
-	| parameter_list ',' declaration_specifiers T_IDENTIFIER {$1->insert($4, $3); $$ = $1;}
-	| declaration_list pointer T_IDENTIFIER
-	| parameter_list ',' pointer declaration_specifiers T_IDENTIFIER
+	: parameter_declaration {$$ = new List(); $$->insert($1);}
+	| parameter_list ',' parameter_declaration {$1->insert($3); $$ = $1;}
+	;
 
 parameter_declaration
 	: declaration_specifiers declarator
@@ -286,6 +328,29 @@ parameter_declaration
 identifier_list
 	: T_IDENTIFIER {$$ = new List(); $$->insert(*$1)}
 	| identifier_list ',' T_IDENTIFIER ($1->insert(*$3); $$ = $1;)
+	;
+
+type_name
+	: specifier_qualifier_list
+	| specifier_qualifier_list abstract_declarator
+	;
+
+abstract_declarator
+	: pointer
+	| direct_abstract_declarator
+	| pointer direct_abstract_declarator
+	;
+
+direct_abstract_declarator
+	: '(' abstract_declarator ')'
+	| '[' ']'
+	| '[' constant_expression ']'
+	| direct_abstract_declarator '[' ']'
+	| direct_abstract_declarator '[' constant_expression ']'
+	| '(' ')'
+	| '(' parameter_type_list ')'
+	| direct_abstract_declarator '(' ')'
+	| direct_abstract_declarator '(' parameter_type_list ')'
 	;
 
 initializer
@@ -306,7 +371,6 @@ statement
 	| selection_statement {$$ = $1;}
 	| iteration_statement {$$ = $1;}
 	| jump_statement {$$ = $1;}
-	| declaration_statement {$$ = $1;}
 	;
 
 labeled_statement
@@ -357,9 +421,6 @@ jump_statement
 	: T_RETURN expression ';'{$$ = new Return($2);}
 	;
 
-declaration_statement
-	: declaration ';' {$$ = $1;}
-
 translation_unit
 	: external_declaration {g_root->insert($1);}
 	| translation_unit external_declaration{g_root->insert($2);}
@@ -367,17 +428,15 @@ translation_unit
 
 external_declaration
 	: function_definition {$$ = $1;}
-	| function_declaration {$$ = $1;}
-	| declaration_statement {$$ = $1;} 
+	| declaration {$$ = $1;}
 	;
 
 function_definition
-	: specifier_qualifier_list T_IDENTIFIER params compound_statement {$$ = new Function(*$1, *$2, $3, $4);}
-	| specifier_qualifier_list pointer T_IDENTIFIER params compound_statement
+	: declaration_specifiers declarator compound_statement {$$ = new Function(*$1, $2, NULL, $3); /* most important!*/}
+	| declaration_specifiers declarator declaration_list compound_statement {$$ = new Function(*$1, $2, $3, $4);}
+	| declarator declaration_list compound_statement {}
+	| declarator compound_statement {}
 	;
-
-function_declaration
-	: specifier_qualifier_list T_IDENTIFIER params ';' {$$ = new FunctionDeclaration(*$1, *$2, $3,)}
 
 %%
 
