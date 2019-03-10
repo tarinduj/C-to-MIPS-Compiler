@@ -2,6 +2,6 @@
 #include "catch.hpp"
 
 
-TEST_CASE ("General test") {	
-	SUCCEED("Hello");
+TEST_CASE ("General test", "[.]") {	
+	FAIL("Hello");
 }

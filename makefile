@@ -38,3 +38,6 @@ clean :
 	rm -f src/*.tab.*
 	rm -f src/*.yy.cpp
 	rm -f src/*.output
+
+test: bin/test
+	bin/test
