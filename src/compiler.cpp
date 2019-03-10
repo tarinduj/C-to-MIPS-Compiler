@@ -2,10 +2,7 @@
 #include "compiler.hpp"
 #include "run.hpp"
 
-
-int main()
+int main(int argc, char const *argv[])
 {
-	std::cout << "Hello, this is the compiler.\n";
-	run();
-	return 0;
+	return run(argc, argv);
 }
