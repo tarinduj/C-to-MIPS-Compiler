@@ -2,7 +2,7 @@ CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
 CXX = g++-8
 
-OBJECT_FILES = obj/run.o
+OBJECT_FILES = obj/run.o obj/type.o obj/chunk.o obj/symbolTable.o 
 TEST_OBJECT_FILES = obj/test.o
 
 bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
@@ -14,7 +14,7 @@ bin/compiler: parser lexer $(OBJECT_FILES) obj/compiler.o
 	$(CXX) $(CXXFLAGS) -o bin/compiler $(OBJECT_FILES) obj/compiler.o 
 	
 
-obj/%.o : src/%.cpp include/%.hpp
+obj/%.o : src/%.cpp include/*.hpp
 	mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
