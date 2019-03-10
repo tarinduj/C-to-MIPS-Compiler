@@ -9,12 +9,24 @@ class DirectDeclarator: public Node
 {
 private:
     std::string val;
-    std::vector<NodePtr> parameters;
+    NodePtr paramList;
 public:
-    DirectDeclarator(std::string* _v);
-    void insert(NodePtr _n);
+    DirectDeclarator(NodePtr _name, NodePtr _list);
+    void insert(NodePtr _n){}
     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
     void mipsPrint(std::ostream& _o){}//;    
+};
+
+class Declaration: public Node
+{
+private:
+public:
+};
+
+class InitDeclarator: public Node
+{
+private:
+public:
 };
 
 #endif

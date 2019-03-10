@@ -13,15 +13,29 @@ public:
     void insert(NodePtr _n);
     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
     void mipsPrint(std::ostream& _o){}//;
+    void getList(std::vector<NodePtr>& res);
 };
 
 class Scope: public Node
 {
 private:
-    std::vector<NodePtr> statements;
+    std::vector<NodePtr> executionList;
 public:
-    Scope();
+    Scope(NodePtr _lst1, NodePtr _lst2);
+    Scope(NodePtr _lst);
     void insert(NodePtr _n);
+    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    void mipsPrint(std::ostream& _o){}//;
+};
+
+class IdentifierList: public Node
+{
+private:
+    std::vector<std::string> identifiers;
+public:
+    IdentifierList();
+    void insert(NodePtr _n){}
+    void insert(std::string _n);
     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
     void mipsPrint(std::ostream& _o){}//;
 };

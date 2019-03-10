@@ -68,7 +68,7 @@ unary_expression
 	: postfix_expression {$$ = $1}
 	| T_INC unary_expression {$$ = new BinaryOperation($2, *$1, NULL);}
 	| T_DEC unary_expression {$$ = new BinaryOperation($2, *$1, NULL);}
-	| unary_operator cast_expression {;/*needs to be done*/}
+	| unary_operator cast_expression {;} //TODO
 	| T_SIZEOF unary_expression {$$ = new SizeOf($2);}
 	| T_SIZEOF '(' type_name ')' {$$ = new SizeOf(*$3);}
 	;
@@ -147,7 +147,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression {$$ = $1;}
-	| logical_or_expression '?' expression ':' conditional_expression {;}
+	| logical_or_expression '?' expression ':' conditional_expression {;} //TODO
 	;
 
 assignment_expression
@@ -179,8 +179,8 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';' {$$ = $1;}
-	| declaration_specifiers init_declarator_list ';'
+	: declaration_specifiers ';' {$$ = new Declaration(*$1, NULL);}
+	| declaration_specifiers init_declarator_list ';' {$$ = new Declaration(*$1, $2);}
 	;
 
 declaration_specifiers
@@ -288,12 +288,12 @@ declarator
 	;
 
 direct_declarator
-	: T_IDENTIFIER {$$ = new std::string(*$1);}
+	: T_IDENTIFIER {$$ = new Variable(*$1);}
 	| '(' declarator ')' {$$ = $2;}
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_type_list ')'
-	| direct_declarator '(' identifier_list ')' {$$ = new DirectDeclarator($1, $3);}
+	| direct_declarator '(' parameter_type_list ')' //{$$ = new DirectDeclarator($1, $3);}
+	| direct_declarator '(' identifier_list ')' //{$$ = new DirectDeclarator($1, $3);} //maybe something with gettypes to ensure that $1 is a string
 	| direct_declarator '(' ')' {$$ = new DirectDeclarator($1, NULL);}
 	;
 
@@ -326,7 +326,7 @@ parameter_declaration
 	;
 
 identifier_list
-	: T_IDENTIFIER {$$ = new List(); $$->insert(*$1)}
+	: T_IDENTIFIER {$$ = new IdentifierList(); $$->insert(*$1)}
 	| identifier_list ',' T_IDENTIFIER ($1->insert(*$3); $$ = $1;)
 	;
 
@@ -380,10 +380,10 @@ labeled_statement
 	;
 
 compound_statement
-	: '{' '}'
-	| '{' statement_list '}' {$$ = $2;}
-	| '{' declaration_list '}'
-	| '{' declaration_list statement_list '}'
+	: '{' '}' {;}
+	| '{' statement_list '}' {$$ = new Scope($1);}
+	| '{' declaration_list '}' {$$ = new Scope($1);}
+	| '{' declaration_list statement_list '}' {$$ = new Scope($1, $2);}
 	;
 
 declaration_list
@@ -392,7 +392,7 @@ declaration_list
 	;
 
 statement_list
-	: statement {$$ = new Scope(); $$->insert($1);}
+	: statement {$$ = new List(); $$->insert($1);}
 	| statement_list statement {$1->insert($2); $$ = $1;}
 	;
 
@@ -415,10 +415,10 @@ iteration_statement
 	;
 
 jump_statement
-	//: T_CONTINUE ';' {$$ = new Continue();}
-	//| T_BREAK ';' {$$ = new Break();}
-	//| T_RETURN ';' {$$ = new Return(NULL);}
-	: T_RETURN expression ';'{$$ = new Return($2);}
+	: T_CONTINUE ';' {$$ = new Continue();}
+	| T_BREAK ';' {$$ = new Break();}
+	| T_RETURN ';' {$$ = new Return(NULL);}
+	| T_RETURN expression ';'{$$ = new Return($2);}
 	;
 
 translation_unit

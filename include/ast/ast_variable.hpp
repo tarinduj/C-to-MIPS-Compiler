@@ -6,7 +6,9 @@
 class Variable: public Node
 {
 private:
+    std::string name;
 public:
+    Variable(std::string* _s);
 };
 
 #endif
