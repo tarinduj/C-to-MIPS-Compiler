@@ -32,7 +32,7 @@ bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o 
 	g++ $(CPPFLAGS) -o bin/print_canonical $^
 
 clean :
-	rm -f obj/*.o
+	rm -rf obj
 	rm -f src/*.o
 	rm -f bin/*
 	rm -f src/*.tab.*
