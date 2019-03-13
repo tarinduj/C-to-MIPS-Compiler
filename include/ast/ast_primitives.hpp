@@ -1,55 +1,55 @@
 #ifndef AST_PRIMITIVES_HPP
 #define AST_PRIMITIVES_HPP
 
-#include <string>
 #include "ast_node.hpp"
+#include <string>
 
-class IntConst: public Node
-{
+class IntConst : public Node {
 private:
-    int val;
-    int size;
-    std::string type;
+  int val;
+  int size;
+  std::string type;
+
 public:
-    IntConst(int _v);
-    void insert(NodePtr _n){}
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
+  IntConst(int _v);
+  void insert(NodePtr _n) {}
+  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &_o) {} //;
 };
 
-class FloatConst: public Node
-{
+class FloatConst : public Node {
 private:
-    double val;
-    int size;
+  double val;
+  int size;
+
 public:
-    FloatConst(double _v);
-    void insert(NodePtr _n){}
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
+  FloatConst(double _v);
+  void insert(NodePtr _n) {}
+  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &_o) {} //;
 };
 
-class CharConst: public Node
-{
+class CharConst : public Node {
 private:
-    int val;
-    int size;
+  int val;
+  int size;
+
 public:
-    CharConst(int _v);
-    void insert(NodePtr _n){}
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
+  CharConst(int _v);
+  void insert(NodePtr _n) {}
+  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &_o) {} //;
 };
 
-class String: public Node
-{
+class String : public Node {
 private:
-    std::string val;
+  std::string val;
+
 public:
-    String(std::string* _v);
-    void insert(NodePtr _n){}
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
+  String(std::string *_v);
+  void insert(NodePtr _n) {}
+  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &_o) {} //;
 };
 
 #endif
