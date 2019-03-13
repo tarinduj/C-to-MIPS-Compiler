@@ -7,13 +7,11 @@
 class TranslationUnit: public Node
 {
 private:
-    std::vector<NodePtr> functions;
-    std::vector<NodePtr> statements;
+    std::vector<NodePtr> parts;
 public:
     TranslationUnit();
     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
     void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+    void insert(NodePtr _n);
 };
-
 #endif

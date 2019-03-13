@@ -8,28 +8,28 @@
 class BinaryOperation: public Node
 {
 private:
-    NodePtr _left;
-    NodePtr _right;
+    NodePtr lExp;
+    NodePtr rExp;
     std::string op;
 public:
     BinaryOperation(NodePtr left, std::string* opPtr, NodePtr right);
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+    virtual void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
+    virtual void mipsPrint(std::ostream& _o){}//;
+    virtual void insert(NodePtr _n){}//;
 };
 
 class SizeOfOp: public Node
 {
 private:
     int size;
-    NodePtr _exp;
+    NodePtr exp;
     std::string typeName;
 public:
-    SizeOfOp(NodePtr exp);
-    SizeOfOp(std::string* t);
-    void pyPrint(std::ostream& _o){}//;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+    SizeOfOp(NodePtr _exp);
+    SizeOfOp(std::string* _n);
+    virtual void pyPrint(std::ostream& _o){}//;
+    virtual void mipsPrint(std::ostream& _o){}//;
+    virtual void insert(NodePtr _n){}//;
 };
 
 #endif

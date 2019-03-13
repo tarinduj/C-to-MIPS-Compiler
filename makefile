@@ -1,8 +1,8 @@
 CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
-CXX = g++-8
+CXX = g++
 
-OBJECT_FILES = obj/run.o
+OBJECT_FILES = obj/run.o obj/ast_binop.o obj/ast_declarator.o obj/ast_function.o obj/ast_jump.o obj/ast_list.o obj/ast_node.o obj/ast_primitives.o obj/ast_translation.o obj/ast_variable.o obj/C_lexer.o obj/C_parser.o
 TEST_OBJECT_FILES = obj/test.o
 
 bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
@@ -18,14 +18,21 @@ obj/%.o : src/%.cpp include/%.hpp
 	mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
+obj/%.o : src/%.cpp include/ast/%.hpp
+	mkdir -p obj
+	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
 parser: src/C_parser.y
 	bison -v -d src/C_parser.y -o src/C_parser.tab.cpp 
 	mv src/C_parser.tab.hpp include
+	mkdir -p obj
+	$(CXX) $(CXXFLAGS) -c -o obj/C_parser.o src/C_parser.tab.cpp
 
 lexer : src/C_lexer.flex parser
 	flex -o src/C_lexer.yy.cpp src/C_lexer.flex
 	touch include/C_lexer.yy.hpp
+	mkdir -p obj
+	$(CXX) $(CXXFLAGS) -c -o obj/C_lexer.o src/C_lexer.yy.cpp
 
 bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o src/C_parser.tab.o
 	mkdir -p bin
@@ -38,6 +45,8 @@ clean :
 	rm -f src/*.tab.*
 	rm -f src/*.yy.cpp
 	rm -f src/*.output
+	rm -f include/C_parser.tab.hpp
+	rm -f include/C_lexer.yy.hpp
 
 test: bin/test
 	bin/test

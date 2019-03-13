@@ -3,23 +3,23 @@
 #include <string>
 #include "ast_node.hpp"
 
-class Break: public Node
-{
-private:
-    /* data */
-public:
-    Break(/* args */) { }
-    ~Break() { }
-};
+// class Break: public Node
+// {
+// private:
+//     /* data */
+// public:
+//     Break(/* args */) { }
+//     ~Break() { }
+// };
 
-class Continue: public Node
-{
-private:
-    /* data */
-public:
-    Continue(/* args */) { }
-    ~Continue() { }
-};
+// class Continue: public Node
+// {
+// private:
+//     /* data */
+// public:
+//     Continue(/* args */) { }
+//     ~Continue() { }
+// };
 
 class Return: public Node
 {

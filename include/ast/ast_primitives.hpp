@@ -1,8 +1,8 @@
-#ifdef AST_PRIMITIVES_HPP
+#ifndef AST_PRIMITIVES_HPP
 #define AST_PRIMITIVES_HPP
 
-#include "ast_node.hpp"
 #include <string>
+#include "ast_node.hpp"
 
 class IntConst: public Node
 {
@@ -23,7 +23,7 @@ private:
     double val;
     int size;
 public:
-    Floatonst(double _v);
+    FloatConst(double _v);
     void insert(NodePtr _n){}
     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
     void mipsPrint(std::ostream& _o){}//;
@@ -46,7 +46,7 @@ class String: public Node
 private:
     std::string val;
 public:
-    String(std::string _v);
+    String(std::string* _v);
     void insert(NodePtr _n){}
     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
     void mipsPrint(std::ostream& _o){}//;

@@ -11,6 +11,6 @@
 #include "ast/ast_translation.hpp"
 #include "ast/ast_variable.hpp"
 
-extern NodePtr parseAST(char *name);
+extern NodePtr parseAST(std::string name);
 
 #endif
