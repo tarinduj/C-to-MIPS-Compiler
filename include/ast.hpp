@@ -13,4 +13,7 @@
 
 extern NodePtr parseAST(std::string name);
 
+#define LEX_DEBUG 0
+#define PAR_DEBUG 1
+
 #endif

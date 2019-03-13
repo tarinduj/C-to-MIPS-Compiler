@@ -2,6 +2,7 @@
   #include "ast.hpp"
   #include <fstream>
   #include <string>
+	#include <iostream>
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
@@ -43,7 +44,6 @@ primary_expression
 	: T_IDENTIFIER {$$ = new Variable($1);}
 	| T_INTCONST {$$ = new IntConst($1);}
   | T_FLOATCONST {$$ = new FloatConst($1);}
-  //| T_CHARCONST {$$ = new CharConst($1);}
 	| T_STRINGLIT {$$ = new String($1);}
 	| T_LB expression T_RB {$$ = $2;}
 	;
@@ -213,7 +213,7 @@ type_specifier
 	: T_VOID {$$ = $1;}
 	| T_CHAR {$$ = $1;}
 	| T_SHORT {$$ = $1;}
-	| T_INT {$$ = $1;}
+	| T_INT {$$ = $1; std::cerr << "int \n";}
 	| T_LONG {$$ = $1;}
 	| T_FLOAT {$$ = $1;}
 	| T_DOUBLE {$$ = $1;}
@@ -419,21 +419,21 @@ jump_statement
 	: T_CONTINUE T_SEMI //{$$ = new Continue();}
 	| T_BREAK T_SEMI //{$$ = new Break();}
 	| T_RETURN T_SEMI {$$ = new Return(NULL);}
-	| T_RETURN expression T_SEMI{$$ = new Return($2);}
+	| T_RETURN expression T_SEMI{std::cerr<<"return \n"; $$ = new Return($2);}
 	;
 
 translation_unit
-	: external_declaration {g_root->insert($1);}
+	: external_declaration {std::cerr<<"translation unit \n"; g_root->insert($1);}
 	| translation_unit external_declaration{g_root->insert($2);}
 	;
 
 external_declaration
-	: function_definition {$$ = $1;}
+	: function_definition {std::cerr<<"external declaration added\n";$$ = $1;}
 	| declaration {$$ = $1;}
 	;
 
 function_definition
-	: declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, $3); /* most important!*/}
+	: declaration_specifiers declarator compound_statement {std::cerr<<"creating function \n"; $$ = new Function($1, $2, $3); /* most important!*/}
 	| declaration_specifiers declarator declaration_list compound_statement {$$ = new Function($1, $2, $4);}
 	| declarator declaration_list compound_statement {}
 	| declarator compound_statement {}

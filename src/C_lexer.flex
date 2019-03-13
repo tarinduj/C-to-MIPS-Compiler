@@ -2,12 +2,11 @@
 %option yylineno
 
 %{
-//#include "../include/ast.hpp"
+#include "ast.hpp"
 #include "C_parser.tab.hpp"
 #include <string>
 #include <iostream>
 extern FILE *yyin;
-
 
 extern "C" int fileno(FILE *stream);
 
@@ -142,5 +141,7 @@ int makeFloatToken (int T){
     return T;
 }
 void printToken(){
-    std::cerr<<yytext<<"\t";
+    if(LEX_DEBUG){
+        std::cerr<<yytext<<"\t";
+    }
 }
