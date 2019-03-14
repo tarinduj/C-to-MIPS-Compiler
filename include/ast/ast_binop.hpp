@@ -11,8 +11,7 @@ private:
 
 public:
   BinaryOperation(NodePtr left, std::string *opPtr, NodePtr right);
-  virtual void pyPrint(std::ostream &_o) {
-  } //; when implementing delete {} and leave ;
+  virtual void pyPrint(std::ostream &_o);
   virtual void mipsPrint(std::ostream &_o) {} //;
   virtual void insert(NodePtr _n) {}          //;
 };
@@ -26,7 +25,7 @@ private:
 public:
   SizeOfOp(NodePtr _exp);
   SizeOfOp(std::string *_n);
-  virtual void pyPrint(std::ostream &_o) {}   //;
+  virtual void pyPrint(std::ostream &_o){}
   virtual void mipsPrint(std::ostream &_o) {} //;
   virtual void insert(NodePtr _n) {}          //;
 };

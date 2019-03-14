@@ -7,6 +7,6 @@
 int main(int argc, char const *argv[]) {
   std::string name(argv[1]);
   NodePtr ast = parseAST(name);
-  std::cout << std::endl;
+  ast->pyPrint(std::cout);
   return 0;
 }

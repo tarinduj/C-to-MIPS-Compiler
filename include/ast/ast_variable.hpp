@@ -9,7 +9,7 @@ private:
 
 public:
   Variable(std::string *_s);
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void insert(NodePtr _n) {}          //;
 };

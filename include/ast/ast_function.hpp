@@ -6,14 +6,14 @@
 
 class Function : public Node {
 private:
-  NodePtr decl;
-  NodePtr statements;
+  NodePtr decl = NULL;
+  NodePtr statements = NULL;
   std::string returnType;
 
 public:
   Function(std::string *_decSpec, NodePtr _d, NodePtr _s);
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &os) {} //;
   void insert(NodePtr _n) {}          //;
 };
 

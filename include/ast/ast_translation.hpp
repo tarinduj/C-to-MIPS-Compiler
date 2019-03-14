@@ -10,8 +10,8 @@ private:
 
 public:
   TranslationUnit();
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void pyPrint(std::ostream &os);
+  void mipsPrint(std::ostream &os) {} //;
   void insert(NodePtr _n);
 };
 #endif

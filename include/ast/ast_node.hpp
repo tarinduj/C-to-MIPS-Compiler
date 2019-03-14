@@ -12,8 +12,8 @@ class Node {
 public:
   Node();
   ~Node();
-  virtual void pyPrint(std::ostream &_o) = 0;
-  virtual void mipsPrint(std::ostream &_o) = 0;
+  virtual void pyPrint(std::ostream &os) = 0;
+  virtual void mipsPrint(std::ostream &os) = 0;
   virtual void insert(NodePtr _n);
   virtual void insert(std::string *_n);
   virtual void getList(std::vector<NodePtr> &res) const;

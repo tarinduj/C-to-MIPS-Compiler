@@ -11,7 +11,7 @@ private:
 public:
   List();
   void insert(NodePtr _n);
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void getList(std::vector<NodePtr> &res);
 };
@@ -19,15 +19,15 @@ public:
 class Scope : public Node {
 private:
   NodePtr decList = NULL;
-  NodePtr statList;
+  NodePtr statList = NULL;
 
 public:
   Scope(NodePtr _lst1, NodePtr _lst2); // concatenate two lists. it is for
                                        // declaration_list statement_list
   Scope(NodePtr _lst);
-  void insert(NodePtr _n){};
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void insert(NodePtr _n){}
+  void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &os) {} //;
 };
 
 class IdentifierList : public Node {

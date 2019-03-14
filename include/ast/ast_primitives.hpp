@@ -7,13 +7,13 @@
 class IntConst : public Node {
 private:
   int val;
-  int size;
-  std::string type;
+  int size = 4;
+  std::string type = "int";
 
 public:
   IntConst(int _v);
   void insert(NodePtr _n) {}
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
 };
 

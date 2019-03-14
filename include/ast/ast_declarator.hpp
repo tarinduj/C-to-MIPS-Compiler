@@ -16,8 +16,8 @@ public:
                    NodePtr _list); // possibly add bolean to specify whether its
                                    // a function or array
   void insert(NodePtr _n) {}
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &os) {} //;
                                       // std::string getID();
 };
 
@@ -34,8 +34,8 @@ private:
 public:
   Declaration(std::string *_spec, NodePtr _list);
   void insert(NodePtr _n) {}
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void pyPrint(std::ostream &os);
+  void mipsPrint(std::ostream &os) {} //;
 };
 
 class InitDeclarator : public Node {
@@ -46,8 +46,8 @@ private:
 public:
   InitDeclarator(NodePtr _d, NodePtr _i);
   void insert(NodePtr _n) {}
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void pyPrint(std::ostream &os);
+  void mipsPrint(std::ostream &os) {} //;
 };
 
 #endif

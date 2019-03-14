@@ -10,30 +10,32 @@ bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 	$(CXX) $(CXXFLAGS) -o bin/test $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 
 bin/compiler: parser lexer $(OBJECT_FILES) obj/compiler.o
-	mkdir -p bin
-	$(CXX) $(CXXFLAGS) -o bin/compiler $(OBJECT_FILES) obj/compiler.o 
+	@mkdir -p bin
+	@$(CXX) $(CXXFLAGS) -o bin/compiler $(OBJECT_FILES) obj/compiler.o 
 	
 obj/%.o : src/%.cpp include/%.hpp
-	mkdir -p obj
-	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
+	@echo building $<
+	@mkdir -p obj
+	@$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
 obj/%.o : src/%.cpp include/ast/%.hpp
-	mkdir -p obj
-	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
+	@echo building $<
+	@mkdir -p obj
+	@$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
 parser: src/C_parser.y
-	@bison -v -d src/C_parser.y -o src/C_parser.tab.cpp
+	@echo "building parser..."
+	@bison -v -d -Wnone src/C_parser.y -o src/C_parser.tab.cpp
 	@mv src/C_parser.tab.hpp include
 	@mkdir -p obj
 	@$(CXX) $(CXXFLAGS) -c -o obj/C_parser.o src/C_parser.tab.cpp
-	@echo "building parser..."
 
 lexer : src/C_lexer.flex parser
+	@echo "building lexer..."
 	@flex -o src/C_lexer.yy.cpp src/C_lexer.flex
 	@touch include/C_lexer.yy.hpp
 	@mkdir -p obj
 	@$(CXX) $(CXXFLAGS) -c -o obj/C_lexer.o src/C_lexer.yy.cpp
-	@echo "building lexer..."
 
 bin/print_canonical : src/print_canonical.o src/C_parser.tab.o src/C_lexer.yy.o src/C_parser.tab.o
 	mkdir -p bin

@@ -1,4 +1,4 @@
-void foo(){
-  int x = 2;
-  return x;
+int foo(){
+  int xxyyzz = 5;
+  return xxyyzz;
 }

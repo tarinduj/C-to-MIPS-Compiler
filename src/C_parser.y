@@ -213,7 +213,7 @@ type_specifier
 	: T_VOID {$$ = $1;}
 	| T_CHAR {$$ = $1;}
 	| T_SHORT {$$ = $1;}
-	| T_INT {$$ = $1; std::cerr << "int \n";}
+	| T_INT {$$ = $1;}
 	| T_LONG {$$ = $1;}
 	| T_FLOAT {$$ = $1;}
 	| T_DOUBLE {$$ = $1;}
@@ -295,7 +295,7 @@ direct_declarator
 	| direct_declarator T_LSB T_RSB
 	| direct_declarator T_LB parameter_type_list T_RB //{$$ = new DirectDeclarator($1, $3);}
 	| direct_declarator T_LB identifier_list T_RB //{$$ = new DirectDeclarator($1, $3);} //maybe something with gettypes to ensure that $1 is a string
-	| direct_declarator T_LB T_RB {$$ = new DirectDeclarator($1, NULL);}
+	| direct_declarator T_LB T_RB {std::cerr<<"i have empty parameter list\n"; $$ = new DirectDeclarator($1, NULL);}
 	;
 
 pointer
@@ -312,7 +312,7 @@ type_qualifier_list
 
 
 parameter_type_list
-	: parameter_list
+	: parameter_list {$$ = $1;}
 	;
 
 parameter_list
@@ -419,21 +419,21 @@ jump_statement
 	: T_CONTINUE T_SEMI //{$$ = new Continue();}
 	| T_BREAK T_SEMI //{$$ = new Break();}
 	| T_RETURN T_SEMI {$$ = new Return(NULL);}
-	| T_RETURN expression T_SEMI{std::cerr<<"return \n"; $$ = new Return($2);}
+	| T_RETURN expression T_SEMI{$$ = new Return($2);}
 	;
 
 translation_unit
-	: external_declaration {std::cerr<<"translation unit \n"; g_root->insert($1);}
+	: external_declaration {g_root->insert($1);}
 	| translation_unit external_declaration{g_root->insert($2);}
 	;
 
 external_declaration
-	: function_definition {std::cerr<<"external declaration added\n";$$ = $1;}
+	: function_definition {$$ = $1;}
 	| declaration {$$ = $1;}
 	;
 
 function_definition
-	: declaration_specifiers declarator compound_statement {std::cerr<<"creating function \n"; $$ = new Function($1, $2, $3); /* most important!*/}
+	: declaration_specifiers declarator compound_statement {std::cerr<<"this function is accepted\n"; $$ = new Function($1, $2, $3); /* most important!*/}
 	| declaration_specifiers declarator declaration_list compound_statement {$$ = new Function($1, $2, $4);}
 	| declarator declaration_list compound_statement {}
 	| declarator compound_statement {}
