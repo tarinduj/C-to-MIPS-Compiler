@@ -1,10 +1,26 @@
+#ifndef CONTEXT_HPP
+#define CONTEXT_HPP
+
+#include "type.hpp"
+#include "chunk.hpp"
+#include <vector>
+#include <map>
+
 class Context {
+private:
+  std::vector<std::map<std::string, ChunkPtr>> chunk_table;
+  std::vector<std::map<std::string, TypePtr>> type_table;
 public:
+  Context();
   void order(std::string id, int &out_reg);
   std::pair<unsigned int, unsigned int> order(std::string id1, std::string id2);
   void new_scope();
   void del_scope();
   void new_frame();
-  void get_to_reg(std::string id, unsigned int reg);
-  unsigned int get_reg(unsigned int reg);
-}
+  void register_type(std::string, TypePtr);
+  void register_chunk(std::string, ChunkPtr);
+  TypePtr resolve_type(std::string);
+  ChunkPtr resolve_chunk(std::string);
+};
+
+#endif

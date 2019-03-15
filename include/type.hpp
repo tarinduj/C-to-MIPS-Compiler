@@ -16,7 +16,6 @@ typedef std::shared_ptr<Type> TypePtr;
 
 class PrimitiveType : public Type {
 public:
-  PrimitiveType();
   virtual unsigned get_size() const override;
   virtual Primitive get_primitive_type() const override;
   virtual TypeCategory get_type_category() const override;
