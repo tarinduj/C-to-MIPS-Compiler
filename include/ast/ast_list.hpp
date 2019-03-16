@@ -7,13 +7,16 @@
 class List : public Node {
 private:
   std::vector<NodePtr> elements;
-
+  std::string type;
 public:
   List();
   void insert(NodePtr _n);
   void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void getList(std::vector<NodePtr> &res);
+  void setType(std::string* _t);
+
+  void getDeclaredVarNames(std::vector<std::string>& v) const;
 };
 
 class Scope : public Node {

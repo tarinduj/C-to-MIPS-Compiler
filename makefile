@@ -9,9 +9,9 @@ bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 	mkdir -p bin
 	$(CXX) $(CXXFLAGS) -o bin/test $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 
-bin/compiler: parser lexer $(OBJECT_FILES) obj/compiler.o
+bin/c_compiler: parser lexer $(OBJECT_FILES) obj/c_compiler.o
 	@mkdir -p bin
-	@$(CXX) $(CXXFLAGS) -o bin/compiler $(OBJECT_FILES) obj/compiler.o 
+	@$(CXX) $(CXXFLAGS) -o bin/c_compiler $(OBJECT_FILES) obj/c_compiler.o 
 	
 obj/%.o : src/%.cpp include/%.hpp
 	@echo building $<

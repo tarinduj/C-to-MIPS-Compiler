@@ -6,10 +6,11 @@ BinaryOperation::BinaryOperation(NodePtr left, std::string *opPtr,
   delete opPtr;
 };
 void BinaryOperation::pyPrint(std::ostream& os){
-  os << "BinaryOperation print\n";
+  os << "(";
   lExp->pyPrint(os);
-  os << op;
+  os << ") " << op <<" (";
   rExp->pyPrint(os);
+  os << ")";
 }
 
 SizeOfOp::SizeOfOp(NodePtr _exp) : exp(_exp){};

@@ -2,7 +2,7 @@
 
 IntConst::IntConst(int _v) : val(_v){}
 void IntConst::pyPrint(std::ostream& os){
-  os<<"intValue: "<<val<<"\n";
+  os<<val;
 }
 FloatConst::FloatConst(double _v) : val(_v){}
 CharConst::CharConst(int _v) : val(_v){};

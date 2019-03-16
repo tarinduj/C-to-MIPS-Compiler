@@ -192,7 +192,7 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator {$$ = new List(); $$->insert($1);}
+	: init_declarator {$$ = new List(); $$->insert($1); $$->setType(new std::string("init"));}
 	| init_declarator_list T_COMA init_declarator {$1->insert($3); $$ = $1;}
 	;
 
@@ -295,7 +295,7 @@ direct_declarator
 	| direct_declarator T_LSB T_RSB
 	| direct_declarator T_LB parameter_type_list T_RB //{$$ = new DirectDeclarator($1, $3);}
 	| direct_declarator T_LB identifier_list T_RB //{$$ = new DirectDeclarator($1, $3);} //maybe something with gettypes to ensure that $1 is a string
-	| direct_declarator T_LB T_RB {std::cerr<<"i have empty parameter list\n"; $$ = new DirectDeclarator($1, NULL);}
+	| direct_declarator T_LB T_RB {$$ = new DirectDeclarator($1, NULL);}
 	;
 
 pointer
@@ -388,12 +388,12 @@ compound_statement
 	;
 
 declaration_list
-	: declaration {$$ = new List(); $$->insert($1);}
+	: declaration {$$ = new List(); $$->insert($1); $$->setType(new std::string("decl"));}
 	| declaration_list declaration {$1->insert($2); $$ = $1;}
 	;
 
 statement_list
-	: statement {$$ = new List(); $$->insert($1);}
+	: statement {$$ = new List(); $$->insert($1); $$->setType(new std::string("stat"));}
 	| statement_list statement {$1->insert($2); $$ = $1;}
 	;
 
@@ -433,7 +433,7 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator compound_statement {std::cerr<<"this function is accepted\n"; $$ = new Function($1, $2, $3); /* most important!*/}
+	: declaration_specifiers declarator compound_statement {$$ = new Function($1, $2, $3); /* most important!*/}
 	| declaration_specifiers declarator declaration_list compound_statement {$$ = new Function($1, $2, $4);}
 	| declarator declaration_list compound_statement {}
 	| declarator compound_statement {}
