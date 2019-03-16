@@ -1,15 +1,16 @@
 #ifndef CONTEXT_HPP
 #define CONTEXT_HPP
 
-#include "type.hpp"
 #include "chunk.hpp"
-#include <vector>
+#include "type.hpp"
 #include <map>
+#include <vector>
 
 class Context {
 private:
   std::vector<std::map<std::string, ChunkPtr>> chunk_table;
   std::vector<std::map<std::string, TypePtr>> type_table;
+
 public:
   Context();
   void order(std::string id, int &out_reg);
