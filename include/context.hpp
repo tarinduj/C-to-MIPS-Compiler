@@ -10,6 +10,7 @@ class Context {
 private:
   std::vector<std::map<std::string, ChunkPtr>> chunk_table;
   std::vector<std::map<std::string, TypePtr>> type_table;
+  unsigned offset = 0;
 
 public:
   Context();
@@ -18,10 +19,10 @@ public:
   void new_scope();
   void del_scope();
   void new_frame();
-  void register_type(std::string, TypePtr);
-  void register_chunk(std::string, ChunkPtr);
-  TypePtr resolve_type(std::string);
-  ChunkPtr resolve_chunk(std::string);
+  ChunkPtr register_chunk(std::string, TypePtr);
+  ChunkPtr resolve_chunk(std::string) const;
+  TypePtr register_type(std::string, TypePtr);
+  TypePtr resolve_type(std::string) const;
 };
 
 #endif
