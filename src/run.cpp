@@ -49,7 +49,7 @@ int run(int argc, char const *argv[]) {
       clara::Opt(translate)["-t"]["--translate"](
           "translate from C89 to Python") |
       clara::Opt(setVerbosity, "quiet|normal|high")["-v"]["--verbosity"](
-          "set output verbosity") |
+          "set verbosity of messages") |
       clara::Opt(output_file, "output")["-o"]("place the output into <file>") |
       clara::Arg(input_file, "input")("Input file").required();
 
