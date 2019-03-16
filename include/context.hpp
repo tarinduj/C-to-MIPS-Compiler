@@ -19,6 +19,7 @@ public:
   void new_scope();
   void del_scope();
   void new_frame();
+  unsigned get_scope_num() const;
   ChunkPtr register_chunk(std::string, TypePtr);
   ChunkPtr resolve_chunk(std::string) const;
   TypePtr register_type(std::string, TypePtr);
