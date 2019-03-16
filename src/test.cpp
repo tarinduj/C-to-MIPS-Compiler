@@ -18,8 +18,7 @@ TEST_CASE("Context type retreival", "[Type][Context]") {
   Context context;
   TypePtr type = context.register_type(
       "type1", std::shared_ptr<PrimitiveType>(new PrimitiveType()));
-  INFO(type.get())
-  REQUIRE(type->get_type_category() == 0);
+  REQUIRE(type->get_type_category() == Type::PRIMITIVE);
   REQUIRE(type->get_primitive_type() == Type::INT);
   TypePtr type_2 = context.resolve_type("type1");
   REQUIRE(type_2->get_type_category() == Type::PRIMITIVE);
