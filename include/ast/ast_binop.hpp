@@ -25,7 +25,7 @@ private:
 public:
   SizeOfOp(NodePtr _exp);
   SizeOfOp(std::string *_n);
-  virtual void pyPrint(std::ostream &_o){}
+  virtual void pyPrint(std::ostream &_o) {}
   virtual void mipsPrint(std::ostream &_o) {} //;
   virtual void insert(NodePtr _n) {}          //;
 };

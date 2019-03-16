@@ -5,10 +5,10 @@ BinaryOperation::BinaryOperation(NodePtr left, std::string *opPtr,
     : lExp(left), rExp(right), op(*opPtr) {
   delete opPtr;
 };
-void BinaryOperation::pyPrint(std::ostream& os){
+void BinaryOperation::pyPrint(std::ostream &os) {
   os << "(";
   lExp->pyPrint(os);
-  os << ") " << op <<" (";
+  os << ") " << op << " (";
   rExp->pyPrint(os);
   os << ")";
 }

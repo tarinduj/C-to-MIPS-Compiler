@@ -36,8 +36,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
-  void getDeclaredVarNames(std::vector<std::string>& v) const;
-
+  void getDeclaredVarNames(std::vector<std::string> &v) const;
 };
 
 class InitDeclarator : public Node {
@@ -50,7 +49,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
-  void getDeclaredVarNames(std::vector<std::string>& v) const;
+  void getDeclaredVarNames(std::vector<std::string> &v) const;
 };
 
 #endif
