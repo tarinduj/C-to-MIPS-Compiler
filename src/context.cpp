@@ -7,9 +7,7 @@ Context::Context() {
   chunk_table.emplace_back();
 }
 
-unsigned Context::get_scope_num() const {
-	return chunk_table.size() - 1;
-}
+unsigned Context::get_scope_num() const { return chunk_table.size() - 1; }
 
 TypePtr Context::register_type(std::string identifier, TypePtr type) {
   type_table.back()[identifier] = type;
@@ -17,8 +15,8 @@ TypePtr Context::register_type(std::string identifier, TypePtr type) {
 }
 
 TypePtr Context::resolve_type(std::string identifier) const {
-  for(auto it = type_table.rbegin(); it != type_table.rend(); ++it){
-	  return it->find(identifier)->second;
+  for (auto it = type_table.rbegin(); it != type_table.rend(); ++it) {
+    return it->find(identifier)->second;
   }
 }
 
@@ -30,17 +28,17 @@ ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
 }
 
 ChunkPtr Context::resolve_chunk(std::string identifier) const {
-  for(auto it = chunk_table.rbegin(); it != chunk_table.rend(); ++it){
-	  return it->find(identifier)->second;
+  for (auto it = chunk_table.rbegin(); it != chunk_table.rend(); ++it) {
+    return it->find(identifier)->second;
   }
 }
 
-void Context::new_scope(){
-	type_table.emplace_back();
-	chunk_table.emplace_back();
+void Context::new_scope() {
+  type_table.emplace_back();
+  chunk_table.emplace_back();
 }
 
-void Context::del_scope(){
-	type_table.pop_back();
-	chunk_table.pop_back();
+void Context::del_scope() {
+  type_table.pop_back();
+  chunk_table.pop_back();
 }
