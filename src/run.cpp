@@ -58,11 +58,12 @@ int run(int argc, char const *argv[]) {
   if (help) {
     std::cout << cli;
   }
-  if (compile) {
-    std::cout << "I am  ";
+  else if (compile) {
+    msg(fmt::format("I am gonna compile from {} to {}.", input_file, output_file));
   } else if (translate) {
-    std::cout << "I am translating ";
+    msg(fmt::format("I am gonna translate from {} to {}.", input_file, output_file));
   }
-  std::cout << "from " << input_file << " to " << output_file << '\n';
+
+
   return 0;
 }
