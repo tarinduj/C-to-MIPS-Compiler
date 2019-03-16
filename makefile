@@ -2,7 +2,7 @@ CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
 CXX = g++-8
 
-OBJECT_FILES = obj/run.o obj/type.o obj/chunk.o obj/symbolTable.o  obj/context.o
+OBJECT_FILES = obj/run.o obj/type.o obj/chunk.o obj/context.o
 TEST_OBJECT_FILES = obj/test.o
 
 bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
