@@ -127,4 +127,47 @@ TEST_CASE("Scoping chunks", "[Scope][Chunk]") {
   CHECK(context.resolve_chunk("chunk")->get_offset() == 0 * chunksize);
 }
 
+TEST_CASE("Scoping chunks 2", "[Scope][Chunk]") {
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  Context context;
+  INFO("Scope 0");
+  auto chunk0 = context.register_chunk("chunk", type);
+  unsigned chunksize = chunk0->get_type()->get_size();
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk0);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 0 * chunksize);
+  context.new_scope();
+  INFO("Scope 0-1");
+  auto chunk1 = context.register_chunk("chunk", type);
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk1);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 1 * chunksize);
+  context.new_scope();
+  INFO("Scope 0-1-2");
+  auto chunk2 = context.register_chunk("chunk", type);
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk2);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 2 * chunksize);
+  context.del_scope();
+  INFO("Scope 0-1");
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk1);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 1 * chunksize);
+  context.new_scope();
+  INFO("Scope 0-1-2");
+  auto chunk3 = context.register_chunk("chunk", type);
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk3);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 2 * chunksize);
+  context.del_scope();
+  INFO("Scope 0-1");
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk1);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 1 * chunksize);
+  context.del_scope();
+  INFO("Scope 0");
+  CAPTURE(context.get_stack_size());
+  CHECK(context.resolve_chunk("chunk") == chunk0);
+  CHECK(context.resolve_chunk("chunk")->get_offset() == 0 * chunksize);
+}
 TEST_CASE("Loading and storing chunks to registers", "[Load][Store][Chunk]") {}
