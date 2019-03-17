@@ -8,7 +8,7 @@
 class DirectDeclarator : public Node {
 private:
   NodePtr dirDec;
-  NodePtr paramList;
+  NodePtr paramList = NULL;
   std::string val;
 
 public:
@@ -18,7 +18,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &os) {} //;
-                                      // std::string getID();
+  std::string getType() const;
 };
 
 // pseudo for getID
@@ -37,11 +37,12 @@ public:
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
   void getDeclaredVarNames(std::vector<std::string> &v) const;
+  std::string getType() const;
 };
 
 class InitDeclarator : public Node {
 private:
-  NodePtr declarator;  // will store name of the variable/function
+  NodePtr declarator;  // will store name of the variable/function + parameters of function
   NodePtr initializer; // expression so the value of variable which we pass as
                        // default
 public:

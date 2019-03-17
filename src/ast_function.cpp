@@ -15,5 +15,9 @@ void Function::pyPrint(std::ostream &os) {
     statements->pyPrint(os);
   os << "\n";
 }
+std::string Function::getType() const{
+  return "func";
+}
+
 FunctionCall::FunctionCall(NodePtr _exp, NodePtr _arg)
     : postExp(_exp), arguments(_arg){};

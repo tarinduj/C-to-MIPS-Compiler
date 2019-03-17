@@ -8,6 +8,7 @@ void addEnding(std::ostream &os) {
   os << "if __name__ == \"__main__\":\n";
   os << "\timport sys\n";
   os << "\tret=main()\n";
+  os << "\tprint(\"temporary exit code:\")\n\tprint(ret)\n"; //temporarty line
   os << "\tsys.exit(ret)\n";
 };
 

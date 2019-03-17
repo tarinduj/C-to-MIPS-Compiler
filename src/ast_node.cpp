@@ -7,7 +7,8 @@ void Node::insert(std::string *_n){};
 void Node::getList(std::vector<NodePtr> &res) const {};
 void Node::setType(std::string *_t){};
 void Node::getDeclaredVarNames(std::vector<std::string> &v) const {};
-std::string Node::getName(){};
+std::string Node::getName() const {};
+std::string Node::getType() const {};
 
 void addIndent() { scopeCounter++; }
 void delIndent() { scopeCounter--; }

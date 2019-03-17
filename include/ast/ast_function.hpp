@@ -15,6 +15,8 @@ public:
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &os) {} //;
   void insert(NodePtr _n) {}          //;
+  std::string getType() const;
+
 };
 
 class FunctionCall : public Node {
@@ -27,6 +29,7 @@ public:
   void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void insert(NodePtr _n) {}          //;
+
 };
 
 // class FunctionDeclaration: public Node

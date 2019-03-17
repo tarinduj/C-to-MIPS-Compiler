@@ -25,9 +25,10 @@ void List::setType(std::string *_t) {
 
 void List::getDeclaredVarNames(std::vector<std::string> &v) const {
   if (type == "init") {
-    for (int i = 0; i < elements.size(); i++) {
-      if (elements[i])
-        elements[i]->getDeclaredVarNames(v);
+    for (int i = 0; i < elements.size(); i++) { 
+      if (elements[i]){
+        elements[i]->getDeclaredVarNames(v);  
+      }
     }
   }
 }
