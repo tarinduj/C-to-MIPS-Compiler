@@ -1,52 +1,54 @@
 CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
-CXX = g++
+CXX = g++-8
 
 OBJECT_FILES += obj/run.o obj/type.o obj/chunk.o obj/context.o obj/format.o obj/posix.o
-OBJECT_FILES += obj/C_lexer.o obj/C_parser.o
 OBJECT_FILES += obj/ast_binop.o obj/ast_declarator.o obj/ast_function.o obj/ast_jump.o obj/ast_list.o obj/ast_node.o obj/ast_primitives.o obj/ast_translation.o obj/ast_variable.o 
+OBJECT_FILES += obj/C_lexer.yy.o obj/C_parser.tab.o
 
 TEST_OBJECT_FILES = obj/test.o
 
 obj/format.o: 
-	mkdir -p obj
+	@mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o obj/format.o src_fmt/format.cc
 
 obj/posix.o: 
-	mkdir -p obj
+	@mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o obj/posix.o src_fmt/posix.cc		
 
-bin/test: parser lexer $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
-	mkdir -p bin
+bin/test: $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
+	@mkdir -p bin
 	$(CXX) $(CXXFLAGS) -o bin/test $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 
-bin/c_compiler: parser lexer $(OBJECT_FILES) obj/compiler.o
+bin/c_compiler: $(OBJECT_FILES) obj/compiler.o
 	@mkdir -p bin
-	@$(CXX) $(CXXFLAGS) -o bin/c_compiler $(OBJECT_FILES) obj/compiler.o 
+	$(CXX) $(CXXFLAGS) -o bin/c_compiler $(OBJECT_FILES) obj/compiler.o 
 	
 
 obj/%.o : src/%.cpp include/*.hpp
-	mkdir -p obj
+	@mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
 obj/%.o : src/%.cpp include/ast/%.hpp
-	@echo building $<
 	@mkdir -p obj
-	@$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
+	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
-parser: src/C_parser.y
-	@echo "building parser..."
-	@bison -v -d -Wnone src/C_parser.y -o src/C_parser.tab.cpp
-	@mv src/C_parser.tab.hpp include
+obj/C_parser.tab.o: tmp/C_parser.tab.cpp tmp/C_parser.tab.hpp
 	@mkdir -p obj
-	@$(CXX) $(CXXFLAGS) -c -o obj/C_parser.o src/C_parser.tab.cpp
+	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
 
-lexer : src/C_lexer.flex parser
-	@echo "building lexer..."
-	@flex -o src/C_lexer.yy.cpp src/C_lexer.flex
-	@touch include/C_lexer.yy.hpp
+obj/C_lexer.yy.o: tmp/C_lexer.yy.cpp tmp/C_parser.tab.hpp 
 	@mkdir -p obj
-	@$(CXX) $(CXXFLAGS) -c -o obj/C_lexer.o src/C_lexer.yy.cpp
+	$(CXX) $(CXXFLAGS) -c -o obj/$(basename $(notdir $<)).o $< 
+
+tmp/C_parser.tab.hpp tmp/C_parser.tab.cpp: lexer_parser/C_parser.y
+	@mkdir -p tmp
+	bison -v -d -Wnone lexer_parser/C_parser.y -o tmp/C_parser.tab.cpp
+
+tmp/C_lexer.yy.cpp : lexer_parser/C_lexer.flex tmp/C_parser.tab.hpp
+	@mkdir -p tmp
+	flex -o tmp/C_lexer.yy.cpp lexer_parser/C_lexer.flex
+	touch tmp/C_lexer.yy.hpp
 
 clean :
 	rm -f obj/*.o
