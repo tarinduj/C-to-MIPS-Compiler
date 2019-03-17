@@ -1,19 +1,17 @@
 #ifndef AST_TRANSLATION_HPP
 #define AST_TRANSLATION_HPP
 
-#include <vector>
 #include "ast_node.hpp"
+#include <vector>
 
-class TranslationUnit: public Node
-{
+class TranslationUnit : public Node {
 private:
-    std::vector<NodePtr> functions;
-    std::vector<NodePtr> statements;
-public:
-    TranslationUnit();
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
-};
+  std::vector<NodePtr> parts;
 
+public:
+  TranslationUnit();
+  void pyPrint(std::ostream &os);
+  void mipsPrint(std::ostream &os) {} //;
+  void insert(NodePtr _n);
+};
 #endif

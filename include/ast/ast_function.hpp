@@ -1,47 +1,45 @@
 #ifndef AST_FUNCTION_HPP
 #define AST_FUNCTION_HPP
-#include <vector>
-#include <string>
 #include "ast_node.hpp"
-class Function: public Node
-{
+#include <string>
+#include <vector>
+
+class Function : public Node {
 private:
-    NodePtr arguments;
-    NodePtr statements;
-    std::string returnType;
-    std::string functionName;
+  NodePtr decl = NULL;
+  NodePtr statements = NULL;
+  std::string returnType;
+
 public:
-    Function(std::string* _r, std::string* _n, NodePtr _arg, NodePtr _s);
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+  Function(std::string *_decSpec, NodePtr _d, NodePtr _s);
+  void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &os) {} //;
+  void insert(NodePtr _n) {}          //;
+  std::string getType() const;
 };
 
-
-class FunctionCall: public Node
-{
+class FunctionCall : public Node {
 private:
-    NodePtr arguments;
-    std::string callName;  
+  NodePtr arguments;
+  NodePtr postExp;
+
 public:
-    FunctionCall(std::string* _n, NodePtr _arg);
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+  FunctionCall(NodePtr _exp, NodePtr _arg);
+  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void mipsPrint(std::ostream &_o) {} //;
+  void insert(NodePtr _n) {}          //;
 };
 
-class FunctionDeclaration: public Node
-{
-private:
-    NodePtr arguments;
-    std::string returnType;
-    std::string functionName;
-public:
-    FunctionDeclaration(NodePtr _ret, std::string* _n, NodePtr _arg);
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
-};
-
+// class FunctionDeclaration: public Node
+// {
+// private:
+//     NodePtr arguments;
+//     std::string returnType;
+//     std::string functionName;
+// public:
+//     FunctionDeclaration(NodePtr _ret, std::string* _n, NodePtr _arg);
+//     void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave
+//     ; void mipsPrint(std::ostream& _o){}//; void insert(NodePtr _n){}//;
+// };
 
 #endif

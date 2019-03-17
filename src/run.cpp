@@ -1,9 +1,14 @@
 #include "run.hpp"
+#include "ast.hpp"
 #include "clara.hpp"
 #include "fmt/format.h"
 #include "verbosity.hpp"
+#include <fstream>
 #include <iostream>
 #include <string>
+
+int scopeCounter = 0;
+std::vector<std::string> globalVarNames;
 
 void msg(std::string msg, bool endl) {
   if (verbosity_config == V_NORM || verbosity_config == V_HIGH) {
@@ -63,7 +68,20 @@ int run(int argc, char const *argv[]) {
   } else if (translate) {
     msg(fmt::format("I am gonna translate from {} to {}.", input_file,
                     output_file));
+    std::ofstream target_file(output_file);
+    NodePtr ast = parseAST(input_file);
+    ast->pyPrint(target_file);
+    addEnding(target_file);
   }
 
   return 0;
 }
+
+void addEnding(std::ostream &os) {
+  os << "# Invoke main as the starting point\n";
+  os << "if __name__ == \"__main__\":\n";
+  os << "\timport sys\n";
+  os << "\tret=main()\n";
+  os << "\tprint(\"temporary exit code:\")\n\tprint(ret)\n"; // temporarty line
+  os << "\tsys.exit(ret)\n";
+};

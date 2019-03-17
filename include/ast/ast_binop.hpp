@@ -1,35 +1,33 @@
 #ifndef AST_BINOP_HPP
 #define AST_BINOP_HPP
-#include <string>
 #include "ast_node.hpp"
+#include <string>
 
-
-
-class BinaryOperation: public Node
-{
+class BinaryOperation : public Node {
 private:
-    NodePtr _left;
-    NodePtr _right;
-    std::string op;
+  NodePtr lExp;
+  NodePtr rExp;
+  std::string op;
+
 public:
-    BinaryOperation(NodePtr left, std::string* opPtr, NodePtr right);
-    void pyPrint(std::ostream& _o){}//; when implementing delete {} and leave ;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+  BinaryOperation(NodePtr left, std::string *opPtr, NodePtr right);
+  virtual void pyPrint(std::ostream &_o);
+  virtual void mipsPrint(std::ostream &_o) {} //;
+  virtual void insert(NodePtr _n) {}          //;
 };
 
-class SizeOfOp: public Node
-{
+class SizeOfOp : public Node {
 private:
-    int size;
-    NodePtr _exp;
-    std::string typeName;
+  int size;
+  NodePtr exp;
+  std::string typeName;
+
 public:
-    SizeOfOp(NodePtr exp);
-    SizeOfOp(std::string* t);
-    void pyPrint(std::ostream& _o){}//;
-    void mipsPrint(std::ostream& _o){}//;
-    void insert(NodePtr _n){}//;
+  SizeOfOp(NodePtr _exp);
+  SizeOfOp(std::string *_n);
+  virtual void pyPrint(std::ostream &_o) {}
+  virtual void mipsPrint(std::ostream &_o) {} //;
+  virtual void insert(NodePtr _n) {}          //;
 };
 
 #endif
