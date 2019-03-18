@@ -2,16 +2,21 @@
 #include "ast/ast_variable.hpp"
 
 DirectDeclarator::DirectDeclarator(NodePtr _decl, NodePtr _list)
-    : dirDec(_decl), paramList(_list){};
+    : dirDec(_decl), idList(_list){};
 void DirectDeclarator::pyPrint(std::ostream &os) {
   if (dirDec)
     dirDec->pyPrint(os);
   os << "(";
-  if (paramList)
-    paramList->pyPrint(os);
+  if (idList)
+    idList->pyPrint(os);
   os << "):\n";
 }
-std::string DirectDeclarator::getType() const { return "dirDec"; }
+void DirectDeclarator::getGlobal(std::vector<std::string>& v){
+  if(dynamic_cast<Variable*>(dirDec)){
+    v.push_back(dirDec->getName());
+  }
+}
+
 Declaration::Declaration(std::string *_spec, NodePtr _list)
     : decSpec(*_spec), initDecList(_list) {
   delete _spec;
@@ -21,10 +26,10 @@ void Declaration::pyPrint(std::ostream &os) {
     initDecList->pyPrint(os);
   }
 }
-void Declaration::getDeclaredVarNames(std::vector<std::string> &v) const {
-  initDecList->getDeclaredVarNames(v);
+
+void Declaration::getGlobal(std::vector<std::string>& v){
+  initDecList->getGlobal(v);
 }
-std::string Declaration::getType() const { return "dec"; }
 
 InitDeclarator::InitDeclarator(NodePtr _d, NodePtr _i)
     : declarator(_d), initializer(_i){};
@@ -39,11 +44,16 @@ void InitDeclarator::pyPrint(std::ostream &os) {
     os << " = 0";
   }
 }
-void InitDeclarator::getDeclaredVarNames(std::vector<std::string> &v) const {
-  std::cerr << declarator->getType() << "\n";
-  if (declarator->getType() == "var") {
-    std::cerr << "entered var \n";
-    std::string name = declarator->getName();
-    v.push_back(name);
-  }
+
+void InitDeclarator::getGlobal(std::vector<std::string>& v){
+  if(dynamic_cast<Variable*>(declarator)) 
+    v.push_back(declarator->getName());
+}
+
+ParamDeclaration::ParamDeclaration(std::string* _s, NodePtr _d): decSpec(*_s), declarator(_d){
+  delete _s;
+}
+
+void ParamDeclaration::pyPrint(std::ostream& os){
+  if(declarator) declarator->pyPrint(os);
 }

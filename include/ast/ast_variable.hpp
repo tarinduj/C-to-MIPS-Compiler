@@ -13,7 +13,6 @@ public:
   void mipsPrint(std::ostream &_o) {} //;
   void insert(NodePtr _n) {}
   std::string getName();
-  std::string getType() const;
 };
 
 #endif

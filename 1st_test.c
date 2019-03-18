@@ -1,25 +1,10 @@
-int global_var;
-int global_var2 = 5;
-int functionDeclaration();
+int g_var1 = 7;
+int g_var2 = 69;
+int declaredfoo();
 
-int foo()
-{
-  int x = 5, y = 7, b = 10;
-  int z = x * y;
-  int ab;
-  int a, c;
-  int d = z * (z - x) + x;
-  a = z - x;
-  c = 25 + z;
-  return d;
-}
-
-int main()
-{
-  return global_var;
-}
-
-void voidfunction(){
-  int y;
-  global_var = y + global_var2;
+int foo(int x, int y){
+  int a = (x-(g_var1))*y*(y*y);
+    int z = 8;
+int c = a + z;
+  return c*(x +y)/g_var2;
 }

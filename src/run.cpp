@@ -68,10 +68,17 @@ int run(int argc, char const *argv[]) {
   } else if (translate) {
     msg(fmt::format("I am gonna translate from {} to {}.", input_file,
                     output_file));
-    std::ofstream target_file(output_file);
-    NodePtr ast = parseAST(input_file);
-    ast->pyPrint(target_file);
-    addEnding(target_file);
+    if(verbosity_config == V_HIGH){
+      NodePtr ast = parseAST(input_file);
+      ast->pyPrint(std::cout);
+    }
+    else{
+      std::ofstream target_file(output_file);
+      NodePtr ast = parseAST(input_file);
+      ast->pyPrint(target_file);
+      addEnding(target_file);
+    }
+
   }
 
   return 0;

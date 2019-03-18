@@ -54,15 +54,15 @@ postfix_expression
 	| postfix_expression T_LSB expression T_RSB //{$$ = new Array($1, $3);}
 	| postfix_expression T_LB T_RB {$$ = new FunctionCall($1, NULL);}
 	| postfix_expression T_LB argument_expression_list T_RB {$$ = new FunctionCall($1, $3);}
-	| postfix_expression T_DOT T_IDENTIFIER //{$$ = new BinaryOperation($1, $2, $3);}
-	| postfix_expression T_ARROW T_IDENTIFIER //{$$ = new BinaryOperation($1, $2, $3);}
-	| postfix_expression T_INC {$$ = new BinaryOperation($1, $2, NULL);}
-	| postfix_expression T_DEC {$$ = new BinaryOperation($1, $2, NULL);}
+	| postfix_expression T_DOT T_IDENTIFIER 
+	| postfix_expression T_ARROW T_IDENTIFIER 
+	| postfix_expression T_INC //{$$ = new PostFixExpression($1, $2)}
+	| postfix_expression T_DEC //{$$ = new PostFixExpression($1, $2)}
 	;
 
 argument_expression_list
-	: assignment_expression {$$ = $1;}
-	| argument_expression_list T_COMA assignment_expression {;}
+	: assignment_expression {$$ = new List(); $$->insert($1); $$->setType(ARG_EXP);}
+	| argument_expression_list T_COMA assignment_expression {$1->insert($3); $$ = $1;}
 	;
 
 unary_expression
@@ -192,7 +192,7 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator {$$ = new List(); $$->insert($1); $$->setType(new std::string("init"));}
+	: init_declarator {$$ = new List(); $$->insert($1); $$->setType(INIT);}
 	| init_declarator_list T_COMA init_declarator {$1->insert($3); $$ = $1;}
 	;
 
@@ -293,8 +293,8 @@ direct_declarator
 	| T_LB declarator T_RB {$$ = $2;}
 	| direct_declarator T_LSB constant_expression T_RSB
 	| direct_declarator T_LSB T_RSB
-	| direct_declarator T_LB parameter_type_list T_RB //{$$ = new DirectDeclarator($1, $3);}
-	| direct_declarator T_LB identifier_list T_RB //{$$ = new DirectDeclarator($1, $3);} //maybe something with gettypes to ensure that $1 is a string
+	| direct_declarator T_LB parameter_type_list T_RB {$$ = new DirectDeclarator($1, $3);}
+	| direct_declarator T_LB identifier_list T_RB {$$ = new DirectDeclarator($1, $3);} //maybe something with gettypes to ensure that $1 is a string
 	| direct_declarator T_LB T_RB {$$ = new DirectDeclarator($1, NULL);}
 	;
 
@@ -316,12 +316,12 @@ parameter_type_list
 	;
 
 parameter_list
-	: parameter_declaration {$$ = new List(); $$->insert($1);}
+	: parameter_declaration {$$ = new List(); $$->insert($1); $$->setType(PARAM);}
 	| parameter_list T_COMA parameter_declaration {$1->insert($3); $$ = $1;}
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator
+	: declaration_specifiers declarator {$$ = new ParamDeclaration($1, $2);}
 	| declaration_specifiers abstract_declarator
 	| declaration_specifiers
 	;
@@ -388,12 +388,12 @@ compound_statement
 	;
 
 declaration_list
-	: declaration {$$ = new List(); $$->insert($1); $$->setType(new std::string("decl"));}
+	: declaration {$$ = new List(); $$->insert($1); $$->setType(DECL);}
 	| declaration_list declaration {$1->insert($2); $$ = $1;}
 	;
 
 statement_list
-	: statement {$$ = new List(); $$->insert($1); $$->setType(new std::string("stat"));}
+	: statement {$$ = new List(); $$->insert($1); $$->setType(STAT);}
 	| statement_list statement {$1->insert($2); $$ = $1;}
 	;
 

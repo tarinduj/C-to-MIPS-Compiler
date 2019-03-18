@@ -6,30 +6,36 @@ void List::getList(std::vector<NodePtr> &res) { res = elements; }
 void List::pyPrint(std::ostream &os) {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i]) {
-      // os<<type<<": ";
-      if (i != 0 && type == "init")
-        printIndent(os);
-      if (type != "init")
-        printIndent(os);
-      elements[i]->pyPrint(os);
-      if (elements.size() != 0 && i < elements.size() - 1) {
-        os << "\n";
+      switch(type){
+        case INIT:{
+          if (i != 0) printIndent(os);
+          elements[i]->pyPrint(os);
+          if (elements.size() != 0 && i < elements.size() - 1) os << "\n";
+          break;
+        }
+        case PARAM:{
+          elements[i]->pyPrint(os);
+          if (elements.size() != 0 && i < elements.size() - 1) os << ", ";
+          break;
+        }
+        default:{
+          printIndent(os);
+          elements[i]->pyPrint(os);
+          if (elements.size() != 0 && i < elements.size() - 1) os << "\n";
+          break;
+        }
       }
     }
   }
 }
-void List::setType(std::string *_t) {
-  type = *_t;
-  delete _t;
-}
+void List::setType(listType t){
+  type = t;
+};
 
-void List::getDeclaredVarNames(std::vector<std::string> &v) const {
-  if (type == "init") {
-    for (int i = 0; i < elements.size(); i++) {
-      if (elements[i]) {
-        elements[i]->getDeclaredVarNames(v);
-      }
-    }
+void List::getGlobal(std::vector<std::string>& v){
+  for(int i = 0; i < elements.size(); i++){
+    if(elements[i])
+      elements[i]->getGlobal(v);
   }
 }
 
@@ -52,3 +58,8 @@ void IdentifierList::insert(std::string *_n) {
   identifiers.push_back(*_n);
   delete _n;
 };
+void IdentifierList::pyPrint(std::ostream &os) {
+  for (int i = 0; i < identifiers.size(); i++) {
+      os << identifiers[i] <<"\n";
+  }
+}

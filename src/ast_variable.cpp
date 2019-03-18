@@ -2,5 +2,6 @@
 
 Variable::Variable(std::string *_s) : name(*_s) { delete _s; }
 void Variable::pyPrint(std::ostream &os) { os << name; }
-std::string Variable::getName() { return name; }
-std::string Variable::getType() const { return "var"; }
+std::string Variable::getName(){
+  return name;
+}

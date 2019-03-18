@@ -6,16 +6,12 @@ Function::Function(std::string *_decSpec, NodePtr _d, NodePtr _s)
 };
 void Function::pyPrint(std::ostream &os) {
   os << "def ";
-  if (decl)
-    decl->pyPrint(os);
+  if (decl) decl->pyPrint(os);
   for (int i = 0; i < globalVarNames.size(); i++) {
     os << "\tglobal " << globalVarNames[i] << "\n";
   }
-  if (statements)
-    statements->pyPrint(os);
+  if (statements) statements->pyPrint(os);
   os << "\n";
 }
-std::string Function::getType() const { return "func"; }
-
 FunctionCall::FunctionCall(NodePtr _exp, NodePtr _arg)
     : postExp(_exp), arguments(_arg){};

@@ -8,7 +8,7 @@
 class DirectDeclarator : public Node {
 private:
   NodePtr dirDec;
-  NodePtr paramList = NULL;
+  NodePtr idList = NULL;
   std::string val;
 
 public:
@@ -18,7 +18,8 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &os) {} //;
-  std::string getType() const;
+  void getGlobal(std::vector<std::string>& v);
+
 };
 
 // pseudo for getID
@@ -36,8 +37,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
-  void getDeclaredVarNames(std::vector<std::string> &v) const;
-  std::string getType() const;
+  void getGlobal(std::vector<std::string>& v);
 };
 
 class InitDeclarator : public Node {
@@ -51,7 +51,19 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
-  void getDeclaredVarNames(std::vector<std::string> &v) const;
+  void getGlobal(std::vector<std::string>& v);
+
+};
+
+class ParamDeclaration : public Node {
+private:
+  std::string decSpec;
+  NodePtr declarator;
+public:
+  ParamDeclaration(std::string* _s, NodePtr _d);
+  void insert(NodePtr _n) {}
+  void pyPrint(std::ostream &os);
+  void mipsPrint(std::ostream &os) {}
 };
 
 #endif

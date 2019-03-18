@@ -7,7 +7,7 @@
 class List : public Node {
 private:
   std::vector<NodePtr> elements;
-  std::string type;
+  listType type;
 
 public:
   List();
@@ -15,9 +15,8 @@ public:
   void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void getList(std::vector<NodePtr> &res);
-  void setType(std::string *_t);
-
-  void getDeclaredVarNames(std::vector<std::string> &v) const;
+  void setType(listType t);
+  void getGlobal(std::vector<std::string>& v);
 };
 
 class Scope : public Node {
@@ -42,7 +41,7 @@ public:
   IdentifierList();
   void insert(NodePtr _n) {}
   void insert(std::string *_n);
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
 };
 
