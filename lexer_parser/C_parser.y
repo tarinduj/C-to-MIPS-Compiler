@@ -67,8 +67,8 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1;}
-	| T_INC unary_expression //{$$ = new UnaryOperator($1, $2);}
-	| T_DEC unary_expression //{$$ = new UnaryOperator($1, $2);}
+	| T_INC unary_expression {$$ = new UnaryOperation($1, $2);}
+	| T_DEC unary_expression {$$ = new UnaryOperation($1, $2);}
 	| unary_operator cast_expression {$$ = new UnaryOperation($1, $2);}
 	| T_SIZEOF unary_expression {$$ = new SizeOfOp($2);}
 	| T_SIZEOF T_LB type_name T_RB {$$ = new SizeOfOp($3);}
@@ -381,7 +381,7 @@ labeled_statement
 	;
 
 compound_statement
-	: T_LCB T_RCB {;}
+	: T_LCB T_RCB {$$ = NULL;}
 	| T_LCB statement_list T_RCB {$$ = new Scope($2);}
 	| T_LCB declaration_list T_RCB {$$ = new Scope($2);}
 	| T_LCB declaration_list statement_list T_RCB {$$ = new Scope($2, $3);}

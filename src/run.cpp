@@ -9,6 +9,7 @@
 
 int scopeCounter = 0;
 std::vector<std::string> globalVarNames;
+bool elif = 0;
 
 void msg(std::string msg, bool endl) {
   if (verbosity_config == V_NORM || verbosity_config == V_HIGH) {

@@ -31,7 +31,10 @@ public:
 // global declarations
 extern int scopeCounter;
 extern std::vector<std::string> globalVarNames;
+extern bool elif;
 extern void addIndent();
 extern void delIndent();
 extern void printIndent(std::ostream &os);
+extern void startELIF();
+extern void endELIF();
 #endif

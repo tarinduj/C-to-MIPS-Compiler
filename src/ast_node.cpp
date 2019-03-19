@@ -11,3 +11,5 @@ std::string Node::getName(){return "";};
 void addIndent() { scopeCounter++;}
 void delIndent() { scopeCounter--;}
 void printIndent(std::ostream &os) { os << std::string(scopeCounter, '\t'); }
+void startELIF() { elif = 1;}
+void endELIF() { elif = 0;}

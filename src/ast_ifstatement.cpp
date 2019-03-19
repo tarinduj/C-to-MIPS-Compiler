@@ -4,15 +4,42 @@
 IfStatement::IfStatement(NodePtr _c, NodePtr _t, NodePtr _e):
   condition(_c), trueStatement(_t), elseStatement(_e) {};
 void IfStatement::pyPrint(std::ostream& os){
-  os << "if(";
+  // os << "if(";
+  // condition->pyPrint(os);
+  // os << "):\n";
+  // pyPrintStatement(os, trueStatement);
+  // if(elseStatement){
+  //   os << "\n";
+  //   printIndent(os);
+  //   os << "else:\n";
+  //   pyPrintStatement(os, elseStatement);
+  // }
+  if(!elif){
+    os << "if(";
+  }
+  else{
+    os << "elif(";
+    endELIF();
+  }
   condition->pyPrint(os);
-  os << "):\n";
-  pyPrintStatement(os, trueStatement);
+  os << "):";
+  if(trueStatement){
+    os << "\n";
+    pyPrintStatement(os, trueStatement);
+  } else {
+    os << " pass\n";
+  }
   if(elseStatement){
     os << "\n";
     printIndent(os);
-    os << "else:\n";
-    pyPrintStatement(os, elseStatement);
+    if(dynamic_cast<IfStatement*>(elseStatement)){
+      startELIF();
+      elseStatement->pyPrint(os);
+    }
+    else{
+      os << "else:\n";
+      pyPrintStatement(os, elseStatement);
+    }
   }
 }
 
