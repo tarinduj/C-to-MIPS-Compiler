@@ -37,11 +37,11 @@ int run(int argc, char const *argv[]) {
   std::string input_file;
 
   auto const setVerbosity = [&](std::string const &verbosity_str) {
-    if (verbosity_str == "quiet")
+    if (verbosity_str == "quiet" || verbosity_str == "q")
       verbosity_config = V_QUIET;
-    else if (verbosity_str == "normal")
+    else if (verbosity_str == "normal" || verbosity_str == "n")
       verbosity_config = V_NORM;
-    else if (verbosity_str == "high")
+    else if (verbosity_str == "high" || verbosity_str == "h")
       verbosity_config = V_HIGH;
     else
       return clara::ParserResult::runtimeError("Unrecognised verbosity, '" +
