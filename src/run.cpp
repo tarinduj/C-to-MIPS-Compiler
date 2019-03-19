@@ -66,6 +66,10 @@ int run(int argc, char const *argv[]) {
   } else if (compile) {
     msg(fmt::format("I am gonna compile from {} to {}.", input_file,
                     output_file));
+    std::ofstream target_file(output_file);
+    target_file << "foo:\n\taddiu $sp,$sp,-8\n\tsw $fp,4($sp)\n\tmove $fp,$sp\n\tli $2,5\n\tmove $sp,$fp\n\tlw $fp,4($sp)\n\taddiu $sp,$sp,8\n\tj $31\n\tnop";
+    //NodePtr ast = parseAST(input_file);
+    //ast->mipsPrintTop(target_file);
   } else if (translate) {
     msg(fmt::format("I am gonna translate from {} to {}.", input_file,
                     output_file));
