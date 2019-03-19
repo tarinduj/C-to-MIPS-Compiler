@@ -1,10 +1,8 @@
 CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
-CXXFLAGS_POST = -lpthread -ldl
 CXX = g++-8
 
-OBJECT_FILES = obj/run.o obj/type.o obj/chunk.o obj/context.o 
-OBJECT_FILES += obj/loguru.o obj/format.o obj/posix.o
+OBJECT_FILES += obj/run.o obj/type.o obj/chunk.o obj/context.o obj/format.o obj/posix.o
 OBJECT_FILES += obj/ast_binop.o obj/ast_declarator.o obj/ast_function.o obj/ast_jump.o obj/ast_list.o obj/ast_node.o obj/ast_primitives.o obj/ast_translation.o obj/ast_variable.o 
 OBJECT_FILES += obj/C_lexer.yy.o obj/C_parser.tab.o
 
@@ -18,17 +16,13 @@ obj/posix.o:
 	@mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c -o obj/posix.o src_fmt/posix.cc		
 
-obj/loguru.o: 
-	@mkdir -p obj
-	$(CXX) $(CXXFLAGS) -c -o obj/loguru.o src/loguru.cpp $(CXXFLAGS_POST) 
-
 bin/test: $(OBJECT_FILES) $(TEST_OBJECT_FILES) 
 	@mkdir -p bin
-	$(CXX) $(CXXFLAGS) -o bin/test $(OBJECT_FILES) $(TEST_OBJECT_FILES) $(CXXFLAGS_POST) 
+	$(CXX) $(CXXFLAGS) -o bin/test $(OBJECT_FILES) $(TEST_OBJECT_FILES)
 
 bin/c_compiler: $(OBJECT_FILES) obj/compiler.o
 	@mkdir -p bin
-	$(CXX) $(CXXFLAGS) -o bin/c_compiler $(OBJECT_FILES) obj/compiler.o $(CXXFLAGS_POST) 
+	$(CXX) $(CXXFLAGS) -o bin/c_compiler $(OBJECT_FILES) obj/compiler.o 
 	
 
 obj/%.o : src/%.cpp include/*.hpp

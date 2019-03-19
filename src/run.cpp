@@ -2,15 +2,31 @@
 #include "ast.hpp"
 #include "clara.hpp"
 #include "fmt/format.h"
-#include "loguru.hpp"
 #include "verbosity.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
-using namespace fmt::literals;
 
 int scopeCounter = 0;
 std::vector<std::string> globalVarNames;
+
+void msg(std::string msg, bool endl) {
+  if (verbosity_config == V_NORM || verbosity_config == V_HIGH) {
+    std::cerr << msg;
+    if (endl) {
+      std::cerr << '\n';
+    }
+  }
+}
+
+void log(std::string msg, bool endl) {
+  if (verbosity_config == V_HIGH) {
+    std::cerr << msg;
+    if (endl) {
+      std::cerr << '\n';
+    }
+  }
+}
 
 int run(int argc, char const *argv[]) {
   bool compile = false;
@@ -19,19 +35,31 @@ int run(int argc, char const *argv[]) {
   std::string output_file;
   std::string input_file;
 
-  int verbosity = 0;
+  auto const setVerbosity = [&](std::string const &verbosity_str) {
+    if (verbosity_str == "quiet")
+      verbosity_config = V_QUIET;
+    else if (verbosity_str == "normal")
+      verbosity_config = V_NORM;
+    else if (verbosity_str == "high")
+      verbosity_config = V_HIGH;
+    else
+      return clara::ParserResult::runtimeError("Unrecognised verbosity, '" +
+                                               verbosity_str + "'");
+    return clara::ParserResult::ok(clara::ParseResultType::Matched);
+  };
 
   auto cli =
       clara::Help(help) |
       clara::Opt(compile)["-c"]["--compile"]("compile from C98 to MIPS") |
       clara::Opt(translate)["-t"]["--translate"](
           "translate from C89 to Python") |
-      clara::Opt(verbosity, "from 0 to 10")["-v"]["--verbosity"](
+      clara::Opt(setVerbosity, "quiet|normal|high")["-v"]["--verbosity"](
           "set verbosity of messages") |
       clara::Opt(output_file, "output")["-o"]("place the output into <file>") |
       clara::Arg(input_file, "input")("Input file").required();
 
   cli.parse(clara::Args(argc, argv));
+
   if (help) {
     std::cout << cli;
   } else if (compile) {
@@ -40,21 +68,12 @@ int run(int argc, char const *argv[]) {
   } else if (translate) {
     msg(fmt::format("I am gonna translate from {} to {}.", input_file,
                     output_file));
-    if(verbosity_config == V_HIGH){
-      NodePtr ast = parseAST(input_file);
-      ast->pyPrint(std::cout);
-    }
-    else{
-      std::ofstream target_file(output_file);
-      NodePtr ast = parseAST(input_file);
-      ast->pyPrint(target_file);
-      addEnding(target_file);
-    }
-
-    return 0;
+    std::ofstream target_file(output_file);
+    NodePtr ast = parseAST(input_file);
+    ast->pyPrint(target_file);
+    addEnding(target_file);
   }
-  loguru::g_stderr_verbosity = verbosity;
-  LOG_F(INFO, "Hello world");
+
   return 0;
 }
 
