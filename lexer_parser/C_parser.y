@@ -67,9 +67,9 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1;}
-	| T_INC unary_expression //{$$ = new UnaryOperator($2, $1, NULL);}
-	| T_DEC unary_expression //{$$ = new UnaryOperator($2, $1, NULL);}
-	| unary_operator cast_expression //{ = new UnaryOperator} //TODO
+	| T_INC unary_expression //{$$ = new UnaryOperator($1, $2);}
+	| T_DEC unary_expression //{$$ = new UnaryOperator($1, $2);}
+	| unary_operator cast_expression {$$ = new UnaryOperation($1, $2);}
 	| T_SIZEOF unary_expression {$$ = new SizeOfOp($2);}
 	| T_SIZEOF T_LB type_name T_RB {$$ = new SizeOfOp($3);}
 	;
@@ -409,7 +409,7 @@ selection_statement
 	;
 
 iteration_statement
-	: T_WHILE T_LB expression T_RB statement
+	: T_WHILE T_LB expression T_RB statement {$$ = new WhileLoop($3, $5);}
 	| T_DO statement T_WHILE T_LB expression T_RB T_SEMI
 	| T_FOR T_LB expression_statement expression_statement T_RB statement
 	| T_FOR T_LB expression_statement expression_statement expression T_RB statement

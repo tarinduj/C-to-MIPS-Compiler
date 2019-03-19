@@ -8,9 +8,22 @@ BinaryOperation::BinaryOperation(NodePtr left, std::string *opPtr,
 void BinaryOperation::pyPrint(std::ostream &os) {
   os << "(";
   lExp->pyPrint(os);
-  os << ") " << op << " (";
+  //os << ") " << op << " (";
+  pyPrintOp(os);
   rExp->pyPrint(os);
   os << ")";
+}
+
+void BinaryOperation::pyPrintOp(std::ostream& os){
+  if(op == "&&"){
+    os << ") and (";
+  }
+  else if(op == "||"){
+    os << ") or (";
+  }
+  else{
+    os << ") " << op << " (";
+  }
 }
 
 SizeOfOp::SizeOfOp(NodePtr _exp) : exp(_exp){};

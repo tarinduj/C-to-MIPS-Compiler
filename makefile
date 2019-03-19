@@ -3,7 +3,7 @@ CXXFLAGS += -I include
 CXX = g++-8
 
 OBJECT_FILES += obj/run.o obj/type.o obj/chunk.o obj/context.o obj/format.o obj/posix.o
-OBJECT_FILES += obj/ast_binop.o obj/ast_declarator.o obj/ast_function.o obj/ast_jump.o obj/ast_list.o obj/ast_node.o obj/ast_primitives.o obj/ast_translation.o obj/ast_variable.o obj/ast_ifstatement.o
+OBJECT_FILES += obj/ast_binop.o obj/ast_declarator.o obj/ast_function.o obj/ast_jump.o obj/ast_list.o obj/ast_node.o obj/ast_primitives.o obj/ast_translation.o obj/ast_variable.o obj/ast_ifstatement.o obj/ast_loops.o obj/ast_unaryop.o
 OBJECT_FILES += obj/C_lexer.yy.o obj/C_parser.tab.o
 
 TEST_OBJECT_FILES = obj/test.o

@@ -8,12 +8,12 @@ private:
   NodePtr lExp;
   NodePtr rExp;
   std::string op;
-
+  void pyPrintOp(std::ostream& os);
 public:
   BinaryOperation(NodePtr left, std::string *opPtr, NodePtr right);
-  virtual void pyPrint(std::ostream &_o);
-  virtual void mipsPrint(std::ostream &_o) {} //;
-  virtual void insert(NodePtr _n) {}          //;
+  void pyPrint(std::ostream &_o);
+  void mipsPrint(std::ostream &_o) {} //;
+  void insert(NodePtr _n) {}          //;
 };
 
 class SizeOfOp : public Node {

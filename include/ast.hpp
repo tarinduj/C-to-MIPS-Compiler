@@ -11,6 +11,8 @@
 #include "ast/ast_translation.hpp"
 #include "ast/ast_variable.hpp"
 #include "ast/ast_ifstatement.hpp"
+#include "ast/ast_loops.hpp"
+#include "ast/ast_unaryop.hpp"
 
 extern NodePtr parseAST(std::string name);
 

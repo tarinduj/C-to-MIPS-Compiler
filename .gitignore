@@ -8,3 +8,6 @@ settings.json
 bin/
 obj/
 tmp/
+c_translator/
+test_bench_translator.sh
+

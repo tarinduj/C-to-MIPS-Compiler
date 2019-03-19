@@ -71,9 +71,13 @@ int run(int argc, char const *argv[]) {
     std::ofstream target_file(output_file);
     NodePtr ast = parseAST(input_file);
     ast->pyPrint(target_file);
-    globalVarNames.clear();
-    ast->pyPrint(std::cerr);
     addEnding(target_file);
+    //testing purposes
+    if(verbosity_config == V_HIGH){
+      globalVarNames.clear();
+      ast->pyPrint(std::cerr);
+    }
+
   }
 
   return 0;
