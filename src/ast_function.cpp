@@ -7,24 +7,26 @@ Function::Function(std::string *_decSpec, NodePtr _d, NodePtr _s)
 };
 void Function::pyPrint(std::ostream &os) {
   os << "def ";
-  if (decl) decl->pyPrint(os);
+  if (decl)
+    decl->pyPrint(os);
   for (int i = 0; i < globalVarNames.size(); i++) {
     os << "\tglobal " << globalVarNames[i] << "\n";
   }
-  if (statements) statements->pyPrint(os);
+  if (statements)
+    statements->pyPrint(os);
   os << "\n";
 }
 FunctionCall::FunctionCall(NodePtr _exp, NodePtr _arg)
     : functionName(_exp), arguments(_arg){};
 
-void FunctionCall::pyPrint(std::ostream& os){
-  if(dynamic_cast<Variable*>(functionName)){
+void FunctionCall::pyPrint(std::ostream &os) {
+  if (dynamic_cast<Variable *>(functionName)) {
     functionName->pyPrint(os);
     os << "(";
-    if(arguments) arguments->pyPrint(os);
+    if (arguments)
+      arguments->pyPrint(os);
     os << ")";
-  } 
-  else{
+  } else {
     functionName->pyPrint(os);
   }
 }

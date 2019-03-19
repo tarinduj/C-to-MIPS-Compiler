@@ -8,7 +8,8 @@ private:
   NodePtr lExp;
   NodePtr rExp;
   std::string op;
-  void pyPrintOp(std::ostream& os);
+  void pyPrintOp(std::ostream &os);
+
 public:
   BinaryOperation(NodePtr left, std::string *opPtr, NodePtr right);
   void pyPrint(std::ostream &_o);

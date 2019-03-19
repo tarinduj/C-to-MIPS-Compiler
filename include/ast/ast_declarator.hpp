@@ -18,8 +18,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &os) {} //;
-  void getGlobal(std::vector<std::string>& v);
-
+  void getGlobal(std::vector<std::string> &v);
 };
 
 // pseudo for getID
@@ -37,7 +36,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
-  void getGlobal(std::vector<std::string>& v);
+  void getGlobal(std::vector<std::string> &v);
 };
 
 class InitDeclarator : public Node {
@@ -51,16 +50,16 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {} //;
-  void getGlobal(std::vector<std::string>& v);
-
+  void getGlobal(std::vector<std::string> &v);
 };
 
 class ParamDeclaration : public Node {
 private:
   std::string decSpec;
   NodePtr declarator;
+
 public:
-  ParamDeclaration(std::string* _s, NodePtr _d);
+  ParamDeclaration(std::string *_s, NodePtr _d);
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {}

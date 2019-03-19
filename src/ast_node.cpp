@@ -6,10 +6,10 @@ void Node::insert(NodePtr _n){};
 void Node::insert(std::string *_n){};
 void Node::getList(std::vector<NodePtr> &res) const {};
 void Node::setType(listType t){};
-void Node::getGlobal(std::vector<std::string>& v){};
-std::string Node::getName(){return "";};
-void addIndent() { scopeCounter++;}
-void delIndent() { scopeCounter--;}
+void Node::getGlobal(std::vector<std::string> &v){};
+std::string Node::getName() { return ""; };
+void addIndent() { scopeCounter++; }
+void delIndent() { scopeCounter--; }
 void printIndent(std::ostream &os) { os << std::string(scopeCounter, '\t'); }
-void startELIF() { elif = 1;}
-void endELIF() { elif = 0;}
+void startELIF() { elif = 1; }
+void endELIF() { elif = 0; }

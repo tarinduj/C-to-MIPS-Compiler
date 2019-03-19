@@ -381,7 +381,7 @@ labeled_statement
 	;
 
 compound_statement
-	: T_LCB T_RCB {$$ = NULL;}
+	: T_LCB T_RCB {$$ = new Scope(NULL);}
 	| T_LCB statement_list T_RCB {$$ = new Scope($2);}
 	| T_LCB declaration_list T_RCB {$$ = new Scope($2);}
 	| T_LCB declaration_list statement_list T_RCB {$$ = new Scope($2, $3);}

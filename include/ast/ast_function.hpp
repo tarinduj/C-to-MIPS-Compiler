@@ -24,7 +24,7 @@ private:
 
 public:
   FunctionCall(NodePtr _exp, NodePtr _arg);
-  void pyPrint(std::ostream& os); //; when implementing delete {} and leave ;
+  void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void insert(NodePtr _n) {}          //;
 };

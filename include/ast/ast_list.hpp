@@ -16,7 +16,7 @@ public:
   void mipsPrint(std::ostream &_o) {} //;
   void getList(std::vector<NodePtr> &res);
   void setType(listType t);
-  void getGlobal(std::vector<std::string>& v);
+  void getGlobal(std::vector<std::string> &v);
 };
 
 class Scope : public Node {

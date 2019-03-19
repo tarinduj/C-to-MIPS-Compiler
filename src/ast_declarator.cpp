@@ -11,8 +11,8 @@ void DirectDeclarator::pyPrint(std::ostream &os) {
     idList->pyPrint(os);
   os << "):\n";
 }
-void DirectDeclarator::getGlobal(std::vector<std::string>& v){
-  if(dynamic_cast<Variable*>(dirDec)){
+void DirectDeclarator::getGlobal(std::vector<std::string> &v) {
+  if (dynamic_cast<Variable *>(dirDec)) {
     v.push_back(dirDec->getName());
   }
 }
@@ -27,7 +27,7 @@ void Declaration::pyPrint(std::ostream &os) {
   }
 }
 
-void Declaration::getGlobal(std::vector<std::string>& v){
+void Declaration::getGlobal(std::vector<std::string> &v) {
   initDecList->getGlobal(v);
 }
 
@@ -45,15 +45,17 @@ void InitDeclarator::pyPrint(std::ostream &os) {
   }
 }
 
-void InitDeclarator::getGlobal(std::vector<std::string>& v){
-  if(dynamic_cast<Variable*>(declarator)) 
+void InitDeclarator::getGlobal(std::vector<std::string> &v) {
+  if (dynamic_cast<Variable *>(declarator))
     v.push_back(declarator->getName());
 }
 
-ParamDeclaration::ParamDeclaration(std::string* _s, NodePtr _d): decSpec(*_s), declarator(_d){
+ParamDeclaration::ParamDeclaration(std::string *_s, NodePtr _d)
+    : decSpec(*_s), declarator(_d) {
   delete _s;
 }
 
-void ParamDeclaration::pyPrint(std::ostream& os){
-  if(declarator) declarator->pyPrint(os);
+void ParamDeclaration::pyPrint(std::ostream &os) {
+  if (declarator)
+    declarator->pyPrint(os);
 }
