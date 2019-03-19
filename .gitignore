@@ -10,4 +10,5 @@ obj/
 tmp/
 c_translator/
 test_bench_translator.sh
-
+1st_test.c
+2nd_test.c
