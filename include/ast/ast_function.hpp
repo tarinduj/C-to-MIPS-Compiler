@@ -19,12 +19,12 @@ public:
 
 class FunctionCall : public Node {
 private:
-  NodePtr arguments;
-  NodePtr postExp;
+  NodePtr arguments = NULL;
+  NodePtr functionName;
 
 public:
   FunctionCall(NodePtr _exp, NodePtr _arg);
-  void pyPrint(std::ostream &_o) {} //; when implementing delete {} and leave ;
+  void pyPrint(std::ostream& os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
   void insert(NodePtr _n) {}          //;
 };

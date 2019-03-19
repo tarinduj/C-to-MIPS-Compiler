@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-enum listType {INIT, PARAM, DECL, STAT, ARG_EXP};
+enum listType {INIT, INITDEC, PARAM, DECL, STAT, ARG_EXP};
 class Node;
 typedef Node *NodePtr;
 

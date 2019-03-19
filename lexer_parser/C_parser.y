@@ -32,7 +32,7 @@
 %type<float_val> T_FLOATCONST
 %type<int_val> T_INTCONST T_CHARCONST
 
-%right "then" T_ELSE
+//%right "then" T_ELSE
 
 
 
@@ -67,9 +67,9 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression {$$ = $1;}
-	| T_INC unary_expression //{$$ = new BinaryOperation($2, $1, NULL);}
-	| T_DEC unary_expression //{$$ = new BinaryOperation($2, $1, NULL);}
-	| unary_operator cast_expression {;} //TODO
+	| T_INC unary_expression //{$$ = new UnaryOperator($2, $1, NULL);}
+	| T_DEC unary_expression //{$$ = new UnaryOperator($2, $1, NULL);}
+	| unary_operator cast_expression //{ = new UnaryOperator} //TODO
 	| T_SIZEOF unary_expression {$$ = new SizeOfOp($2);}
 	| T_SIZEOF T_LB type_name T_RB {$$ = new SizeOfOp($3);}
 	;
@@ -192,7 +192,7 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator {$$ = new List(); $$->insert($1); $$->setType(INIT);}
+	: init_declarator {$$ = new List(); $$->insert($1); $$->setType(INITDEC);}
 	| init_declarator_list T_COMA init_declarator {$1->insert($3); $$ = $1;}
 	;
 
@@ -361,7 +361,7 @@ initializer
 	;
 
 initializer_list
-	: initializer {$$ = new List(); $$->insert($1);}
+	: initializer {$$ = new List(); $$->insert($1); $$->setType(INIT);}
 	| initializer_list T_COMA initializer {$1->insert($3); $$ = $1;}
 	;
 
@@ -403,8 +403,8 @@ expression_statement
 	;
 
 selection_statement
-	: T_IF T_LB expression T_RB statement %prec "then" 
-	| T_IF T_LB expression T_RB statement T_ELSE statement
+	: T_IF T_LB expression T_RB statement  {$$ = new IfStatement($3, $5, NULL); /*%prec "then"*/}
+	| T_IF T_LB expression T_RB statement T_ELSE statement {$$ = new IfStatement($3, $5, $7);}
 	| T_SWITCH T_LB expression T_RB statement
 	;
 

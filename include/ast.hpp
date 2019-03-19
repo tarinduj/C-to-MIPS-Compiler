@@ -10,6 +10,7 @@
 #include "ast/ast_primitives.hpp"
 #include "ast/ast_translation.hpp"
 #include "ast/ast_variable.hpp"
+#include "ast/ast_ifstatement.hpp"
 
 extern NodePtr parseAST(std::string name);
 

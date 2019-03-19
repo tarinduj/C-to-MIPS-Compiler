@@ -7,12 +7,13 @@ void List::pyPrint(std::ostream &os) {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i]) {
       switch(type){
-        case INIT:{
+        case INITDEC:{
           if (i != 0) printIndent(os);
           elements[i]->pyPrint(os);
           if (elements.size() != 0 && i < elements.size() - 1) os << "\n";
           break;
         }
+        case ARG_EXP:
         case PARAM:{
           elements[i]->pyPrint(os);
           if (elements.size() != 0 && i < elements.size() - 1) os << ", ";
