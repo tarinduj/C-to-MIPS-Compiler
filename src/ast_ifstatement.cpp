@@ -7,22 +7,11 @@ void IfStatement::pyPrint(std::ostream& os){
   os << "if(";
   condition->pyPrint(os);
   os << "):\n";
-
-  // if(dynamic_cast<Scope*>(trueStatement)){
-  //   trueStatement->pyPrint(os);
-  // }
-  // else{
-  //   addIndent();
-  //   trueStatement->pyPrint(os);
-  //   delIndent();
-  // }
   pyPrintStatement(os, trueStatement);
-
   if(elseStatement){
+    os << "\n";
+    printIndent(os);
     os << "else:\n";
-    //addIndent();
-    //elseStatement->pyPrint(os);
-    //delIndent();
     pyPrintStatement(os, elseStatement);
   }
 }
@@ -33,6 +22,7 @@ void IfStatement::pyPrintStatement(std::ostream& os, NodePtr s){
   }
   else{
     addIndent();
+    printIndent(os);
     s->pyPrint(os);
     delIndent();
   }

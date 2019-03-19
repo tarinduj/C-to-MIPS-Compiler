@@ -45,9 +45,10 @@ Scope::Scope(NodePtr _lst1, NodePtr _lst2) : decList(_lst1), statList(_lst2){};
 void Scope::pyPrint(std::ostream &os) {
   addIndent();
   // os<<"decList: ";
-  if (decList)
+  if (decList){
     decList->pyPrint(os);
-  os << "\n";
+    os << "\n";
+  }
   // os<<"statList: ";
   if (statList)
     statList->pyPrint(os);
