@@ -9,9 +9,9 @@ do
 	RES=$?
 	echo $RES
 	if [ $RES -eq 0 ]; then
-       echo SUCCES;
+       echo -e "\e[1m\e[32mSUCCES\e[0m"
     else
-    	echo FAIL;
+	    echo -e "\e[1m\e[31mFAIL\e[0m"
     	exit 1;
     fi
 
