@@ -1,17 +1,26 @@
 #!/bin/bash
+
+make bin/c_compiler
 cd test_deliverable
+
+
 
 for item in $(cat testnames.txt); 
 do
-	echo TESTING $item; 
+	echo -e "\e[1m=============\e[0m"; 
+	echo -e "\e[1m\e[34mTESTING $item\e[0m"; 
 	make -B -s our/$item;
-	our/$item
+	qemu-mips our/$item
 	RES=$?
 	echo $RES
 	if [ $RES -eq 0 ]; then
-       echo -e "\e[1m\e[32mSUCCES\e[0m"
+    	echo -e "\e[1m\e[32mSUCCES\e[0m"
+    	echo -e "\e[1m=============\e[0m"
+
     else
-	    echo -e "\e[1m\e[31mFAIL\e[0m"
+    	echo -e "\e[1m\e[31mFAIL\e[0m"
+    	echo -e "\e[1m=============\e[0m"
+
     	exit 1;
     fi
 

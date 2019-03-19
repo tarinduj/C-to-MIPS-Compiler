@@ -14,3 +14,5 @@ test_bench_translator.sh
 2nd_test.c
 test_deliverable/our
 test_deliverable/ref
+test_deliverable/tmp_our
+test_deliverable/tmp_ref

@@ -1,26 +1,28 @@
 GCC_MIPS = mips-linux-gnu-gcc
-COMPILER = mips-linux-gnu-gcc -S -static
+COMPILER = ../bin/c_compiler -c
 GCC_MIPS_FLAGS = -static
 EMULATOR = qemu-mips
 
 clean:
 	rm -rf our
 	rm -rf ref
-	rm -rf tmp
+	rm -rf tmp_ref
+	rm -rf tmp_our
+
 
 our/%: test_cases/%_driver.c test_cases/%.c
-	mkdir -p -m a=rwx tmp
+	mkdir -p -m a=rwx tmp_our
 	mkdir -p -m a=rwx our
-	$(COMPILER) test_cases/$*.c -o tmp/$*.s
-	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -c test_cases/$*_driver.c -o tmp/$*_driver.o 
-	$(GCC_MIPS) $(GCC_MIPS_FLAGS) tmp/$*.s tmp/$*_driver.o -o our/$* 
+	$(COMPILER) test_cases/$*.c -o tmp_our/$*.s
+	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -c test_cases/$*_driver.c -o tmp_our/$*_driver.o 
+	$(GCC_MIPS) $(GCC_MIPS_FLAGS) tmp_our/$*.s tmp_our/$*_driver.o -o our/$* 
 
 ref/%: test_cases/%_driver.c test_cases/%.c
-	mkdir -p -m a=rwx tmp
+	mkdir -p -m a=rwx tmp_ref
 	mkdir -p -m a=rwx ref
-	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -S test_cases/$*.c -o tmp/$*.s
-	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -c test_cases/$*_driver.c -o tmp/$*_driver.o 
-	$(GCC_MIPS) $(GCC_MIPS_FLAGS) tmp/$*.s tmp/$*_driver.o -o ref/$* 
+	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -S test_cases/$*.c -o tmp_ref/$*.s
+	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -c test_cases/$*_driver.c -o tmp_ref/$*_driver.o 
+	$(GCC_MIPS) $(GCC_MIPS_FLAGS) tmp_ref/$*.s tmp_ref/$*_driver.o -o ref/$* 
 
 test_%:
 	@mkdir -p -m a=rwx ref

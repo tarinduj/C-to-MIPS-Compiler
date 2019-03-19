@@ -1,9 +1,9 @@
-int run (int);
+extern int run ();
 
 int main()
 {
-	int result = run(5);
-	if (result == 25)
+	int result = run();
+	if (result == 5)
 		return 0;
 	else
 		return 1;

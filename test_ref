@@ -5,7 +5,7 @@ for item in $(cat testnames.txt);
 do
 	echo TESTING $item; 
 	make -B -s ref/$item;
-	ref/$item
+	qemu-mips ref/$item
 	RES=$?
 	echo $RES
 	if [ $RES -eq 0 ]; then
