@@ -22,7 +22,7 @@ int run(int argc, char const *argv[]) {
 
   auto cli =
       clara::Help(help) |
-      clara::Opt(compile)["-c"]["--compile"]("compile from C98 to MIPS") |
+      clara::Opt(compile)["-c"]["-S"]["--compile"]("compile from C98 to MIPS") |
       clara::Opt(translate)["-t"]["--translate"](
           "translate from C89 to Python") |
       clara::Opt(output_file, "output")["-o"]("place the output into <file>") |

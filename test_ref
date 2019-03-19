@@ -1,0 +1,20 @@
+#!/bin/bash
+cd test_deliverable
+
+for item in $(cat testnames.txt); 
+do
+	echo TESTING $item; 
+	make -B -s ref/$item;
+	ref/$item
+	RES=$?
+	echo $RES
+	if [ $RES -eq 0 ]; then
+       echo SUCCES;
+    else
+    	echo FAIL;
+    	exit 1;
+    fi
+
+
+	echo $res;
+done;

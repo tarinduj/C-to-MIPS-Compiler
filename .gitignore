@@ -8,3 +8,5 @@ settings.json
 bin/
 obj/
 tmp/
+test_deliverable/our
+test_deliverable/ref
