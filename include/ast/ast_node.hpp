@@ -21,7 +21,7 @@ public:
   Node();
   ~Node();
   virtual void pyPrint(std::ostream &os) = 0;
-  virtual void mipsPrint(Chunk ret);
+  virtual void mipsPrint(ChunkPtr ret);
   virtual void mipsPrint();
   virtual void insert(NodePtr _n);
   virtual void insert(std::string *_n);

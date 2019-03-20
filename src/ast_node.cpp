@@ -2,7 +2,7 @@
 
 Node::Node(){};
 Node::~Node(){};
-void Node::mipsPrint(Chunk ret) {};
+void Node::mipsPrint(ChunkPtr ret) {};
 void Node::mipsPrint() {};
 void Node::insert(NodePtr _n){};
 void Node::insert(std::string *_n){};
