@@ -171,3 +171,13 @@ TEST_CASE("Scoping chunks 2", "[Scope][Chunk]") {
   CHECK(context.resolve_chunk("chunk")->get_offset() == 0 * chunksize);
 }
 TEST_CASE("Loading and storing chunks to registers", "[Load][Store][Chunk]") {}
+
+TEST_CASE("Context printing", "[Context][Codegen]") {
+  std::stringstream ss;
+  Context context(&ss);
+  *context.get_stream() << "Hello, ";
+  *context.get_stream() << "world.\n";
+  CHECK(std::string(context.get_stream()->str()) ==
+        std::string("Hello, world.\n"));
+  REQUIRE(ss.str() == std::string("Hello, world.\n"));
+}

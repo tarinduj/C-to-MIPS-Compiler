@@ -4,10 +4,20 @@
 #include "run.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
 
-Context::Context() {
+Context::Context(std::stringstream *os): os(os) {
   type_table.emplace_back();
   chunk_table.emplace_back();
+}
+
+Context::Context():os(nullptr){
+  type_table.emplace_back();
+  chunk_table.emplace_back();
+}
+
+std::stringstream *Context::get_stream() const {
+  return os;
 }
 
 unsigned Context::get_scope_num() const { return chunk_table.size() - 1; }
