@@ -2,13 +2,11 @@
 #include "ast.hpp"
 #include "clara.hpp"
 #include "fmt/format.h"
+#include "logger_macros.hpp"
 #include "verbosity.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "logger_macros.hpp"
-
-
 
 
 int run(int argc, char const *argv[]) {
@@ -32,12 +30,17 @@ int run(int argc, char const *argv[]) {
     std::cout << cli;
   } else if (compile) {
     std::ofstream target_file(output_file);
-    target_file << "\t.globl run\nrun:\n\taddiu $sp,$sp,-8\n\tsw $fp,4($sp)\n\tmove $fp,$sp\n\tli $2,5\n\tmove $sp,$fp\n\tlw $fp,4($sp)\n\taddiu $sp,$sp,8\n\tj $31\n\tnop";
-    //NodePtr ast = parseAST(input_file);
-    //ast->mipsPrintTop(target_file);
-    MSG << fmt::format("I am gonna compile from {} to {}\n", input_file, output_file);
+    target_file
+        << "\t.globl run\nrun:\n\taddiu $sp,$sp,-8\n\tsw $fp,4($sp)\n\tmove "
+           "$fp,$sp\n\tli $2,5\n\tmove $sp,$fp\n\tlw $fp,4($sp)\n\taddiu "
+           "$sp,$sp,8\n\tj $31\n\tnop";
+    // NodePtr ast = parseAST(input_file);
+    // ast->mipsPrintTop(target_file);
+    MSG << fmt::format("I am gonna compile from {} to {}\n", input_file,
+                       output_file);
   } else if (translate) {
-    MSG << fmt::format("I am gonna translate from {} to {}\n", input_file, output_file);
+    MSG << fmt::format("I am gonna translate from {} to {}\n", input_file,
+                       output_file);
     std::ofstream target_file(output_file);
     NodePtr ast = parseAST(input_file);
     ast->pyPrint(target_file);
