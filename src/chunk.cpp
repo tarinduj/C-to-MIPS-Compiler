@@ -1,10 +1,18 @@
 #include "chunk.hpp"
 
-Chunk::Chunk(unsigned offset, TypePtr type, Context *context)
-    : offset(offset), chunkType(chunkType), type(type), context(context) {}
-
-Chunk::ChunkType Chunk::get_chunk_type() const { return GLOBAL; }
+Chunk::Chunk(TypePtr type, Context *context) : type(type), context(context) {}
 
 TypePtr Chunk::get_type() const { return type; }
 
-unsigned Chunk::get_offset() const { return offset; }
+int Chunk::get_offset() const { return 0; }
+
+LocalChunk::LocalChunk(TypePtr type, Context *context) : Chunk(type, context) {
+  offset = context->get_stack_size();
+}
+
+int LocalChunk::get_offset() const { return offset; }
+
+void LocalChunk::store() {}
+unsigned LocalChunk::get_reg() const {}
+unsigned LocalChunk::load() {}
+void LocalChunk::discard() {}

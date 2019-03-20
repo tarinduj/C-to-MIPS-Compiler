@@ -30,7 +30,6 @@ TEST_CASE("Chunk", "[Chunk][Type]") {
   TypePtr integer_type = std::make_shared<PrimitiveType>();
   ChunkPtr a = context.register_chunk("a", integer_type);
   CHECK(a->get_type() == integer_type);
-  CHECK(a->get_chunk_type() == Chunk::GLOBAL);
   CHECK(a->get_offset() == 0);
 }
 
@@ -41,13 +40,11 @@ TEST_CASE("Register and resolve Chunk", "[Chunk][Type]") {
   auto a_2 = context.resolve_chunk("a");
   CHECK(a_1 == a_2);
   CHECK(a_1->get_type() == integer_type);
-  CHECK(a_1->get_chunk_type() == Chunk::GLOBAL);
   CHECK(a_1->get_offset() == 0);
   auto b_1 = context.register_chunk("b", integer_type);
   auto b_2 = context.resolve_chunk("b");
   CHECK(b_1 == b_2);
   CHECK(b_1->get_type() == integer_type);
-  CHECK(b_1->get_chunk_type() == Chunk::GLOBAL);
   CHECK(b_1->get_offset() == integer_type->get_size());
 }
 

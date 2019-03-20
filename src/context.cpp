@@ -3,22 +3,20 @@
 #include "fmt/format.h"
 #include "run.hpp"
 #include <iostream>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
-Context::Context(std::stringstream *os): os(os) {
+Context::Context(std::stringstream *os) : os(os) {
   type_table.emplace_back();
   chunk_table.emplace_back();
 }
 
-Context::Context():os(nullptr){
+Context::Context() : os(nullptr) {
   type_table.emplace_back();
   chunk_table.emplace_back();
 }
 
-std::stringstream *Context::get_stream() const {
-  return os;
-}
+std::stringstream *Context::get_stream() const { return os; }
 
 unsigned Context::get_scope_num() const { return chunk_table.size() - 1; }
 
@@ -37,7 +35,7 @@ TypePtr Context::resolve_type(std::string identifier) const {
 }
 
 ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
-  auto chunk = std::make_shared<Chunk>(get_stack_size(), type, this);
+  auto chunk = std::shared_ptr<Chunk>(new LocalChunk(type, this));
   chunk_table.back()[identifier] = chunk;
   return chunk;
 }
