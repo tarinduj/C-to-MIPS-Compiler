@@ -21,16 +21,12 @@ void TranslationUnit::pyPrint(std::ostream &os) {
 }
 
 void TranslationUnit::mipsPrint() {
-  std::cerr << "entered translation unit\n";
-  //*global_context->get_stream() << "hello";
-  // << "\t.file	1 \"\"\n"
-  *global_context->get_stream() << "\t.section .mdebug.abi32\n"
-                                << "\t.previous\n"
-                                << "\t.nan	legacy\n"
-                                << "\t.module	fp=32\n"
-                                << "\t.module	nooddspreg\n"
-                                << "\t.abicalls\n";
-  std::cerr << "finished first printing\n";
+  *global_context->get_stream() << ".section .mdebug.abi32\n"
+                                << ".previous\n"
+                                << ".nan	legacy\n"
+                                << ".module	fp=32\n"
+                                << ".module	nooddspreg\n"
+                                << ".abicalls\n";
   for (int i = 0; i < parts.size(); i++) {
     if (parts[i]) {
       parts[i]->mipsPrint();

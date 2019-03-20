@@ -18,6 +18,7 @@ int run(int argc, char const *argv[]) {
   std::string output_file;
   std::string input_file;
 
+
   auto cli =
       clara::Help(help) |
       clara::Opt(compile)["-c"]["-S"]["--compile"]("compile from C98 to MIPS") |
@@ -28,12 +29,12 @@ int run(int argc, char const *argv[]) {
 
   cli.parse(clara::Args(argc, argv));
 
-  global_context = new Context(&std::cout);
+  std::ofstream target_file(output_file);
+  global_context = new Context(&target_file);
 
   if (help) {
     std::cout << cli;
   } else if (compile) {
-    std::ofstream target_file(output_file);
     NodePtr ast = parseAST(input_file);
     MSG <<"starting mipsprinting\n";
     MSG << fmt::format("I am gonna compile from {} to {}\n", input_file,
@@ -43,7 +44,6 @@ int run(int argc, char const *argv[]) {
   } else if (translate) {
     MSG << fmt::format("I am gonna translate from {} to {}\n", input_file,
                        output_file);
-    std::ofstream target_file(output_file);
     NodePtr ast = parseAST(input_file);
     ast->pyPrint(target_file);
     addEnding(target_file);
@@ -55,6 +55,7 @@ int run(int argc, char const *argv[]) {
   }
 
   MSG << "Finished\n";
+  target_file.close();
   return 0;
 }
 
