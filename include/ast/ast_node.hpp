@@ -35,7 +35,7 @@ public:
 };
 
 // global declarations
-extern Context *context;
+static Context *global_context;
 extern int scopeCounter;
 extern std::vector<std::string> globalVarNames;
 extern bool elif;
