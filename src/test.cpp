@@ -176,3 +176,47 @@ TEST_CASE("Context printing", "[Context][Codegen]") {
   *context.get_stream() << "world.\n";
   REQUIRE(ss.str() == std::string("Hello, world.\n"));
 }
+
+TEST_CASE("Register allocation by context", "[Context]"){
+  std::stringstream ss;
+  Context context(&ss);
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  auto chunk8  = context.register_chunk("chunk8", type);
+  chunk8->load();
+  CHECK(chunk8->get_reg() == 8 );
+  auto chunk9  = context.register_chunk("chunk9", type);
+  chunk9->load();
+  CHECK(chunk9->get_reg() == 9 );
+  auto chunk10 = context.register_chunk("chunk10", type);
+  chunk10->load();
+  CHECK(chunk10->get_reg() == 10 );
+  auto chunk11 = context.register_chunk("chunk11", type);
+  chunk11->load();
+  CHECK(chunk11->get_reg() == 11 );
+  auto chunk12 = context.register_chunk("chunk12", type);
+  chunk12->load();
+  CHECK(chunk12->get_reg() == 12 );
+  auto chunk13 = context.register_chunk("chunk13", type);
+  chunk13->load();
+  CHECK(chunk13->get_reg() == 13 );
+  auto chunk14 = context.register_chunk("chunk14", type);
+  chunk14->load();
+  CHECK(chunk14->get_reg() == 14 );
+  auto chunk15 = context.register_chunk("chunk15", type);
+  chunk15->load();
+  CHECK(chunk15->get_reg() == 15 );
+  auto chunk24 = context.register_chunk("chunk16", type);
+  chunk24->load();
+  CHECK(chunk24->get_reg() == 24 );
+  auto chunk25 = context.register_chunk("chunk17", type);
+  chunk25->load();
+  CHECK(chunk25->get_reg() == 25 );
+  auto extra = context.register_chunk("extra", type);
+  extra->load();
+  CHECK(extra->get_reg() == -1 );
+  auto one_more_extra = context.register_chunk("one_more_one_more_extra", type);
+  chunk13->store();
+  one_more_extra->load();
+  CHECK(one_more_extra->get_reg() == 13 );
+  std::cout << ss.str();
+}
