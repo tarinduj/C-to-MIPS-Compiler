@@ -3,10 +3,10 @@
 #include "fmt/format.h"
 #include "run.hpp"
 #include <iostream>
-#include <sstream>
+#include <ostream>
 #include <stdexcept>
 
-Context::Context(std::stringstream *os) : os(os) {
+Context::Context(std::ostream *os) : os(os) {
   type_table.emplace_back();
   chunk_table.emplace_back();
 }
@@ -16,7 +16,7 @@ Context::Context() : os(nullptr) {
   chunk_table.emplace_back();
 }
 
-std::stringstream *Context::get_stream() const { return os; }
+std::ostream *Context::get_stream() const { return os; }
 
 unsigned Context::get_scope_num() const { return chunk_table.size() - 1; }
 

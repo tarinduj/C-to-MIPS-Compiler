@@ -7,36 +7,36 @@ void List::pyPrint(std::ostream &os) {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i]) {
       switch (type) {
-        case INITDEC: {
-          if (i != 0)
-            printIndent(os);
-          elements[i]->pyPrint(os);
-          if (elements.size() != 0 && i < elements.size() - 1)
-            os << "\n";
-          break;
-        }
-        case ARG_EXP:
-        case PARAM: {
-          elements[i]->pyPrint(os);
-          if (elements.size() != 0 && i < elements.size() - 1)
-            os << ", ";
-          break;
-        }
-        default: {
+      case INITDEC: {
+        if (i != 0)
           printIndent(os);
-          elements[i]->pyPrint(os);
-          if (elements.size() != 0 && i < elements.size() - 1)
-            os << "\n";
-          break;
-        }
+        elements[i]->pyPrint(os);
+        if (elements.size() != 0 && i < elements.size() - 1)
+          os << "\n";
+        break;
+      }
+      case ARG_EXP:
+      case PARAM: {
+        elements[i]->pyPrint(os);
+        if (elements.size() != 0 && i < elements.size() - 1)
+          os << ", ";
+        break;
+      }
+      default: {
+        printIndent(os);
+        elements[i]->pyPrint(os);
+        if (elements.size() != 0 && i < elements.size() - 1)
+          os << "\n";
+        break;
+      }
       }
     }
   }
 }
 
-void List::mipsPrint(){
-  for(int i = 0; i < elements.size(); i ++){
-    if(elements[i])
+void List::mipsPrint() {
+  for (int i = 0; i < elements.size(); i++) {
+    if (elements[i])
       elements[i]->mipsPrint();
   }
 }

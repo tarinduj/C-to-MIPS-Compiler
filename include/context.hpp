@@ -4,18 +4,18 @@
 #include "chunk.hpp"
 #include "type.hpp"
 #include <map>
-#include <sstream>
+#include <ostream>
 #include <vector>
 
 class Context {
 private:
   std::vector<std::map<std::string, ChunkPtr>> chunk_table;
   std::vector<std::map<std::string, TypePtr>> type_table;
-  std::stringstream *os;
+  std::ostream *os;
   unsigned offset = 0;
 
 public:
-  Context(std::stringstream *os);
+  Context(std::ostream *os);
   Context();
   void order(std::string id, int &out_reg);
   std::pair<unsigned int, unsigned int> order(std::string id1, std::string id2);
@@ -28,7 +28,7 @@ public:
   ChunkPtr resolve_chunk(std::string) const;
   TypePtr register_type(std::string, TypePtr);
   TypePtr resolve_type(std::string) const;
-  std::stringstream *get_stream() const;
+  std::ostream *get_stream() const;
 };
 
 #endif

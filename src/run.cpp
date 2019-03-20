@@ -1,13 +1,13 @@
 #include "run.hpp"
 #include "ast.hpp"
 #include "clara.hpp"
+#include "context.hpp"
 #include "fmt/format.h"
 #include "logger_macros.hpp"
 #include "verbosity.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
-
 
 int run(int argc, char const *argv[]) {
   bool compile = false;
@@ -25,6 +25,8 @@ int run(int argc, char const *argv[]) {
       clara::Arg(input_file, "input")("Input file").required();
 
   cli.parse(clara::Args(argc, argv));
+
+  global_context = new Context(&std::cout);
 
   if (help) {
     std::cout << cli;

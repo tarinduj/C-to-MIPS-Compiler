@@ -1,6 +1,7 @@
 #include "ast/ast_declarator.hpp"
-#include "ast/ast_variable.hpp"
 #include "ast/ast_primitives.hpp"
+#include "ast/ast_variable.hpp"
+#include "run.hpp"
 
 DirectDeclarator::DirectDeclarator(NodePtr _decl, NodePtr _list)
     : dirDec(_decl), idList(_list){};
@@ -27,8 +28,8 @@ void Declaration::pyPrint(std::ostream &os) {
     initDecList->pyPrint(os);
   }
 }
-void Declaration::mipsPrint(){
-  if(decSpec == "int" && initDecList){
+void Declaration::mipsPrint() {
+  if (decSpec == "int" && initDecList) {
     initDecList->mipsPrint();
   }
 }
@@ -51,11 +52,13 @@ void InitDeclarator::pyPrint(std::ostream &os) {
   }
 }
 
-void InitDeclarator::mipsPrint(){
+void InitDeclarator::mipsPrint() {
   std::string var_name;
   int val;
-  if(dynamic_cast<Variable*>(declarator)) var_name = declarator->getName();
-  if(dynamic_cast<IntConst*>(initializer)) val = initializer->getVal();
+  if (dynamic_cast<Variable *>(declarator))
+    var_name = declarator->getName();
+  if (dynamic_cast<IntConst *>(initializer))
+    val = initializer->getVal();
   // *context->get_stream()
   //   << ".globl " << var_name << "\n"
   //   << ".data\n"
@@ -64,7 +67,10 @@ void InitDeclarator::mipsPrint(){
   //   << ".size " << var_name << ", 4\n"
   //   << var_name << ":\n"
   //   << ".word " << val << "\n";
-  *context->get_stream() << fmt::format(".globl {}\n.data\n.align 2\n.type {}, @object\n, .size {}, 4\n{}:\n.word {}\n", var_name, var_name, var_name, val);
+  *global_context->get_stream()
+      << fmt::format(".globl {}\n.data\n.align 2\n.type {}, @object\n, .size "
+                     "{}, 4\n{}:\n.word {}\n",
+                     var_name, var_name, var_name, val);
 }
 
 void InitDeclarator::getGlobal(std::vector<std::string> &v) {

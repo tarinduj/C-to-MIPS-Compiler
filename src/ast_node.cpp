@@ -2,8 +2,8 @@
 
 Node::Node(){};
 Node::~Node(){};
-void Node::mipsPrint(ChunkPtr ret) {};
-void Node::mipsPrint() {};
+void Node::mipsPrint(ChunkPtr ret){};
+void Node::mipsPrint(){};
 void Node::insert(NodePtr _n){};
 void Node::insert(std::string *_n){};
 void Node::getList(std::vector<NodePtr> &res) const {};
@@ -11,8 +11,6 @@ void Node::setType(listType t){};
 void Node::getGlobal(std::vector<std::string> &v){};
 int Node::getVal(){};
 std::string Node::getName() { return ""; };
-
-
 
 int scopeCounter = 0;
 std::vector<std::string> globalVarNames;

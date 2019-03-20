@@ -174,7 +174,5 @@ TEST_CASE("Context printing", "[Context][Codegen]") {
   Context context(&ss);
   *context.get_stream() << "Hello, ";
   *context.get_stream() << "world.\n";
-  CHECK(std::string(context.get_stream()->str()) ==
-        std::string("Hello, world.\n"));
   REQUIRE(ss.str() == std::string("Hello, world.\n"));
 }

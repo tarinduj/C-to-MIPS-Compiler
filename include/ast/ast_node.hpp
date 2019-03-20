@@ -10,7 +10,6 @@
 #include "context.hpp"
 #include "fmt/format.h"
 
-
 enum listType { INIT, INITDEC, PARAM, DECL, STAT, ARG_EXP };
 class Node;
 typedef Node *NodePtr;
@@ -36,7 +35,7 @@ public:
 };
 
 // global declarations
-extern Context* context;
+extern Context *context;
 extern int scopeCounter;
 extern std::vector<std::string> globalVarNames;
 extern bool elif;
