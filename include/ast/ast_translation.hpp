@@ -11,7 +11,7 @@ private:
 public:
   TranslationUnit();
   void pyPrint(std::ostream &os);
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
   void insert(NodePtr _n);
 };
 #endif

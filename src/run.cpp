@@ -9,9 +9,6 @@
 #include "logger_macros.hpp"
 
 
-int scopeCounter = 0;
-std::vector<std::string> globalVarNames;
-bool elif = 0;
 
 
 int run(int argc, char const *argv[]) {

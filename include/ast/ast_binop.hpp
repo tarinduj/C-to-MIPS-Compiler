@@ -17,18 +17,18 @@ public:
   void insert(NodePtr _n) {}          //;
 };
 
-class SizeOfOp : public Node {
-private:
-  int size;
-  NodePtr exp;
-  std::string typeName;
+// class SizeOfOp : public Node {
+// private:
+//   int size;
+//   NodePtr exp;
+//   std::string typeName;
 
-public:
-  SizeOfOp(NodePtr _exp);
-  SizeOfOp(std::string *_n);
-  virtual void pyPrint(std::ostream &_o) {}
-  virtual void mipsPrint(std::ostream &_o) {} //;
-  virtual void insert(NodePtr _n) {}          //;
-};
+// public:
+//   SizeOfOp(NodePtr _exp);
+//   SizeOfOp(std::string *_n);
+//   virtual void pyPrint(std::ostream &_o) {}
+//   virtual void mipsPrint(std::ostream &_o) {} //;
+//   virtual void insert(NodePtr _n) {}          //;
+// };
 
 #endif

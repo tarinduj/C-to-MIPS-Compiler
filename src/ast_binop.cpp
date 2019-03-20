@@ -24,5 +24,5 @@ void BinaryOperation::pyPrintOp(std::ostream &os) {
   }
 }
 
-SizeOfOp::SizeOfOp(NodePtr _exp) : exp(_exp){};
-SizeOfOp::SizeOfOp(std::string *_n) : typeName(*_n) { delete _n; };
+// SizeOfOp::SizeOfOp(NodePtr _exp) : exp(_exp){};
+// SizeOfOp::SizeOfOp(std::string *_n) : typeName(*_n) { delete _n; };

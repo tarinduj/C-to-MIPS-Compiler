@@ -35,7 +35,7 @@ public:
   Declaration(std::string *_spec, NodePtr _list);
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
   void getGlobal(std::vector<std::string> &v);
 };
 
@@ -49,7 +49,7 @@ public:
   InitDeclarator(NodePtr _d, NodePtr _i);
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
   void getGlobal(std::vector<std::string> &v);
 };
 

@@ -2,12 +2,21 @@
 
 Node::Node(){};
 Node::~Node(){};
+void Node::mipsPrint(Chunk ret) {};
+void Node::mipsPrint() {};
 void Node::insert(NodePtr _n){};
 void Node::insert(std::string *_n){};
 void Node::getList(std::vector<NodePtr> &res) const {};
 void Node::setType(listType t){};
 void Node::getGlobal(std::vector<std::string> &v){};
+int Node::getVal(){};
 std::string Node::getName() { return ""; };
+
+
+
+int scopeCounter = 0;
+std::vector<std::string> globalVarNames;
+bool elif = 0;
 void addIndent() { scopeCounter++; }
 void delIndent() { scopeCounter--; }
 void printIndent(std::ostream &os) { os << std::string(scopeCounter, '\t'); }

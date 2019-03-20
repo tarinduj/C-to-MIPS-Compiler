@@ -15,6 +15,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &_o) {} //;
+  int getVal();
 };
 
 class FloatConst : public Node {

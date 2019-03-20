@@ -7,32 +7,40 @@ void List::pyPrint(std::ostream &os) {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i]) {
       switch (type) {
-      case INITDEC: {
-        if (i != 0)
+        case INITDEC: {
+          if (i != 0)
+            printIndent(os);
+          elements[i]->pyPrint(os);
+          if (elements.size() != 0 && i < elements.size() - 1)
+            os << "\n";
+          break;
+        }
+        case ARG_EXP:
+        case PARAM: {
+          elements[i]->pyPrint(os);
+          if (elements.size() != 0 && i < elements.size() - 1)
+            os << ", ";
+          break;
+        }
+        default: {
           printIndent(os);
-        elements[i]->pyPrint(os);
-        if (elements.size() != 0 && i < elements.size() - 1)
-          os << "\n";
-        break;
-      }
-      case ARG_EXP:
-      case PARAM: {
-        elements[i]->pyPrint(os);
-        if (elements.size() != 0 && i < elements.size() - 1)
-          os << ", ";
-        break;
-      }
-      default: {
-        printIndent(os);
-        elements[i]->pyPrint(os);
-        if (elements.size() != 0 && i < elements.size() - 1)
-          os << "\n";
-        break;
-      }
+          elements[i]->pyPrint(os);
+          if (elements.size() != 0 && i < elements.size() - 1)
+            os << "\n";
+          break;
+        }
       }
     }
   }
 }
+
+void List::mipsPrint(){
+  for(int i = 0; i < elements.size(); i ++){
+    if(elements[i])
+      elements[i]->mipsPrint();
+  }
+}
+
 void List::setType(listType t) { type = t; };
 
 void List::getGlobal(std::vector<std::string> &v) {
@@ -50,27 +58,14 @@ void Scope::pyPrint(std::ostream &os) {
     printIndent(os);
     os << "pass\n";
   } else {
-    // os<<"decList: ";
     if (decList) {
       decList->pyPrint(os);
       os << "\n";
     }
-    // os<<"statList: ";
     if (statList)
       statList->pyPrint(os);
   }
   delIndent();
-
-  //   addIndent();
-  // // os<<"decList: ";
-  // if (decList){
-  //   decList->pyPrint(os);
-  //   os << "\n";
-  // }
-  // // os<<"statList: ";
-  // if (statList)
-  //   statList->pyPrint(os);
-  // delIndent();
 }
 
 IdentifierList::IdentifierList(){};

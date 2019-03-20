@@ -13,7 +13,7 @@ public:
   List();
   void insert(NodePtr _n);
   void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void mipsPrint();
   void getList(std::vector<NodePtr> &res);
   void setType(listType t);
   void getGlobal(std::vector<std::string> &v);

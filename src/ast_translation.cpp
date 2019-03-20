@@ -18,3 +18,21 @@ void TranslationUnit::pyPrint(std::ostream &os) {
     }
   }
 }
+
+void TranslationUnit::mipsPrint(){
+  *context->get_stream() << "\t.file	1 \"\"\n"
+	<< "\t.section .mdebug.abi32\n"
+	<< "\t.previous\n"
+	<< "\t.nan	legacy\n"
+	<< "\t.module	fp=32\n"
+	<< "\t.module	nooddspreg\n"
+	<< "\t.abicalls\n";
+
+  for(int i = 0; i < parts.size(); i++){
+    if(parts[i]){
+      parts[i]->mipsPrint();
+    }
+  }
+
+  *context->get_stream() << ".ident	\"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.9) 5.4.0 20160609\"";
+}
