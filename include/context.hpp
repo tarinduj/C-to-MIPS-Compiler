@@ -7,8 +7,13 @@
 #include <ostream>
 #include <vector>
 
+class Chunk;
+class LocalChunk;
+class GlobalChunk;
+
 class Context {
 private:
+  std::array<bool, 32> regs;
   std::vector<std::map<std::string, ChunkPtr>> chunk_table;
   std::vector<std::map<std::string, TypePtr>> type_table;
   std::ostream *os;
@@ -17,6 +22,8 @@ private:
 public:
   Context(std::ostream *os);
   Context();
+  void initialize_regs();
+  int allocate_reg();
   void order(std::string id, int &out_reg);
   std::pair<unsigned int, unsigned int> order(std::string id1, std::string id2);
   void new_scope();
@@ -29,6 +36,9 @@ public:
   TypePtr register_type(std::string, TypePtr);
   TypePtr resolve_type(std::string) const;
   std::ostream *get_stream() const;
+  friend Chunk;
+  friend LocalChunk;
+  friend GlobalChunk;
 };
 
 #endif

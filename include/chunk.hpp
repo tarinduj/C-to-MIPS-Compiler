@@ -13,7 +13,7 @@ typedef std::shared_ptr<Chunk> ChunkPtr;
 class Context;
 
 class Chunk {
-private:
+protected:
   std::optional<unsigned> reg;
   TypePtr type;
   Context *context;

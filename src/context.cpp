@@ -9,11 +9,40 @@
 Context::Context(std::ostream *os) : os(os) {
   type_table.emplace_back();
   chunk_table.emplace_back();
+  initialize_regs();
 }
 
 Context::Context() : os(nullptr) {
   type_table.emplace_back();
   chunk_table.emplace_back();
+  initialize_regs();
+}
+
+void Context::initialize_regs(){
+  for(auto it = regs.begin();it != regs.end(); ++it){
+    *it = 0;
+  }
+  // Freely usable temporary registers
+  regs[8]  = true; 
+  regs[9]  = true;
+  regs[10] = true; 
+  regs[11] = true;
+  regs[12] = true;
+  regs[13] = true;
+  regs[14] = true;
+  regs[15] = true;
+  regs[24] = true;
+  regs[25] = true;
+}
+
+int Context::allocate_reg(){
+  for(auto reg = regs.begin(); reg != regs.end(); ++reg){
+    if (*reg) {
+      *reg = false;
+      return reg - regs.begin();
+    }
+  }
+  return -1;
 }
 
 std::ostream *Context::get_stream() const { return os; }
