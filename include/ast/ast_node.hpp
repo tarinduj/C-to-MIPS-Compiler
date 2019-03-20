@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "chunk.hpp"
+#include "run.hpp"
 #include "context.hpp"
 #include "fmt/format.h"
 
@@ -35,7 +36,6 @@ public:
 };
 
 // global declarations
-static Context *global_context;
 extern int scopeCounter;
 extern std::vector<std::string> globalVarNames;
 extern bool elif;

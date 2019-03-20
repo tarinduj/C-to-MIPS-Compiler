@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+Context * global_context;
+
 int run(int argc, char const *argv[]) {
   bool compile = false;
   bool translate = false;

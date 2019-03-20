@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-//static Context *global_context;
+extern Context *global_context;
 
 void msg(std::string, bool endl = true);
 void log(std::string, bool endl = true);

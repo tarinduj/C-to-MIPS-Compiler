@@ -1,7 +1,7 @@
 #include "ast/ast_translation.hpp"
 #include "ast/ast_declarator.hpp"
 #include "context.hpp"
-#include "run.hpp";
+#include "run.hpp"
 #include <iostream>
 TranslationUnit::TranslationUnit(){};
 void TranslationUnit::insert(NodePtr _n) { parts.push_back(_n); }
