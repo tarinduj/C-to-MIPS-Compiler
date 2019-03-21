@@ -284,20 +284,7 @@ TEST_CASE("Repeated load handling", "[Chunk][GlobalChunk][LocalChunk]") {
   CHECK(reg2 == reg3);
 }
 
-TEST_CASE("Registration of global chunks") {
-  std::stringstream ss;
-  Context context(&ss);
-  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
-  auto globalChunk = context.register_global_chunk("hellochunk", type);
-  std::string ref = "\t.globl\thellochunk\n"
-                    "\t.data\n"
-                    "\t.align\t2\n"
-                    "\t.size\thellochunk, 4\n"
-                    "hellochunk:\n";
-  CHECK(ss.str() == ref);
-}
-
-TEST_CASE("Size of scope") {
+TEST_CASE("Size of scope"){
   std::stringstream ss;
   Context context(&ss);
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
