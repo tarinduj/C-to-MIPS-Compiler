@@ -14,7 +14,7 @@ public:
   BinaryOperation(NodePtr left, std::string *opPtr, NodePtr right);
   void pyPrint(std::ostream &_o);
   void mipsPrint();
-  void mipsPrint(ChunkPtr res){};
+  void mipsPrint(ChunkPtr res);
   void insert(NodePtr _n) {}          //;
 };
 

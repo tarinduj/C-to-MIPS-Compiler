@@ -8,5 +8,6 @@ void Variable::mipsPrint(ChunkPtr res){
   int tmp_reg = tmp->load();
   *global_context->get_stream() << "\tmove\t$" << res_reg << ",\t$" << tmp_reg <<"\n";
   res->store();
+  tmp->discard();
 }
 std::string Variable::getName() { return name; }

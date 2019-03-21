@@ -14,7 +14,7 @@ public:
   IntConst(int _v);
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &_o); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void mipsPrint(ChunkPtr res);
   int getVal();
 };
 
