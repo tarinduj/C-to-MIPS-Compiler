@@ -9,7 +9,8 @@
 #include "chunk.hpp"
 #include "run.hpp"
 #include "context.hpp"
-#include "fmt/format.h"
+#include "logger_macros.hpp"
+
 
 enum listType { INIT, INITDEC, PARAM, DECL, STAT, ARG_EXP };
 class Node;
@@ -30,6 +31,7 @@ public:
   virtual void getGlobal(std::vector<std::string> &v);
   virtual std::string getName();
   virtual int getVal();
+  virtual int getSize();
   // virtual void setType(const std::string& s) = 0;
   // virtual std::string getID() const = 0;
   // virtual unsigned int getSize() const = 0;

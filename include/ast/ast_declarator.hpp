@@ -19,6 +19,7 @@ public:
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint(std::ostream &os) {} //;
   void getGlobal(std::vector<std::string> &v);
+  std::string getName();
 };
 
 // pseudo for getID

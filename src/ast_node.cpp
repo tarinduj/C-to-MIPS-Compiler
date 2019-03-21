@@ -11,6 +11,7 @@ void Node::setType(listType t){};
 void Node::getGlobal(std::vector<std::string> &v){};
 int Node::getVal(){};
 std::string Node::getName() { return ""; };
+int Node::getSize(){};
 
 int scopeCounter = 0;
 std::vector<std::string> globalVarNames;

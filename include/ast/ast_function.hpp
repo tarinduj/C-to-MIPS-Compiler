@@ -9,11 +9,11 @@ private:
   NodePtr decl = NULL;
   NodePtr statements = NULL;
   std::string returnType;
-
+  void printPreamble(std::string& f_name);
 public:
   Function(std::string *_decSpec, NodePtr _d, NodePtr _s);
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
   void insert(NodePtr _n) {}          //;
 };
 

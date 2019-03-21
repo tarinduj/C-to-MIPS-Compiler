@@ -36,7 +36,6 @@ int run(int argc, char const *argv[]) {
     std::cout << cli;
   } else if (compile) {
     NodePtr ast = parseAST(input_file);
-    MSG <<"starting mipsprinting\n";
     MSG << fmt::format("I am gonna compile from {} to {}\n", input_file,
                        output_file);
     ast->mipsPrint();

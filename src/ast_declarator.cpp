@@ -1,7 +1,6 @@
 #include "ast/ast_declarator.hpp"
 #include "ast/ast_primitives.hpp"
 #include "ast/ast_variable.hpp"
-#include "run.hpp"
 
 DirectDeclarator::DirectDeclarator(NodePtr _decl, NodePtr _list)
     : dirDec(_decl), idList(_list){};
@@ -17,6 +16,9 @@ void DirectDeclarator::getGlobal(std::vector<std::string> &v) {
   if (dynamic_cast<Variable *>(dirDec)) {
     v.push_back(dirDec->getName());
   }
+}
+std::string DirectDeclarator::getName(){
+  return dirDec->getName();
 }
 
 Declaration::Declaration(std::string *_spec, NodePtr _list)
@@ -59,14 +61,13 @@ void InitDeclarator::mipsPrint() {
     var_name = declarator->getName();
   if (dynamic_cast<IntConst *>(initializer))
     val = initializer->getVal();
-  *global_context->get_stream()
-    << ".globl " << var_name << "\n"
-    << ".data\n"
-    << ".align 2\n"
-    << ".type " << var_name << ", @object\n"
-    << ".size " << var_name << ", 4\n"
-    << var_name << ":\n"
-    << ".word " << val << "\n";
+    *global_context->get_stream() << ".globl " << var_name << "\n"
+                                  << ".data\n"
+                                  << ".align 2\n"
+                                  << ".type " << var_name << ", @object\n"
+                                  << ".size " << var_name << ", 4\n"
+                                  << var_name << ":\n"
+                                  << ".word " << val << "\n";
 }
 
 void InitDeclarator::getGlobal(std::vector<std::string> &v) {
