@@ -15,12 +15,6 @@ Context::Context(std::ostream *os) : os(os) {
   initialize_regs();
 }
 
-Context::Context() : os(nullptr) {
-  type_table.emplace_back();
-  chunk_table.emplace_back();
-  initialize_regs();
-}
-
 void Context::initialize_regs() {
   for (auto it = regs.begin(); it != regs.end(); ++it) {
     *it = 0;
@@ -66,6 +60,8 @@ TypePtr Context::resolve_type(std::string identifier) const {
 }
 
 ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
+  *get_stream() << "\t#registering chunk with offset {}($fp)\n"_format(get_stack_size()) 
+                << "\taddiu\t$sp,$sp,-{}\n"_format(type->get_size());
   auto chunk = std::shared_ptr<Chunk>(new LocalChunk(type, this));
   chunk_table.back()[identifier] = chunk;
   return chunk;
@@ -104,6 +100,8 @@ void Context::new_scope() {
 }
 
 void Context::del_scope() {
+  *get_stream() << "\t#leaving scope no.{}\n"_format(get_scope_num()) 
+                << "\taddiu\t$sp,$sp,{}\n"_format(get_scope_size(get_scope_num()));
   type_table.pop_back();
   chunk_table.pop_back();
 }

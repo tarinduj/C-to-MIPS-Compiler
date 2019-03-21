@@ -23,7 +23,6 @@ private:
 
 public:
   Context(std::ostream *os);
-  Context();
   void initialize_regs();
   int allocate_reg();
   void order(std::string id, int &out_reg);

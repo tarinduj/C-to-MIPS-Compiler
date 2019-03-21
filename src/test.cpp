@@ -15,7 +15,8 @@ TEST_CASE("Type", "[Type]") {
 }
 
 TEST_CASE("Context type retreival", "[Type][Context]") {
-  Context context;
+  std::stringstream ss;
+  Context context(&ss);
   TypePtr type = context.register_type(
       "type1", std::shared_ptr<PrimitiveType>(new PrimitiveType()));
   CHECK(type->get_type_category() == Type::PRIMITIVE);
@@ -26,7 +27,8 @@ TEST_CASE("Context type retreival", "[Type][Context]") {
 }
 
 TEST_CASE("Chunk", "[Chunk][Type]") {
-  Context context;
+  std::stringstream ss;
+  Context context(&ss);
   TypePtr integer_type = std::make_shared<PrimitiveType>();
   ChunkPtr a = context.register_chunk("a", integer_type);
   CHECK(a->get_type() == integer_type);
@@ -34,7 +36,8 @@ TEST_CASE("Chunk", "[Chunk][Type]") {
 }
 
 TEST_CASE("Register and resolve Chunk", "[Chunk][Type]") {
-  Context context;
+  std::stringstream ss;
+  Context context(&ss);
   TypePtr integer_type = std::make_shared<PrimitiveType>();
   auto a_1 = context.register_chunk("a", integer_type);
   auto a_2 = context.resolve_chunk("a");
@@ -52,7 +55,8 @@ TEST_CASE("Scoping types", "[Scope][Type]") {
   TypePtr type1 = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   TypePtr type2 = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   TypePtr type3 = std::shared_ptr<PrimitiveType>(new PrimitiveType());
-  Context context;
+  std::stringstream ss;
+  Context context(&ss);
   INFO("Scope 0");
   context.register_type("type", type1);
   CHECK(context.resolve_type("type") == type1);
@@ -74,7 +78,8 @@ TEST_CASE("Scoping types", "[Scope][Type]") {
 
 TEST_CASE("Scoping chunks", "[Scope][Chunk]") {
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
-  Context context;
+  std::stringstream ss;
+  Context context(&ss);
   INFO("Scope 0");
   auto chunk0 = context.register_chunk("chunk", type);
   unsigned chunksize = chunk0->get_type()->get_size();
@@ -122,11 +127,13 @@ TEST_CASE("Scoping chunks", "[Scope][Chunk]") {
   CAPTURE(context.get_stack_size());
   CHECK(context.resolve_chunk("chunk") == chunk0);
   CHECK(context.resolve_chunk("chunk")->get_offset() == 0 * chunksize);
+  std::cout << ss.str();
 }
 
 TEST_CASE("Scoping chunks 2", "[Scope][Chunk]") {
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
-  Context context;
+  std::stringstream ss;
+  Context context(&ss);
   INFO("Scope 0");
   auto chunk0 = context.register_chunk("chunk", type);
   unsigned chunksize = chunk0->get_type()->get_size();
