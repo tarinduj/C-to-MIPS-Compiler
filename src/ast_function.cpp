@@ -25,7 +25,7 @@ void Function::mipsPrint(){
     //std::string fpChunkName = saveFP();
     statements->mipsPrint();
     //restoreFP(fpChunkName);
-    *global_context->get_stream() << "\tjr\t$31\n\tnop\n";
+    //*global_context->get_stream() << "\tjr\t$31\n\tnop\n";
     printEnd(f_name);
 
   }
