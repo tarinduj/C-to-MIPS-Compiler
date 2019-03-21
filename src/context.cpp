@@ -54,8 +54,8 @@ TypePtr Context::resolve_type(std::string identifier) const {
   for (auto it = type_table.rbegin(); it != type_table.rend(); ++it) {
     return it->find(identifier)->second;
   }
-  std::string message = fmt::format("Cannot resolve type {}", identifier),
-              msg(message);
+  ERR << fmt::format("Cannot resolve type {}", identifier);
+  std::string message = fmt::format("Cannot resolve type {}", identifier);
   throw std::logic_error(message);
 }
 
@@ -90,7 +90,7 @@ ChunkPtr Context::resolve_chunk(std::string identifier) const {
     return chunk->second;
   }
   std::string message = fmt::format("Cannot resolve chunk {}", identifier);
-  MSG << message << "\n";
+  ERR << message << "\n";
   throw std::logic_error(message);
 }
 
