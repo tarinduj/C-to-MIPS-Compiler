@@ -2,12 +2,13 @@
 #define LOGGER_MACROS_HPP
 
 #include <iostream>
+#include "rang.hpp"
 
 #define LOG                                                                    \
-  std::clog << "[LOG][" __FILE__ << ":" << __func__ << ":" << __LINE__ << "] "
+  std::clog << rang::style::bold << rang::style::dim << rang::fg::gray << "[LOG]" << rang::style::reset << rang::style::dim  << "[" __FILE__ << ":" << __func__ << ":" << __LINE__ << "] " << rang::style::reset
 #define MSG                                                                    \
-  std::clog << "[MSG][" __FILE__ << ":" << __func__ << ":" << __LINE__ << "] "
+  std::clog << rang::style::bold << rang::fgB::blue << "[MSG]" << rang::style::reset << rang::style::dim << "[" __FILE__ << ":" << __func__ << ":" << __LINE__ << "] " << rang::style::reset
 #define ERR                                                                    \
-  std::clog << "[ERR][" __FILE__ << ":" << __func__ << ":" << __LINE__ << "] "
+  std::clog << rang::style::bold << rang::fgB::red << "[ERR]" << rang::style::reset << rang::style::dim << "[" __FILE__ << ":" << __func__ << ":" << __LINE__ << "] " << rang::style::reset
 
 #endif
