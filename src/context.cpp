@@ -70,11 +70,6 @@ ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
 ChunkPtr Context::register_global_chunk(std::string identifier, TypePtr type) {
   auto chunk = std::shared_ptr<Chunk>(new GlobalChunk(type, this, identifier));
   global_chunk_table[identifier] = chunk;
-  *get_stream() << "\t.globl\t{}\n"_format(identifier)
-                << "\t.data\n"
-                << "\t.align\t2\n"
-                << "\t.size\t{}, 4\n"_format(identifier)
-                << "{}:\n"_format(identifier);
   return chunk;
 }
 
