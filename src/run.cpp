@@ -52,6 +52,8 @@ int run(int argc, char const *argv[]) {
       globalVarNames.clear();
       ast->pyPrint(std::cerr);
     }
+  } else {
+    ERR << "Nothing to do. See -h/--help for help.\n";
   }
 
   MSG << "Finished\n";
