@@ -35,6 +35,8 @@ void List::pyPrint(std::ostream &os) {
   }
 }
 void List::mipsPrint() {
+  LOG << "printing list of type: " << type <<"\n"; 
+  LOG << "0.INIT, 1.INITDEC, 2.PARAM, 3.DECL, 4.STAT, 5.ARG_EXP \n";
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i])
       elements[i]->mipsPrint();
@@ -78,6 +80,7 @@ void Scope::pyPrint(std::ostream &os) {
 void Scope::mipsPrint(){
   global_context->new_scope();
   if(decList) decList->registerVariables();
+  if(statList) statList->mipsPrint();
   global_context->del_scope();
 }
 
