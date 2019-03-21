@@ -22,27 +22,49 @@ void Function::mipsPrint(){
   printPreamble(f_name);
   LOG << "finished preamble\n";
   if(returnType == "int" && statements){
-    LOG << "function calling print on scope\n";
-    //TypePtr integer_type = std::make_shared<PrimitiveType>();
-    //auto ret_chunk = global_context->register_chunk("return", integer_type);
-    //statements->mipsPrint(ret_chunk);
+    //std::string fpChunkName = saveFP();
     statements->mipsPrint();
+    //restoreFP(fpChunkName);
+    *global_context->get_stream() << "\tjr\t$31\n\tnop\n";
+    printEnd(f_name);
+
   }
 }
 void Function::printPreamble(std::string& f_name){
-  *global_context->get_stream() << "\.text\n"
+  *global_context->get_stream() << ".text\n"
                                 << ".align 2\n"
                                 << ".globl " << f_name <<"\n"
-                                << ".set nomips16\n"
-                                << ".set nomicromips\n"
-                                << ".ent " << f_name <<"\n"
-                                << ".type " << f_name << ", @function\n"
                                 << f_name << ":\n"
-                                //<< ".frame $fp,8,$31\n"
-                                << "\t.mask 0x40000000,-4\n"
-                                << "\t.fmask 0x00000000,0\n"
-                                << "\t.set noreorder\n"
-                                << "\t.set nomacro\n";
+                                << "\taddiu\t$sp,$sp,-4\n"
+                                << "\tsw\t$fp,0($sp)\n"
+                                << "\tmove\t$fp,$sp\n";
+}
+void Function::printEnd(std::string& f_name){
+  *global_context->get_stream() << "\tmove $sp,$fp\n"
+                                << "\tlw $fp,0($sp)\n"
+                                << "\taddiu $sp,$sp,4\n"
+                                << "\tjr $31\n"
+                                << "\tnop\n";
+}
+std::string Function::saveFP(){
+  //global_context->new_scope();
+  *global_context->get_stream() << "\tmove\t$fp,\t$sp\n";  
+
+  std::string fpChunkName = makeUNQ("fpchunk");
+  TypePtr integer_type = std::make_shared<PrimitiveType>();
+  auto FP = global_context->register_chunk(fpChunkName, integer_type);
+  int regFP = FP->load();
+  *global_context->get_stream() << "\tmove\t$" << regFP << ",\t$fp\n";
+  FP->store();
+  return fpChunkName;
+}
+void Function::restoreFP(std::string& cName){
+  auto FP = global_context->resolve_chunk(cName);
+  int regFP = FP->load();
+  *global_context->get_stream() << "\tmove\t$sp,\t$fp\n";  
+  *global_context->get_stream() << "\tmove\t$fp,\t$" << regFP << "\n";
+  FP->discard();
+  //global_context->del_scope();
 }
 
 FunctionCall::FunctionCall(NodePtr _exp, NodePtr _arg)

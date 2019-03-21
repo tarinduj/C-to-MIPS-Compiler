@@ -28,7 +28,7 @@ private:
 public:
   Return(NodePtr _r);
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
   void insert(NodePtr _n) {}          //;
 };
 

@@ -10,6 +10,9 @@ private:
   NodePtr statements = NULL; //scope
   std::string returnType;
   void printPreamble(std::string& f_name);
+  void printEnd(std::string& f_name);
+  std::string saveFP();
+  void restoreFP(std::string& cName);
 public:
   Function(std::string *_decSpec, NodePtr _d, NodePtr _s);
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
