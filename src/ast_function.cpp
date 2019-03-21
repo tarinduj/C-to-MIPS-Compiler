@@ -35,14 +35,14 @@ void Function::printPreamble(std::string& f_name){
                                 << ".align 2\n"
                                 << ".globl " << f_name <<"\n"
                                 << f_name << ":\n"
-                                << "\taddiu\t$sp,$sp,-4\n"
-                                << "\tsw\t$fp,0($sp)\n"
+                                << "\taddiu\t$sp,$sp,-8\n"
+                                << "\tsw\t$fp,4($sp)\n"
                                 << "\tmove\t$fp,$sp\n";
 }
 void Function::printEnd(std::string& f_name){
   *global_context->get_stream() << "\tmove $sp,$fp\n"
-                                << "\tlw $fp,0($sp)\n"
-                                << "\taddiu $sp,$sp,4\n"
+                                << "\tlw $fp,4($sp)\n"
+                                << "\taddiu $sp,$sp,8\n"
                                 << "\tjr $31\n"
                                 << "\tnop\n";
 }
