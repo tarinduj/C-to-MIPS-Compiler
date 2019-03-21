@@ -81,11 +81,15 @@ void InitDeclarator::registerSingleVar(){
   if(dynamic_cast<Variable*>(declarator) && dynamic_cast<IntConst*>(initializer)){
     std::string var_name = declarator->getName();
     int var_val = initializer->getVal();
-    LOG << "InitDec registering variable: " << var_name << " = " << var_val << "\n";
     TypePtr integer_type = std::make_shared<PrimitiveType>();
-    auto init = global_context->register_chunk(var_name, integer_type);
+
+    ChunkPtr init;
+    if(registerGlobal) 
+      init = global_context->register_global_chunk(var_name, integer_type);
+    else 
+      init = global_context->register_chunk(var_name, integer_type);
+
     int reg = init->load();
-    LOG << "obtained register: " << reg << "\n";
     *global_context->get_stream() << "\tli\t$" << reg << ",\t" << var_val <<"\n";
     init->store();
   }
@@ -93,8 +97,10 @@ void InitDeclarator::registerSingleVar(){
     std::string var_name = declarator->getName();
     LOG << "InitDec registering variable without value: " << var_name << "\n";
     TypePtr integer_type = std::make_shared<PrimitiveType>();
-    auto init = global_context->register_chunk(var_name, integer_type);
-  }
+    if(registerGlobal) 
+      auto init = global_context->register_global_chunk(var_name, integer_type);
+    else 
+      auto init = global_context->register_chunk(var_name, integer_type);  }
 }
 
 ParamDeclaration::ParamDeclaration(std::string *_s, NodePtr _d)

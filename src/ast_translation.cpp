@@ -27,6 +27,11 @@ void TranslationUnit::mipsPrint() {
                                 << ".module	fp=32\n"
                                 << ".module	nooddspreg\n"
                                 << ".abicalls\n";
+  for(int i = 0; i < parts.size(); i++){
+      if (dynamic_cast<Declaration *>(parts[i]))
+        parts[i]->registerVariables();
+  }
+  registerGlobal = 0;
   for (int i = 0; i < parts.size(); i++) {
     if (parts[i]) {
       parts[i]->mipsPrint();

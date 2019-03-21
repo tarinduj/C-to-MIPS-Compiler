@@ -20,6 +20,7 @@ int scopeCounter = 0;
 std::vector<std::string> globalVarNames;
 bool elif = 0;
 unsigned unq = 0;
+bool registerGlobal = 1;
 void addIndent() { scopeCounter++; }
 void delIndent() { scopeCounter--; }
 void printIndent(std::ostream &os) { os << std::string(scopeCounter, '\t'); }

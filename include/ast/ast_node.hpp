@@ -45,6 +45,7 @@ extern int scopeCounter;
 extern std::vector<std::string> globalVarNames;
 extern bool elif;
 extern unsigned unq;
+extern bool registerGlobal;
 extern std::string makeUNQ(std::string s);
 extern void addIndent();
 extern void delIndent();

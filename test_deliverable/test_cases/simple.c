@@ -1,3 +1,4 @@
+int global_var = 69;
 int func(){
-	return 69;
+	return global_var;
 }
