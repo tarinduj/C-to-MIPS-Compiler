@@ -33,6 +33,7 @@ unsigned LocalChunk::load() {
 		return *reg;
 	} else {
 		*context->get_stream() << "\t#fatal error, out of free registers\n"; 
+		return 0;
 	}
 }
 
