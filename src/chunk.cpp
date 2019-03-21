@@ -26,6 +26,9 @@ unsigned LocalChunk::get_reg() const {
 }
 
 unsigned LocalChunk::load() {
+	if (reg) {
+		return *reg;
+	}
 	reg = context->allocate_reg();
 	if (reg != -1){
 		*context->get_stream() << "\tlw\t${}, {}($fp)\n"_format(*reg, get_offset())
@@ -60,6 +63,9 @@ unsigned GlobalChunk::get_reg() const {
 }
 
 unsigned GlobalChunk::load() {
+	if (reg) {
+		return *reg;
+	}
 	reg = context->allocate_reg();
 	unsigned tmp_reg = 25;
 	if (reg != -1 && tmp_reg != -1){

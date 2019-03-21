@@ -258,3 +258,21 @@ TEST_CASE("Global Chunks", "[Chunk]"){
   CHECK(one_more_extra->get_reg() == 13 );
   std::cout << ss.str();
 }
+
+TEST_CASE("Repeated load handling", "[Chunk][GlobalChunk][LocalChunk]"){
+  std::stringstream ss;
+  Context context(&ss);
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  auto globalChunk = context.register_global_chunk("global", type);
+  auto localChunk = context.register_chunk("local", type);
+  auto reg1 = globalChunk->load();
+  auto reg2 = globalChunk->load();
+  auto reg3 = globalChunk->get_reg();
+  CHECK(reg1 == reg2);
+  CHECK(reg2 == reg3);
+  reg1 = localChunk->load();
+  reg2 = localChunk->load();
+  reg3 = localChunk->get_reg();
+  CHECK(reg1 == reg2);
+  CHECK(reg2 == reg3);
+}
