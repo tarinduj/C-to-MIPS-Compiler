@@ -17,7 +17,8 @@ int LocalChunk::get_offset() const { return offset; }
 
 void LocalChunk::store() {
 	context->regs[*reg] = true;
-	*context->get_stream() << "\tCode for storing  reg {} into fp + {}\n"_format(*reg, get_offset()); 
+	*context->get_stream() << "\tsw\t${}, {}($fp)\n"_format(*reg, get_offset())
+						   << "\tnop\n"; 
 }
 
 unsigned LocalChunk::get_reg() const {
@@ -26,7 +27,13 @@ unsigned LocalChunk::get_reg() const {
 
 unsigned LocalChunk::load() {
 	reg = context->allocate_reg();
-	*context->get_stream() << "\tCode to load to reg {} from fp + {}\n"_format(*reg, get_offset()); 
+	if (reg != -1){
+		*context->get_stream() << "\tlw\t${}, {}($fp)\n"_format(*reg, get_offset())
+							   << "\tnop\n";
+		return *reg;
+	} else {
+		*context->get_stream() << "\t#fatal error, out of free registers\n"; 
+	}
 }
 
 void LocalChunk::discard() {
