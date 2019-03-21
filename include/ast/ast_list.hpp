@@ -17,20 +17,21 @@ public:
   void getList(std::vector<NodePtr> &res);
   void setType(listType t);
   void getGlobal(std::vector<std::string> &v);
+  void registerVariables();
 };
 
 class Scope : public Node {
 private:
   NodePtr decList = NULL;
   NodePtr statList = NULL;
-
 public:
   Scope(NodePtr _lst1, NodePtr _lst2); // concatenate two lists. it is for
                                        // declaration_list statement_list
   Scope(NodePtr _lst);
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
+  void mipsPrint(ChunkPtr ret){}
 };
 
 class IdentifierList : public Node {

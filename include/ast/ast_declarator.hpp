@@ -38,6 +38,7 @@ public:
   void pyPrint(std::ostream &os);
   void mipsPrint();
   void getGlobal(std::vector<std::string> &v);
+  void registerVariables();
 };
 
 class InitDeclarator : public Node {
@@ -52,6 +53,7 @@ public:
   void pyPrint(std::ostream &os);
   void mipsPrint();
   void getGlobal(std::vector<std::string> &v);
+  void registerSingleVar();
 };
 
 class ParamDeclaration : public Node {

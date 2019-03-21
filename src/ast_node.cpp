@@ -12,6 +12,9 @@ void Node::getGlobal(std::vector<std::string> &v){};
 int Node::getVal(){};
 std::string Node::getName() { return ""; };
 int Node::getSize(){};
+void Node::registerSingleVar(){};
+void Node::registerVariables(){};
+
 
 int scopeCounter = 0;
 std::vector<std::string> globalVarNames;

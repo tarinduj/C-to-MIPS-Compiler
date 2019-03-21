@@ -30,7 +30,8 @@ int run(int argc, char const *argv[]) {
   cli.parse(clara::Args(argc, argv));
 
   std::ofstream target_file(output_file);
-  global_context = new Context(&target_file);
+  global_context = new Context(&target_file); //debugging
+  //global_context = new Context(&std::cout);
 
   if (help) {
     std::cout << cli;

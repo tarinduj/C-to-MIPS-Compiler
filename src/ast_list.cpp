@@ -1,4 +1,5 @@
 #include "ast/ast_list.hpp"
+#include "ast/ast_declarator.hpp"
 
 List::List() {}
 void List::insert(NodePtr _n) { elements.push_back(_n); }
@@ -33,20 +34,27 @@ void List::pyPrint(std::ostream &os) {
     }
   }
 }
-
 void List::mipsPrint() {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i])
       elements[i]->mipsPrint();
   }
 }
-
 void List::setType(listType t) { type = t; };
-
 void List::getGlobal(std::vector<std::string> &v) {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i])
       elements[i]->getGlobal(v);
+  }
+}
+void List::registerVariables(){
+  for(int i = 0; i < elements.size(); i++){
+    if(elements[i]){
+      switch(type){
+        case INITDEC: {LOG << "regVariables initdec list\n"; elements[i]->registerSingleVar(); break;}
+        case DECL:    {LOG << "regVariables declaration list\n"; elements[i]->registerVariables(); break;}
+      }
+    }
   }
 }
 
@@ -66,6 +74,11 @@ void Scope::pyPrint(std::ostream &os) {
       statList->pyPrint(os);
   }
   delIndent();
+}
+void Scope::mipsPrint(){
+  global_context->new_scope();
+  if(decList) decList->registerVariables();
+  global_context->del_scope();
 }
 
 IdentifierList::IdentifierList(){};

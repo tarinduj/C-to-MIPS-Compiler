@@ -6,9 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "chunk.hpp"
 #include "run.hpp"
+#include "chunk.hpp"
 #include "context.hpp"
+#include "constants.hpp"
+#include "type.hpp"
 #include "logger_macros.hpp"
 
 
@@ -17,7 +19,6 @@ class Node;
 typedef Node *NodePtr;
 
 class Node {
-
 public:
   Node();
   ~Node();
@@ -32,6 +33,8 @@ public:
   virtual std::string getName();
   virtual int getVal();
   virtual int getSize();
+  virtual void registerSingleVar();
+  virtual void registerVariables();
   // virtual void setType(const std::string& s) = 0;
   // virtual std::string getID() const = 0;
   // virtual unsigned int getSize() const = 0;

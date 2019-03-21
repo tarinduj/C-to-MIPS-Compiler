@@ -39,6 +39,9 @@ void Declaration::mipsPrint() {
 void Declaration::getGlobal(std::vector<std::string> &v) {
   initDecList->getGlobal(v);
 }
+void Declaration::registerVariables(){
+  if(initDecList) initDecList->registerVariables();
+}
 
 InitDeclarator::InitDeclarator(NodePtr _d, NodePtr _i)
     : declarator(_d), initializer(_i){};
@@ -73,6 +76,25 @@ void InitDeclarator::mipsPrint() {
 void InitDeclarator::getGlobal(std::vector<std::string> &v) {
   if (dynamic_cast<Variable *>(declarator))
     v.push_back(declarator->getName());
+}
+void InitDeclarator::registerSingleVar(){
+  if(dynamic_cast<Variable*>(declarator) && dynamic_cast<IntConst*>(initializer)){
+    std::string var_name = declarator->getName();
+    int var_val = initializer->getVal();
+    LOG << "InitDec registering variable: " << var_name << " = " << var_val << "\n";
+    TypePtr integer_type = std::make_shared<PrimitiveType>();
+    auto init = global_context->register_chunk(var_name, integer_type);
+    int reg = init->load();
+    LOG << "obtained register: " << reg << "\n";
+    *global_context->get_stream() << "\tli\t$" << reg << ",\t" << var_val <<"\n";
+    init->store();
+  }
+  else if(dynamic_cast<Variable*>(declarator)){
+    std::string var_name = declarator->getName();
+    LOG << "InitDec registering variable without value: " << var_name << "\n";
+    TypePtr integer_type = std::make_shared<PrimitiveType>();
+    auto init = global_context->register_chunk(var_name, integer_type);
+  }
 }
 
 ParamDeclaration::ParamDeclaration(std::string *_s, NodePtr _d)

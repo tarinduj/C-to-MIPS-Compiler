@@ -17,24 +17,32 @@ void Function::pyPrint(std::ostream &os) {
   os << "\n";
 }
 void Function::mipsPrint(){
-  LOG << "entered function\n";
   std::string f_name = decl->getName();
-  LOG << f_name << "\n";
+  LOG << "entered function: " << returnType << " " << f_name << "\n";
+  printPreamble(f_name);
+  LOG << "finished preamble\n";
+  if(returnType == "int" && statements){
+    LOG << "function calling print on scope\n";
+    //TypePtr integer_type = std::make_shared<PrimitiveType>();
+    //auto ret_chunk = global_context->register_chunk("return", integer_type);
+    //statements->mipsPrint(ret_chunk);
+    statements->mipsPrint();
+  }
 }
 void Function::printPreamble(std::string& f_name){
-// .text
-// .align 2
-// .globl run
-// .set nomips16
-// .set nomicromips
-// .ent run
-// .type run, @function
-// run:
-// .frame $fp,8,$31 specify frame size
-// .mask 0x40000000,-4
-// .fmask 0x00000000,0
-// .set noreorder
-// .set nomacro
+  *global_context->get_stream() << "\.text\n"
+                                << ".align 2\n"
+                                << ".globl " << f_name <<"\n"
+                                << ".set nomips16\n"
+                                << ".set nomicromips\n"
+                                << ".ent " << f_name <<"\n"
+                                << ".type " << f_name << ", @function\n"
+                                << f_name << ":\n"
+                                //<< ".frame $fp,8,$31\n"
+                                << "\t.mask 0x40000000,-4\n"
+                                << "\t.fmask 0x00000000,0\n"
+                                << "\t.set noreorder\n"
+                                << "\t.set nomacro\n";
 }
 
 FunctionCall::FunctionCall(NodePtr _exp, NodePtr _arg)

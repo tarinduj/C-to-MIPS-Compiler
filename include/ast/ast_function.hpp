@@ -7,7 +7,7 @@
 class Function : public Node {
 private:
   NodePtr decl = NULL;
-  NodePtr statements = NULL;
+  NodePtr statements = NULL; //scope
   std::string returnType;
   void printPreamble(std::string& f_name);
 public:

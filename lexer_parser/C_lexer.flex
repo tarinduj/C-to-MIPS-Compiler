@@ -5,6 +5,7 @@
 #include "C_parser.tab.hpp"
 #include <string>
 #include <iostream>
+#include <sstream>
 extern FILE *yyin;
 
 extern "C" int fileno(FILE *stream);
@@ -12,11 +13,14 @@ extern "C" int fileno(FILE *stream);
 void yyerror (char const *s);
 int makeToken (int T);
 int makeIntToken(int T);
+int makeIntTokenHex (int T);
+int makeIntTokenOct (int T);
 int makeFloatToken(int T);
 void printToken();
 %}
 
 D			[0-9]
+O           [0-7]
 L			[a-zA-Z_]
 H			[a-fA-F0-9]
 E			[Ee][+-]?{D}+
@@ -25,10 +29,9 @@ IS			(u|U|l|L)*
 
 %%
 
-0[xX]{H}+{IS}?		{return makeIntToken(T_INTCONST);}
-0{D}+{IS}?		    {return makeIntToken(T_INTCONST);}
+0[xX]{H}+{IS}?		{return makeIntTokenHex(T_INTCONST);}
+0{O}+{IS}?		    {return makeIntTokenOct(T_INTCONST);}
 {D}+{IS}?		    {return makeIntToken(T_INTCONST);}
-L?'(\\.|[^\\'])+'	{return makeIntToken(T_INTCONST);}
 {D}+{E}{FS}?		{return makeIntToken(T_INTCONST);}
 
 {D}*"."{D}+({E})?{FS}?	{return makeFloatToken(T_FLOATCONST);}
@@ -131,6 +134,24 @@ int makeToken (int T){
 }
 int makeIntToken (int T){
     yylval.int_val = std::stoi(yytext, 0);
+    printToken();
+    return T;
+}
+int makeIntTokenHex (int T){
+    std::stringstream ss;
+    ss << std::hex << yytext;
+    unsigned int x;
+    ss >> x;
+    yylval.int_val = (int) x;
+    printToken();
+    return T;
+}
+int makeIntTokenOct (int T){
+    std::stringstream ss;
+    ss << std::oct << yytext;
+    unsigned int x;
+    ss >> x;
+    yylval.int_val = (int) x;
     printToken();
     return T;
 }
