@@ -290,3 +290,23 @@ TEST_CASE("Registration of global chunks"){
   "hellochunk:\n";
   CHECK(ss.str() == ref);
 }
+
+TEST_CASE("Size of scope"){
+  std::stringstream ss;
+  Context context(&ss);
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  context.register_chunk("scope0a", type);
+  CHECK(context.get_scope_size(0) == 1*WORD_BYTES);
+  context.register_chunk("scope0b", type);
+  CHECK(context.get_scope_size(0) == 2*WORD_BYTES);
+  context.new_scope();
+  context.register_chunk("scope1", type);
+  context.new_scope();
+  context.new_scope();
+  context.register_chunk("scope3a", type);
+  context.register_chunk("scope3b", type);
+  CHECK(context.get_scope_size(0) == 2*WORD_BYTES);
+  CHECK(context.get_scope_size(1) == 1*WORD_BYTES);
+  CHECK(context.get_scope_size(2) == 0*WORD_BYTES);
+  CHECK(context.get_scope_size(3) == 2*WORD_BYTES);
+}

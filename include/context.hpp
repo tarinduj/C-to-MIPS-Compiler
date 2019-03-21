@@ -31,6 +31,7 @@ public:
   void new_scope();
   void del_scope();
   void new_frame();
+  unsigned get_scope_size(unsigned scope) const;
   unsigned get_scope_num() const;
   unsigned get_stack_size() const;
   ChunkPtr register_chunk(std::string, TypePtr);

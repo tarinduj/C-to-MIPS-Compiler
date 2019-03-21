@@ -119,3 +119,11 @@ unsigned Context::get_stack_size() const {
   }
   return stack_size;
 }
+
+unsigned Context::get_scope_size(unsigned scope) const {
+    int scope_size = 0;
+    for (auto chunk_it = chunk_table.at(scope).begin(); chunk_it != chunk_table.at(scope).end(); ++chunk_it) {
+        scope_size += chunk_it->second->get_type()->get_size();
+    }
+    return scope_size;
+}
