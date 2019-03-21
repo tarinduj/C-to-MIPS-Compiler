@@ -19,6 +19,7 @@ void LocalChunk::store() {
 	context->regs[*reg] = true;
 	*context->get_stream() << "\tsw\t${}, {}($fp)\n"_format(*reg, get_offset())
 						   << "\tnop\n"; 
+    reg.reset();
 }
 
 unsigned LocalChunk::get_reg() const {
@@ -56,6 +57,7 @@ void GlobalChunk::store() {
 						   << "\tnop\n"; 
 	}
 	context->regs[*reg] = true;
+	reg.reset();
 }
 
 unsigned GlobalChunk::get_reg() const {
