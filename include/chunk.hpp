@@ -31,6 +31,7 @@ public:
 class GlobalChunk : public Chunk {
 private:
   std::string name;
+
 public:
   GlobalChunk(TypePtr, Context *, std::string name);
   virtual void store();

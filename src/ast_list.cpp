@@ -35,7 +35,7 @@ void List::pyPrint(std::ostream &os) {
   }
 }
 void List::mipsPrint() {
-  LOG << "printing list of type: " << type <<"\n"; 
+  LOG << "printing list of type: " << type << "\n";
   LOG << "0.INIT, 1.INITDEC, 2.PARAM, 3.DECL, 4.STAT, 5.ARG_EXP \n";
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i])
@@ -49,12 +49,20 @@ void List::getGlobal(std::vector<std::string> &v) {
       elements[i]->getGlobal(v);
   }
 }
-void List::registerVariables(){
-  for(int i = 0; i < elements.size(); i++){
-    if(elements[i]){
-      switch(type){
-        case INITDEC: {LOG << "regVariables initdec list\n"; elements[i]->registerSingleVar(); break;}
-        case DECL:    {LOG << "regVariables declaration list\n"; elements[i]->registerVariables(); break;}
+void List::registerVariables() {
+  for (int i = 0; i < elements.size(); i++) {
+    if (elements[i]) {
+      switch (type) {
+      case INITDEC: {
+        LOG << "regVariables initdec list\n";
+        elements[i]->registerSingleVar();
+        break;
+      }
+      case DECL: {
+        LOG << "regVariables declaration list\n";
+        elements[i]->registerVariables();
+        break;
+      }
       }
     }
   }
@@ -77,10 +85,12 @@ void Scope::pyPrint(std::ostream &os) {
   }
   delIndent();
 }
-void Scope::mipsPrint(){
+void Scope::mipsPrint() {
   global_context->new_scope();
-  if(decList) decList->registerVariables();
-  if(statList) statList->mipsPrint();
+  if (decList)
+    decList->registerVariables();
+  if (statList)
+    statList->mipsPrint();
   global_context->del_scope();
 }
 

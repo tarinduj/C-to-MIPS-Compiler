@@ -16,37 +16,36 @@ LocalChunk::LocalChunk(TypePtr type, Context *context) : Chunk(type, context) {
 int LocalChunk::get_offset() const { return offset; }
 
 void LocalChunk::store() {
-	context->regs[*reg] = true;
-	*context->get_stream() << "\tsw\t${}, -{}($fp)\n"_format(*reg, get_offset())
-						   << "\tnop\n"; 
-    reg.reset();
+  context->regs[*reg] = true;
+  *context->get_stream() << "\tsw\t${}, -{}($fp)\n"_format(*reg, get_offset())
+                         << "\tnop\n";
+  reg.reset();
 }
 
-unsigned LocalChunk::get_reg() const {
-	return *reg;
-}
+unsigned LocalChunk::get_reg() const { return *reg; }
 
 unsigned LocalChunk::load() {
-	if (reg) {
-		return *reg;
-	}
-	reg = context->allocate_reg();
-	if (reg != -1){
-		*context->get_stream() << "\tlw\t${}, -{}($fp)\n"_format(*reg, get_offset())
-							   << "\tnop\n";
-		return *reg;
-	} else {
-		*context->get_stream() << "\t#fatal error, out of free registers\n"; 
-		return 0;
-	}
+  if (reg) {
+    return *reg;
+  }
+  reg = context->allocate_reg();
+  if (reg != -1) {
+    *context->get_stream() << "\tlw\t${}, -{}($fp)\n"_format(*reg, get_offset())
+                           << "\tnop\n";
+    return *reg;
+  } else {
+    *context->get_stream() << "\t#fatal error, out of free registers\n";
+    return 0;
+  }
 }
 
 void LocalChunk::discard() {
-	context->regs[*reg] = true;
-	reg.reset();
+  context->regs[*reg] = true;
+  reg.reset();
 }
 
-GlobalChunk::GlobalChunk(TypePtr type, Context *context, std::string name) : Chunk(type, context), name(name) {}
+GlobalChunk::GlobalChunk(TypePtr type, Context *context, std::string name)
+    : Chunk(type, context), name(name) {}
 
 void GlobalChunk::store() {
 	unsigned tmp_reg = 25;
@@ -60,9 +59,7 @@ void GlobalChunk::store() {
 	reg.reset();
 }
 
-unsigned GlobalChunk::get_reg() const {
-	return *reg;
-}
+unsigned GlobalChunk::get_reg() const { return *reg; }
 
 unsigned GlobalChunk::load() {
 	if (reg) {
@@ -83,6 +80,6 @@ unsigned GlobalChunk::load() {
 }
 
 void GlobalChunk::discard() {
-	context->regs[*reg] = true;
-	reg.reset();
+  context->regs[*reg] = true;
+  reg.reset();
 }

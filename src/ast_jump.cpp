@@ -7,11 +7,12 @@ void Return::pyPrint(std::ostream &os) {
     returnExp->pyPrint(os);
   }
 }
-void Return::mipsPrint(){
+void Return::mipsPrint() {
   TypePtr integer_type = std::make_shared<PrimitiveType>();
   auto RET = global_context->register_chunk(makeUNQ("__retVal"), integer_type);
-  if(returnExp) returnExp->mipsPrint(RET);
+  if (returnExp)
+    returnExp->mipsPrint(RET);
   int retReg = RET->load();
   *global_context->get_stream() << "\tmove\t$2,\t$" << retReg << "\n";
-  RET->discard(); 
+  RET->discard();
 }

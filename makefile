@@ -73,3 +73,5 @@ endings:
 	dos2unix src/*.cpp
 	dos2unix include/*.hpp
 	dos2unix include/ast/*.hpp
+	dos2unix *
+	dos2unix test_deliverable/test_cases/*

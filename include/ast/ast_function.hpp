@@ -7,17 +7,18 @@
 class Function : public Node {
 private:
   NodePtr decl = NULL;
-  NodePtr statements = NULL; //scope
+  NodePtr statements = NULL; // scope
   std::string returnType;
-  void printPreamble(std::string& f_name);
-  void printEnd(std::string& f_name);
+  void printPreamble(std::string &f_name);
+  void printEnd(std::string &f_name);
   std::string saveFP();
-  void restoreFP(std::string& cName);
+  void restoreFP(std::string &cName);
+
 public:
   Function(std::string *_decSpec, NodePtr _d, NodePtr _s);
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
   void mipsPrint();
-  void insert(NodePtr _n) {}          //;
+  void insert(NodePtr _n) {} //;
 };
 
 class FunctionCall : public Node {

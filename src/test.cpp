@@ -184,53 +184,53 @@ TEST_CASE("Context printing", "[Context][Codegen]") {
   REQUIRE(ss.str() == std::string("Hello, world.\n"));
 }
 
-TEST_CASE("Register allocation by context", "[Context]"){
+TEST_CASE("Register allocation by context", "[Context]") {
   std::stringstream ss;
   Context context(&ss);
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
-  auto chunk8  = context.register_chunk("chunk8", type);
+  auto chunk8 = context.register_chunk("chunk8", type);
   CHECK(chunk8->load() == 8);
-  CHECK(chunk8->get_reg() == 8 );
-  auto chunk9  = context.register_chunk("chunk9", type);
+  CHECK(chunk8->get_reg() == 8);
+  auto chunk9 = context.register_chunk("chunk9", type);
   CHECK(chunk9->load() == 9);
-  CHECK(chunk9->get_reg() == 9 );
+  CHECK(chunk9->get_reg() == 9);
   auto chunk10 = context.register_chunk("chunk10", type);
   CHECK(chunk10->load() == 10);
-  CHECK(chunk10->get_reg() == 10 );
+  CHECK(chunk10->get_reg() == 10);
   auto chunk11 = context.register_chunk("chunk11", type);
   CHECK(chunk11->load() == 11);
-  CHECK(chunk11->get_reg() == 11 );
+  CHECK(chunk11->get_reg() == 11);
   auto chunk12 = context.register_chunk("chunk12", type);
   CHECK(chunk12->load() == 12);
-  CHECK(chunk12->get_reg() == 12 );
+  CHECK(chunk12->get_reg() == 12);
   auto chunk13 = context.register_chunk("chunk13", type);
   CHECK(chunk13->load() == 13);
-  CHECK(chunk13->get_reg() == 13 );
+  CHECK(chunk13->get_reg() == 13);
   auto chunk14 = context.register_chunk("chunk14", type);
   CHECK(chunk14->load() == 14);
-  CHECK(chunk14->get_reg() == 14 );
+  CHECK(chunk14->get_reg() == 14);
   auto chunk15 = context.register_chunk("chunk15", type);
   CHECK(chunk15->load() == 15);
-  CHECK(chunk15->get_reg() == 15 );
+  CHECK(chunk15->get_reg() == 15);
   auto chunk24 = context.register_chunk("chunk16", type);
   CHECK(chunk24->load() == 24);
-  CHECK(chunk24->get_reg() == 24 );
+  CHECK(chunk24->get_reg() == 24);
   auto extra = context.register_chunk("extra", type);
   CHECK(extra->load() == 0);
-  CHECK(extra->get_reg() == -1 );
+  CHECK(extra->get_reg() == -1);
   auto one_more_extra = context.register_chunk("one_more_extra", type);
   chunk13->store();
   one_more_extra->load();
-  CHECK(one_more_extra->get_reg() == 13 );
+  CHECK(one_more_extra->get_reg() == 13);
   std::cout << ss.str();
 }
 
-TEST_CASE("Global Chunks", "[Chunk]"){
+TEST_CASE("Global Chunks", "[Chunk]") {
   std::stringstream ss;
   Context context(&ss);
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
-  auto chunk8  = context.register_global_chunk("chunk8", type);
-  auto chunk9  = context.register_global_chunk("chunk9", type);
+  auto chunk8 = context.register_global_chunk("chunk8", type);
+  auto chunk9 = context.register_global_chunk("chunk9", type);
   auto chunk10 = context.register_global_chunk("chunk10", type);
   auto chunk11 = context.register_global_chunk("chunk11", type);
   auto chunk12 = context.register_global_chunk("chunk12", type);
@@ -241,32 +241,32 @@ TEST_CASE("Global Chunks", "[Chunk]"){
   auto extra = context.register_global_chunk("extra", type);
   auto one_more_extra = context.register_global_chunk("one_more_extra", type);
   CHECK(chunk8->load() == 8);
-  CHECK(chunk8->get_reg() == 8 );
+  CHECK(chunk8->get_reg() == 8);
   CHECK(chunk9->load() == 9);
-  CHECK(chunk9->get_reg() == 9 );
+  CHECK(chunk9->get_reg() == 9);
   CHECK(chunk10->load() == 10);
-  CHECK(chunk10->get_reg() == 10 );
+  CHECK(chunk10->get_reg() == 10);
   CHECK(chunk11->load() == 11);
-  CHECK(chunk11->get_reg() == 11 );
+  CHECK(chunk11->get_reg() == 11);
   CHECK(chunk12->load() == 12);
-  CHECK(chunk12->get_reg() == 12 );
+  CHECK(chunk12->get_reg() == 12);
   CHECK(chunk13->load() == 13);
-  CHECK(chunk13->get_reg() == 13 );
+  CHECK(chunk13->get_reg() == 13);
   CHECK(chunk14->load() == 14);
-  CHECK(chunk14->get_reg() == 14 );
+  CHECK(chunk14->get_reg() == 14);
   CHECK(chunk15->load() == 15);
-  CHECK(chunk15->get_reg() == 15 );
+  CHECK(chunk15->get_reg() == 15);
   CHECK(chunk24->load() == 24);
-  CHECK(chunk24->get_reg() == 24 );
+  CHECK(chunk24->get_reg() == 24);
   CHECK(extra->load() == 0);
-  CHECK(extra->get_reg() == -1 );
+  CHECK(extra->get_reg() == -1);
   chunk13->store();
   one_more_extra->load();
-  CHECK(one_more_extra->get_reg() == 13 );
+  CHECK(one_more_extra->get_reg() == 13);
   std::cout << ss.str();
 }
 
-TEST_CASE("Repeated load handling", "[Chunk][GlobalChunk][LocalChunk]"){
+TEST_CASE("Repeated load handling", "[Chunk][GlobalChunk][LocalChunk]") {
   std::stringstream ss;
   Context context(&ss);
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
@@ -284,36 +284,35 @@ TEST_CASE("Repeated load handling", "[Chunk][GlobalChunk][LocalChunk]"){
   CHECK(reg2 == reg3);
 }
 
-TEST_CASE("Registration of global chunks"){
+TEST_CASE("Registration of global chunks") {
   std::stringstream ss;
   Context context(&ss);
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   auto globalChunk = context.register_global_chunk("hellochunk", type);
-  std::string ref = 
-  "\t.globl\thellochunk\n"
-  "\t.data\n"
-  "\t.align\t2\n"
-  "\t.size\thellochunk, 4\n"
-  "hellochunk:\n";
+  std::string ref = "\t.globl\thellochunk\n"
+                    "\t.data\n"
+                    "\t.align\t2\n"
+                    "\t.size\thellochunk, 4\n"
+                    "hellochunk:\n";
   CHECK(ss.str() == ref);
 }
 
-TEST_CASE("Size of scope"){
+TEST_CASE("Size of scope") {
   std::stringstream ss;
   Context context(&ss);
   TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   context.register_chunk("scope0a", type);
-  CHECK(context.get_scope_size(0) == 1*WORD_BYTES);
+  CHECK(context.get_scope_size(0) == 1 * WORD_BYTES);
   context.register_chunk("scope0b", type);
-  CHECK(context.get_scope_size(0) == 2*WORD_BYTES);
+  CHECK(context.get_scope_size(0) == 2 * WORD_BYTES);
   context.new_scope();
   context.register_chunk("scope1", type);
   context.new_scope();
   context.new_scope();
   context.register_chunk("scope3a", type);
   context.register_chunk("scope3b", type);
-  CHECK(context.get_scope_size(0) == 2*WORD_BYTES);
-  CHECK(context.get_scope_size(1) == 1*WORD_BYTES);
-  CHECK(context.get_scope_size(2) == 0*WORD_BYTES);
-  CHECK(context.get_scope_size(3) == 2*WORD_BYTES);
+  CHECK(context.get_scope_size(0) == 2 * WORD_BYTES);
+  CHECK(context.get_scope_size(1) == 1 * WORD_BYTES);
+  CHECK(context.get_scope_size(2) == 0 * WORD_BYTES);
+  CHECK(context.get_scope_size(3) == 2 * WORD_BYTES);
 }

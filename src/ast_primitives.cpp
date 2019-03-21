@@ -3,9 +3,9 @@
 IntConst::IntConst(int _v) : val(_v) {}
 void IntConst::pyPrint(std::ostream &os) { os << val; }
 int IntConst::getVal() { return val; }
-void IntConst::mipsPrint(ChunkPtr res){
+void IntConst::mipsPrint(ChunkPtr res) {
   int regRes = res->load();
-  *global_context->get_stream() << "\tli\t$"<< regRes << ",\t" << val << "\n";
+  *global_context->get_stream() << "\tli\t$" << regRes << ",\t" << val << "\n";
   res->store();
 }
 FloatConst::FloatConst(double _v) : val(_v) {}

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 
-Context * global_context;
+Context *global_context;
 
 int run(int argc, char const *argv[]) {
   bool compile = false;
@@ -17,7 +17,6 @@ int run(int argc, char const *argv[]) {
   bool help = false;
   std::string output_file;
   std::string input_file;
-
 
   auto cli =
       clara::Help(help) |
@@ -30,8 +29,8 @@ int run(int argc, char const *argv[]) {
   cli.parse(clara::Args(argc, argv));
 
   std::ofstream target_file(output_file);
-  global_context = new Context(&target_file); //debugging
-  //global_context = new Context(&std::cout);
+  global_context = new Context(&target_file); // debugging
+  // global_context = new Context(&std::cout);
 
   if (help) {
     std::cout << cli;

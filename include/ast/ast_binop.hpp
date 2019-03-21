@@ -15,7 +15,7 @@ public:
   void pyPrint(std::ostream &_o);
   void mipsPrint();
   void mipsPrint(ChunkPtr res);
-  void insert(NodePtr _n) {}          //;
+  void insert(NodePtr _n) {} //;
 };
 
 // class SizeOfOp : public Node {

@@ -60,7 +60,8 @@ TypePtr Context::resolve_type(std::string identifier) const {
 }
 
 ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
-  *get_stream() << "\t#registering chunk with offset {}($fp)\n"_format(get_stack_size()) 
+  *get_stream() << "\t#registering chunk with offset {}($fp)\n"_format(
+                       get_stack_size())
                 << "\taddiu\t$sp,$sp,-{}\n"_format(type->get_size());
   auto chunk = std::shared_ptr<Chunk>(new LocalChunk(type, this));
   chunk_table.back()[identifier] = chunk;
@@ -95,8 +96,9 @@ void Context::new_scope() {
 }
 
 void Context::del_scope() {
-  *get_stream() << "\t#leaving scope no.{}\n"_format(get_scope_num()) 
-                << "\taddiu\t$sp,$sp,{}\n"_format(get_scope_size(get_scope_num()));
+  *get_stream() << "\t#leaving scope no.{}\n"_format(get_scope_num())
+                << "\taddiu\t$sp,$sp,{}\n"_format(
+                       get_scope_size(get_scope_num()));
   type_table.pop_back();
   chunk_table.pop_back();
 }
@@ -114,9 +116,10 @@ unsigned Context::get_stack_size() const {
 }
 
 unsigned Context::get_scope_size(unsigned scope) const {
-    int scope_size = 0;
-    for (auto chunk_it = chunk_table.at(scope).begin(); chunk_it != chunk_table.at(scope).end(); ++chunk_it) {
-        scope_size += chunk_it->second->get_type()->get_size();
-    }
-    return scope_size;
+  int scope_size = 0;
+  for (auto chunk_it = chunk_table.at(scope).begin();
+       chunk_it != chunk_table.at(scope).end(); ++chunk_it) {
+    scope_size += chunk_it->second->get_type()->get_size();
+  }
+  return scope_size;
 }

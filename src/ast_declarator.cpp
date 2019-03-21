@@ -17,9 +17,7 @@ void DirectDeclarator::getGlobal(std::vector<std::string> &v) {
     v.push_back(dirDec->getName());
   }
 }
-std::string DirectDeclarator::getName(){
-  return dirDec->getName();
-}
+std::string DirectDeclarator::getName() { return dirDec->getName(); }
 
 Declaration::Declaration(std::string *_spec, NodePtr _list)
     : decSpec(*_spec), initDecList(_list) {
@@ -39,8 +37,9 @@ void Declaration::mipsPrint() {
 void Declaration::getGlobal(std::vector<std::string> &v) {
   initDecList->getGlobal(v);
 }
-void Declaration::registerVariables(){
-  if(initDecList) initDecList->registerVariables();
+void Declaration::registerVariables() {
+  if (initDecList)
+    initDecList->registerVariables();
 }
 
 InitDeclarator::InitDeclarator(NodePtr _d, NodePtr _i)
@@ -64,43 +63,44 @@ void InitDeclarator::mipsPrint() {
     var_name = declarator->getName();
   if (dynamic_cast<IntConst *>(initializer))
     val = initializer->getVal();
-    *global_context->get_stream() << ".globl " << var_name << "\n"
-                                  << ".data\n"
-                                  << ".align 2\n"
-                                  << ".type " << var_name << ", @object\n"
-                                  << ".size " << var_name << ", 4\n"
-                                  << var_name << ":\n"
-                                  << ".word " << val << "\n";
+  *global_context->get_stream() << ".globl  " << var_name << "\n"
+                                << ".data\n"
+                                << ".align  2\n"
+                                << ".type   " << var_name << ", @object\n"
+                                << ".size   " << var_name << ", 4\n"
+                                << var_name << ":\n"
+                                << ".word " << val << "\n";
 }
 
 void InitDeclarator::getGlobal(std::vector<std::string> &v) {
   if (dynamic_cast<Variable *>(declarator))
     v.push_back(declarator->getName());
 }
-void InitDeclarator::registerSingleVar(){
-  if(dynamic_cast<Variable*>(declarator) && dynamic_cast<IntConst*>(initializer)){
+void InitDeclarator::registerSingleVar() {
+  if (dynamic_cast<Variable *>(declarator) &&
+      dynamic_cast<IntConst *>(initializer)) {
     std::string var_name = declarator->getName();
     int var_val = initializer->getVal();
     TypePtr integer_type = std::make_shared<PrimitiveType>();
 
     ChunkPtr init;
-    if(registerGlobal) 
+    if (registerGlobal)
       init = global_context->register_global_chunk(var_name, integer_type);
-    else 
+    else {
       init = global_context->register_chunk(var_name, integer_type);
-
-    int reg = init->load();
-    *global_context->get_stream() << "\tli\t$" << reg << ",\t" << var_val <<"\n";
-    init->store();
-  }
-  else if(dynamic_cast<Variable*>(declarator)){
+      int reg = init->load();
+      *global_context->get_stream()
+          << "\tli\t$" << reg << ",\t" << var_val << "\n";
+      init->store();
+    }
+  } else if (dynamic_cast<Variable *>(declarator)) {
     std::string var_name = declarator->getName();
-    LOG << "InitDec registering variable without value: " << var_name << "\n";
     TypePtr integer_type = std::make_shared<PrimitiveType>();
-    if(registerGlobal) 
+    if (registerGlobal)
       auto init = global_context->register_global_chunk(var_name, integer_type);
-    else 
-      auto init = global_context->register_chunk(var_name, integer_type);  }
+    else
+      auto init = global_context->register_chunk(var_name, integer_type);
+  }
 }
 
 ParamDeclaration::ParamDeclaration(std::string *_s, NodePtr _d)

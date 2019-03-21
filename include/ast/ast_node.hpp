@@ -6,13 +6,12 @@
 #include <string>
 #include <vector>
 
-#include "run.hpp"
 #include "chunk.hpp"
-#include "context.hpp"
 #include "constants.hpp"
-#include "type.hpp"
+#include "context.hpp"
 #include "logger_macros.hpp"
-
+#include "run.hpp"
+#include "type.hpp"
 
 enum listType { INIT, INITDEC, PARAM, DECL, STAT, ARG_EXP };
 class Node;

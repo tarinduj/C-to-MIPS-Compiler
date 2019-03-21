@@ -2,5 +2,5 @@ int func();
 
 int main()
 {
-	return (func() != 69);
+	return !(func() == 69);
 }
