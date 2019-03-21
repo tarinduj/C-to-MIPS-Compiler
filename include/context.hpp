@@ -15,7 +15,9 @@ class Context {
 private:
   std::array<bool, 32> regs;
   std::vector<std::map<std::string, ChunkPtr>> chunk_table;
+  std::map<std::string, ChunkPtr> global_chunk_table;
   std::vector<std::map<std::string, TypePtr>> type_table;
+  std::map<std::string, TypePtr> global_type_table;
   std::ostream *os;
   unsigned offset = 0;
 
@@ -32,8 +34,10 @@ public:
   unsigned get_scope_num() const;
   unsigned get_stack_size() const;
   ChunkPtr register_chunk(std::string, TypePtr);
+  ChunkPtr register_global_chunk(std::string, TypePtr);
   ChunkPtr resolve_chunk(std::string) const;
   TypePtr register_type(std::string, TypePtr);
+  TypePtr register_global_type(std::string, TypePtr);
   TypePtr resolve_type(std::string) const;
   std::ostream *get_stream() const;
   friend Chunk;

@@ -30,7 +30,9 @@ public:
 
 class GlobalChunk : public Chunk {
 private:
+  std::string name;
 public:
+  GlobalChunk(TypePtr, Context *, std::string name);
   virtual void store();
   virtual unsigned get_reg() const;
   virtual unsigned load();

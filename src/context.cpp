@@ -5,6 +5,7 @@
 #include <iostream>
 #include <ostream>
 #include <stdexcept>
+#include "logger_macros.hpp"
 
 Context::Context(std::ostream *os) : os(os) {
   type_table.emplace_back();
@@ -32,7 +33,6 @@ void Context::initialize_regs(){
   regs[14] = true;
   regs[15] = true;
   regs[24] = true;
-  regs[25] = true;
 }
 
 int Context::allocate_reg(){
@@ -69,6 +69,12 @@ ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
   return chunk;
 }
 
+ChunkPtr Context::register_global_chunk(std::string identifier, TypePtr type) {
+  auto chunk = std::shared_ptr<Chunk>(new GlobalChunk(type, this, identifier));
+  global_chunk_table[identifier] = chunk;
+  return chunk;
+}
+
 ChunkPtr Context::resolve_chunk(std::string identifier) const {
   for (auto it = chunk_table.rbegin(); it != chunk_table.rend(); ++it) {
     auto chunk = it->find(identifier);
@@ -76,8 +82,12 @@ ChunkPtr Context::resolve_chunk(std::string identifier) const {
       return chunk->second;
     }
   }
-  std::string message = fmt::format("Cannot resolve chunk {}", identifier),
-              msg(message);
+  auto chunk = global_chunk_table.find(identifier);
+  if (chunk != global_chunk_table.end()) {
+    return chunk->second;
+  }
+  std::string message = fmt::format("Cannot resolve chunk {}", identifier);
+  MSG << message << "\n";
   throw std::logic_error(message);
 }
 
