@@ -1,11 +1,13 @@
 #include "context.hpp"
 #include "chunk.hpp"
 #include "fmt/format.h"
+#include "logger_macros.hpp"
 #include "run.hpp"
 #include <iostream>
 #include <ostream>
 #include <stdexcept>
-#include "logger_macros.hpp"
+
+using namespace fmt::literals;
 
 Context::Context(std::ostream *os) : os(os) {
   type_table.emplace_back();
@@ -19,14 +21,14 @@ Context::Context() : os(nullptr) {
   initialize_regs();
 }
 
-void Context::initialize_regs(){
-  for(auto it = regs.begin();it != regs.end(); ++it){
+void Context::initialize_regs() {
+  for (auto it = regs.begin(); it != regs.end(); ++it) {
     *it = 0;
   }
   // Freely usable temporary registers
-  regs[8]  = true; 
-  regs[9]  = true;
-  regs[10] = true; 
+  regs[8] = true;
+  regs[9] = true;
+  regs[10] = true;
   regs[11] = true;
   regs[12] = true;
   regs[13] = true;
@@ -35,8 +37,8 @@ void Context::initialize_regs(){
   regs[24] = true;
 }
 
-int Context::allocate_reg(){
-  for(auto reg = regs.begin(); reg != regs.end(); ++reg){
+int Context::allocate_reg() {
+  for (auto reg = regs.begin(); reg != regs.end(); ++reg) {
     if (*reg) {
       *reg = false;
       return reg - regs.begin();
@@ -72,6 +74,11 @@ ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
 ChunkPtr Context::register_global_chunk(std::string identifier, TypePtr type) {
   auto chunk = std::shared_ptr<Chunk>(new GlobalChunk(type, this, identifier));
   global_chunk_table[identifier] = chunk;
+  *get_stream() << "\t.globl\t{}\n"_format(identifier)
+                << "\t.data\n"
+                << "\t.align\t2\n"
+                << "\t.size\t{}, 4\n"_format(identifier)
+                << "{}:\n"_format(identifier);
   return chunk;
 }
 
