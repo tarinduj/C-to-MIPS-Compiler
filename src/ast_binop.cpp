@@ -1,6 +1,7 @@
 #include "ast/ast_binop.hpp"
 #include "ast/ast_primitives.hpp"
 #include "ast/ast_variable.hpp"
+#include "ast/ast_function.hpp"
 #include "fmt/format.h"
 
 using namespace fmt::literals;
@@ -20,7 +21,7 @@ void BinaryOperation::pyPrint(std::ostream &os) {
   os << ")";
 }
 void BinaryOperation::mipsPrint() {
-  if (dynamic_cast<Variable *>(lExp)) {
+  if (dynamic_cast<Variable *>(lExp) && !dynamic_cast<FunctionCall*>(rExp)) {
     TypePtr integer_type = std::make_shared<PrimitiveType>();
     std::string assign_to = lExp->getName();
     auto LHS = global_context->resolve_chunk(assign_to);
@@ -36,6 +37,9 @@ void BinaryOperation::mipsPrint() {
 
     LHS->store();
     RHS->discard();
+  }
+  else if(dynamic_cast<Variable *>(lExp) && dynamic_cast<FunctionCall*>(rExp)){
+    rExp->mipsPrint();
   }
 }
 void BinaryOperation::mipsPrint(ChunkPtr res) {

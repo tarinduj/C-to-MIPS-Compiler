@@ -15,17 +15,17 @@ int main()
 	int m = 6;
 	if(add(y, m) != 2004)
 		return 1;
-	/*else if(sub(y, m) != 1992)
+	else if(sub(y, m) != 1992)
 		return 2;
-	*/else if(mul(y, m) != 11988)
+	else if(mul(y, m) != 11988)
 		return mul(y,m);
 	else if(div(y, m) != 333)
 		return 4;
 	else if(mod(y, m) != 0)
 		return 5;
-	else if(shr(y, m) != 127872)
+	else if(shr(y, m) != 31)
 		return 6;
-	else if(shl(y, m) != 31)
+	else if(shl(y, m) != 127872)
 		return 7;
 	else if(band(y, m) != 6)
 		return 8;

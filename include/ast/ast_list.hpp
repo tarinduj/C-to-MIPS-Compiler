@@ -18,6 +18,7 @@ public:
   void setType(listType t);
   void getGlobal(std::vector<std::string> &v);
   void registerVariables();
+  void passArguments(std::vector<ChunkPtr>& v);
 };
 
 class Scope : public Node {

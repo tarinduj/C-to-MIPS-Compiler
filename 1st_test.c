@@ -72,7 +72,15 @@
 //   }
 // }
 
+// int foo(int x, int y){
+//   x += 1;
+//   return x + y;
+// }
 int foo(int x, int y){
-  x += 1;
-  return x + y;
+  return 6;
+}
+int bar(){
+  int x;
+  x = foo(5, 7);
+  return x;
 }

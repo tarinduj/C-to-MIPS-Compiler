@@ -11,8 +11,6 @@ private:
   std::string returnType;
   void printPreamble(std::string &f_name);
   void printEnd(std::string &f_name);
-  std::string saveFP();
-  void restoreFP(std::string &cName);
 
 public:
   Function(std::string *_decSpec, NodePtr _d, NodePtr _s);
@@ -29,7 +27,7 @@ private:
 public:
   FunctionCall(NodePtr _exp, NodePtr _arg);
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &_o) {} //;
+  void mipsPrint();
   void insert(NodePtr _n) {}          //;
 };
 

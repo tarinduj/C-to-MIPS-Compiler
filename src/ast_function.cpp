@@ -1,5 +1,6 @@
 #include "ast/ast_function.hpp"
 #include "ast/ast_variable.hpp"
+#include "ast/ast_list.hpp"
 
 Function::Function(std::string *_decSpec, NodePtr _d, NodePtr _s)
     : returnType(*_decSpec), statements(_s), decl(_d) {
@@ -22,14 +23,16 @@ void Function::mipsPrint() {
   LOG << "entered function: " << returnType << " " << f_name << "\n";
   printPreamble(f_name);
   //LOG << "finished preamble\n";
-  if (returnType == "int" && statements) {
+  if (statements) {
     // std::string fpChunkName = saveFP();
     global_context->normalize_argument_chunks();
     statements->mipsPrint();
     // restoreFP(fpChunkName);
     //*global_context->get_stream() << "\tjr\t$31\n\tnop\n";
-    printEnd(f_name);
+
   }
+  printEnd(f_name);
+  global_context->new_frame();
 }
 void Function::printPreamble(std::string &f_name) {
   *global_context->get_stream() << ".text\n"
@@ -47,26 +50,6 @@ void Function::printEnd(std::string &f_name) {
                                 << "\tjr $31\n"
                                 << "\tnop\n";
 }
-std::string Function::saveFP() {
-  // global_context->new_scope();
-  *global_context->get_stream() << "\tmove\t$fp,\t$sp\n";
-
-  std::string fpChunkName = makeUNQ("fpchunk");
-  TypePtr integer_type = std::make_shared<PrimitiveType>();
-  auto FP = global_context->register_chunk(fpChunkName, integer_type);
-  int regFP = FP->load();
-  *global_context->get_stream() << "\tmove\t$" << regFP << ",\t$fp\n";
-  FP->store();
-  return fpChunkName;
-}
-void Function::restoreFP(std::string &cName) {
-  auto FP = global_context->resolve_chunk(cName);
-  int regFP = FP->load();
-  *global_context->get_stream() << "\tmove\t$sp,\t$fp\n";
-  *global_context->get_stream() << "\tmove\t$fp,\t$" << regFP << "\n";
-  FP->discard();
-  // global_context->del_scope();
-}
 
 FunctionCall::FunctionCall(NodePtr _exp, NodePtr _arg)
     : functionName(_exp), arguments(_arg){};
@@ -83,6 +66,16 @@ void FunctionCall::pyPrint(std::ostream &os) {
   }
 }
 
+void FunctionCall::mipsPrint(){
+  std::cout<<"entered mipsPrint for fcall\n";
+  std::string f_name = functionName->getName();
+  LOG << "entered function call for: " << f_name << "\n";
+  std::vector<ChunkPtr> v;
+  if(dynamic_cast<List*>(arguments)) (dynamic_cast<List*>(arguments))->passArguments(v);
+  global_context->pass_args(v);
+  *global_context->get_stream() << "\tjal\t" << f_name << "\n"
+                                << "\tnop\n";
+}
 // 1. calculate size in bytes
 // 2. sp = sp - size
 // 3. save fp at top of the frame

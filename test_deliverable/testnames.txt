@@ -12,4 +12,4 @@ nested_while
 operators
 shadowing_function_arguments
 simple_do_while
-simple_for
+simple_fcall

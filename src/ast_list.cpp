@@ -38,8 +38,20 @@ void List::mipsPrint() {
   LOG << "printing list of type: " << type << "\n";
   LOG << "0.INIT, 1.INITDEC, 2.PARAM, 3.DECL, 4.STAT, 5.ARG_EXP \n";
   for (int i = 0; i < elements.size(); i++) {
-    if (elements[i])
+    if (elements[i]){
       elements[i]->mipsPrint();
+    }
+  }
+}
+void List::passArguments(std::vector<ChunkPtr>& v){
+  if(type == ARG_EXP && elements.size() <= 4){
+    TypePtr integer_type = std::make_shared<PrimitiveType>();
+    for(int i = 0; i < elements.size(); i++){
+      LOG << "entered pass Arguments\n";
+      auto ARG = global_context->register_chunk(makeUNQ("__Arg"), integer_type);
+      elements[i]->mipsPrint(ARG);
+      v.push_back(ARG);
+    }
   }
 }
 void List::setType(listType t) { type = t; };
