@@ -3,14 +3,13 @@
 make bin/c_compiler
 cd test_deliverable
 
-
 bad=0;
 
 for item in $(cat testnames.txt); 
 do
-	echo -e "\e[1m=============\e[0m"; 
-	echo -e "\e[1m\e[34mTESTING $item\e[0m"; 
-	make -B -s our/$item;
+	echo -e "\e[1m=============\e[0m"
+	echo -e "\e[1m\e[34mTESTING $item\e[0m"
+	make -B -s our/$item 2> /dev/null
 	compiled=$?;
 	if [ $compiled -ne 0 ]; then
     	echo -e "\e[1m\e[31mCOMPILATION FAILED\e[0m"
