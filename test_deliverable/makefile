@@ -1,6 +1,6 @@
 GCC_MIPS = mips-linux-gnu-gcc
 COMPILER = ../bin/c_compiler -c
-GCC_MIPS_FLAGS = -static
+GCC_MIPS_FLAGS = -static -pedantic -ansi 
 EMULATOR = qemu-mips
 
 clean:
