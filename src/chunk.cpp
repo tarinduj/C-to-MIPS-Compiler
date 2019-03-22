@@ -17,7 +17,7 @@ int LocalChunk::get_offset() const { return offset; }
 
 void LocalChunk::store() {
   context->regs[*reg] = true;
-  *context->get_stream() << "\tsw\t${}, -{}($fp)\n"_format(*reg, get_offset())
+  *context->get_stream() << "\tsw\t${}, {}($fp)\n"_format(*reg, -get_offset())
                          << "\tnop\n";
   reg.reset();
 }
@@ -30,7 +30,7 @@ unsigned LocalChunk::load() {
   }
   reg = context->allocate_reg();
   if (reg != -1) {
-    *context->get_stream() << "\tlw\t${}, -{}($fp)\n"_format(*reg, get_offset())
+    *context->get_stream() << "\tlw\t${}, {}($fp)\n"_format(*reg, -get_offset())
                            << "\tnop\n";
     return *reg;
   } else {
