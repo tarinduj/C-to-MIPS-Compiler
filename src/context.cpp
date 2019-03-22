@@ -40,6 +40,7 @@ int Context::allocate_reg() {
       return reg - regs.begin();
     }
   }
+  ERR << "Out of registers.\n";
   return -1;
 }
 

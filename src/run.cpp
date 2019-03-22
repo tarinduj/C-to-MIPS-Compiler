@@ -34,6 +34,10 @@ int run(int argc, char const *argv[]) {
 
   if (help) {
     std::cout << cli;
+    MSG << "Important messages, even for the user.\n";
+    CONTEXTLOG << "Messages from the the context manager, mostly internal.\n";
+    LOG << "Internal logs.\n";
+    ERR << "Error messages.\n";
   } else if (compile) {
     NodePtr ast = parseAST(input_file);
     MSG << fmt::format("I am gonna compile from {} to {}\n", input_file,
