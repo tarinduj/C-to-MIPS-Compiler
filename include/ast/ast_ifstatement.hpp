@@ -13,7 +13,7 @@ private:
 public:
   IfStatement(NodePtr _c, NodePtr _t, NodePtr _e);
   void pyPrint(std::ostream &os); //; when implementing delete {} and leave ;
-  void mipsPrint(std::ostream &os) {} //;
+  void mipsPrint();
   void insert(NodePtr _n) {}
 };
 

@@ -1,7 +1,7 @@
 int func1();
 int func2();
 
-int main(int argc, char const *argv[])
+int main()
 {
 	int res1 = func1();
 	int res2 = func2();

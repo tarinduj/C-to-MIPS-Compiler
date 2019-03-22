@@ -18,9 +18,9 @@ void Function::pyPrint(std::ostream &os) {
 }
 void Function::mipsPrint() {
   std::string f_name = decl->getName();
-  LOG << "entered function: " << returnType << " " << f_name << "\n";
+  //LOG << "entered function: " << returnType << " " << f_name << "\n";
   printPreamble(f_name);
-  LOG << "finished preamble\n";
+  //LOG << "finished preamble\n";
   if (returnType == "int" && statements) {
     // std::string fpChunkName = saveFP();
     statements->mipsPrint();

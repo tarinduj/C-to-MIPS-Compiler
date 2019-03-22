@@ -63,13 +63,13 @@ void InitDeclarator::mipsPrint() {
     var_name = declarator->getName();
   if (dynamic_cast<IntConst *>(initializer))
     val = initializer->getVal();
-  *global_context->get_stream() << ".globl  " << var_name << "\n"
-                                << ".data\n"
-                                << ".align  2\n"
-                                << ".type   " << var_name << ", @object\n"
-                                << ".size   " << var_name << ", 4\n"
+  *global_context->get_stream() << "\t.globl  " << var_name << "\n"
+                                << "\t.data\n"
+                                << "\t.align  2\n"
+                                << "\t.type   " << var_name << ", @object\n"
+                                << "\t.size   " << var_name << ", 4\n"
                                 << var_name << ":\n"
-                                << ".word " << val << "\n";
+                                << "\t.word " << val << "\n";
 }
 
 void InitDeclarator::getGlobal(std::vector<std::string> &v) {
@@ -77,13 +77,12 @@ void InitDeclarator::getGlobal(std::vector<std::string> &v) {
     v.push_back(declarator->getName());
 }
 void InitDeclarator::registerSingleVar() {
+  std::string var_name = declarator->getName();
+  TypePtr integer_type = std::make_shared<PrimitiveType>();
+  ChunkPtr init;
   if (dynamic_cast<Variable *>(declarator) &&
       dynamic_cast<IntConst *>(initializer)) {
-    std::string var_name = declarator->getName();
     int var_val = initializer->getVal();
-    TypePtr integer_type = std::make_shared<PrimitiveType>();
-
-    ChunkPtr init;
     if (registerGlobal)
       init = global_context->register_global_chunk(var_name, integer_type);
     else {
@@ -93,13 +92,18 @@ void InitDeclarator::registerSingleVar() {
           << "\tli\t$" << reg << ",\t" << var_val << "\n";
       init->store();
     }
-  } else if (dynamic_cast<Variable *>(declarator)) {
-    std::string var_name = declarator->getName();
+  } else if (dynamic_cast<Variable *>(declarator) && !initializer) {
     TypePtr integer_type = std::make_shared<PrimitiveType>();
     if (registerGlobal)
-      auto init = global_context->register_global_chunk(var_name, integer_type);
+      init = global_context->register_global_chunk(var_name, integer_type);
     else
-      auto init = global_context->register_chunk(var_name, integer_type);
+      init = global_context->register_chunk(var_name, integer_type);
+  } else {
+    init = global_context->register_chunk(var_name, integer_type);
+    initializer->mipsPrint(init);
+    //int reg = init->load();
+    //*global_context->get_stream()
+    //init->store();
   }
 }
 

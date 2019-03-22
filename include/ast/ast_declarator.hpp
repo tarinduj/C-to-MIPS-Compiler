@@ -45,7 +45,7 @@ class InitDeclarator : public Node {
 private:
   NodePtr declarator;  // will store name of the variable/function + parameters
                        // of function
-  NodePtr initializer; // expression so the value of variable which we pass as
+  NodePtr initializer = NULL; // expression so the value of variable which we pass as
                        // default
 public:
   InitDeclarator(NodePtr _d, NodePtr _i);

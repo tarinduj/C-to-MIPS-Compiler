@@ -41,3 +41,22 @@ void IfStatement::pyPrintStatement(std::ostream &os, NodePtr s) {
     delIndent();
   }
 }
+
+void IfStatement::mipsPrint(){
+  TypePtr integer_type = std::make_shared<PrimitiveType>();
+  std::string elseLabel = makeUNQ("__elseIF");
+  std::string endLabel = makeUNQ("__endIF");
+
+  auto CON = global_context->register_chunk(makeUNQ("__IFcondition"), integer_type);
+  if(condition) condition->mipsPrint(CON);
+  int regCON = CON->load();
+  *global_context->get_stream() << "\tbeq\t$" << regCON << ",\t$0,\t" << elseLabel << "\n";
+  CON->discard();
+  if(trueStatement) trueStatement->mipsPrint();
+  *global_context->get_stream() << "\tj\t" << endLabel << "\n";
+  *global_context->get_stream() << "\tnop\n";
+  *global_context->get_stream() << elseLabel << ":\n";
+  if(elseStatement) elseStatement->mipsPrint();
+  *global_context->get_stream() << endLabel << ":\n";
+
+}

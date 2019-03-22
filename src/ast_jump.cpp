@@ -15,4 +15,5 @@ void Return::mipsPrint() {
   int retReg = RET->load();
   *global_context->get_stream() << "\tmove\t$2,\t$" << retReg << "\n";
   RET->discard();
+  //global_context->end()
 }
