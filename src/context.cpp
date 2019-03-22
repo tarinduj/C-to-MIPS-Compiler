@@ -29,6 +29,7 @@ void Context::initialize_regs() {
   regs[14] = true;
   regs[15] = true;
   regs[24] = true;
+  //register 25 used for internal purposes by context and chunk
 }
 
 int Context::allocate_reg() {
