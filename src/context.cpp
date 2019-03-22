@@ -136,14 +136,26 @@ ChunkPtr Context::resolve_chunk(std::string identifier) const {
 void Context::new_scope() {
   type_table.emplace_back();
   chunk_table.emplace_back();
+  MSG << ">>> New scope {}.\n"_format(get_scope_num());
 }
 
 void Context::del_scope() {
+  MSG << "<<< Deleting scope {}.\n"_format(get_scope_num());
   *get_stream() << "\t#leaving scope no.{}\n"_format(get_scope_num())
                 << "\taddiu\t$sp,$sp,{}\n"_format(
                        get_scope_size(get_scope_num()));
   type_table.pop_back();
   chunk_table.pop_back();
+}
+
+void Context::new_frame(){
+  MSG << "|<< Reseting this frame. {} deleted.\n"_format(get_scope_num());
+  while(get_scope_num() != -1){
+    del_scope();
+  }
+  argument_chunk_table.clear();
+  type_table.emplace_back();
+  chunk_table.emplace_back();
 }
 
 unsigned Context::get_stack_size() const {

@@ -340,3 +340,32 @@ TEST_CASE("Arguments", "[Arguments]"){
   CHECK(chunk_e == context.resolve_chunk("e"));
   CHECK(chunk_e->get_offset() == (-4-2)*WORD_BYTES);
 }
+
+TEST_CASE("new_frame", "[Context]"){
+  std::stringstream ss;
+  Context context(&ss);
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  context.register_global_type("type", type);
+  auto global_chunk = context.register_global_chunk("chunk", type);
+  auto argument1 = context.register_argument_chunk("argument", type);
+  context.new_scope();
+  context.register_type("type", type);
+  context.register_chunk("chunk", type);
+  context.new_scope();
+  context.register_type("type", type);
+  context.register_chunk("chunk", type);
+  context.new_scope();
+  context.register_type("type", type);
+  context.register_chunk("chunk", type);
+  context.new_scope();
+  CHECK(context.get_scope_num() == 4);
+  CHECK(context.get_scope_num() == 4);
+  CHECK(context.resolve_chunk("argument") == argument1); 
+  context.new_frame();
+  auto argument2 = context.register_argument_chunk("argument", type);
+  CHECK(context.resolve_chunk("chunk") == global_chunk); 
+  CHECK(context.resolve_type("type") == type);
+  CHECK(context.resolve_chunk("argument") == argument2); 
+}
+
+
