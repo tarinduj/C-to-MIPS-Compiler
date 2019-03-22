@@ -5,3 +5,4 @@ many_functions
 many_globals_and_locals
 if
 if2
+scope
