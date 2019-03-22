@@ -11,19 +11,26 @@ do
 	echo -e "\e[1m=============\e[0m"; 
 	echo -e "\e[1m\e[34mTESTING $item\e[0m"; 
 	make -B -s our/$item;
-	qemu-mips our/$item
-	RES=$?
-	echo $RES
-	if [ $RES -eq 0 ]; then
-    	echo -e "\e[1m\e[32mSUCCES\e[0m"
+	compiled=$?;
+	if [ $compiled -ne 0 ]; then
+    	echo -e "\e[1m\e[31mCOMPILATION FAILED\e[0m"
     	echo -e "\e[1m=============\e[0m"
+    	bad=$((bad+1))
+	else
+		qemu-mips our/$item
+		RES=$?
+		echo $RES
+		if [ $RES -eq 0 ]; then
+	    	echo -e "\e[1m\e[32mSUCCES\e[0m"
+	    	echo -e "\e[1m=============\e[0m"
 
-    else
-    	echo -e "\e[1m\e[31mFAIL\e[0m"
-    	echo -e "\e[1m=============\e[0m"
+	    else
+	    	echo -e "\e[1m\e[31mFAIL\e[0m"
+	    	echo -e "\e[1m=============\e[0m"
 
-    	bad=$((bad+1));
-    fi
+	    	bad=$((bad+1));
+	    fi
+	fi
 	echo $res;
 done;
 exit $bad;
