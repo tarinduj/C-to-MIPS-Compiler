@@ -9,8 +9,8 @@ private:
   NodePtr rExp;
   std::string op;
   void pyPrintOp(std::ostream &os);
-  void mipsPrintOp(int regRes, int regL, int regR);
   void mipsPrintOp(int regL, int regR);
+  void mipsPrintOp(int regRes, int regL, int regR);
 
 public:
   BinaryOperation(NodePtr left, std::string *opPtr, NodePtr right);

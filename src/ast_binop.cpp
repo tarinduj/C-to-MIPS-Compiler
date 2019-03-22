@@ -28,13 +28,8 @@ void BinaryOperation::mipsPrint() {
     int regL = LHS->load();
     int regR = RHS->load();
 
-    if (op == "=")
-      *global_context->get_stream()
-          << "\tmove\t$" << regL << ",\t$" << regR << "\n";
-    else if (op == "+=")
-      *global_context->get_stream()
-          << "\taddu\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
-
+    mipsPrintOp(regL, regR);
+    
     LHS->store();
     RHS->discard();
   }
@@ -114,9 +109,9 @@ void BinaryOperation::mipsPrintOp(int regRes, int regL, int regR){
   //logical operators
   else if(op == "&&"){
     std::string nbrUNQ = getUNQLabel();
-    std::string end = "__end_&&" + nbrUNQ;
-    std::string pass1 = "__pass1_&&" + nbrUNQ;
-    std::string pass2 = "__pass2_&&" + nbrUNQ;
+    std::string end = "__end_L_AND" + nbrUNQ;
+    std::string pass1 = "__pass1_L_AND" + nbrUNQ;
+    std::string pass2 = "__pass2_L_AND" + nbrUNQ;
     *global_context->get_stream() << "\tbne\t$" << regL << ",\t$zero,\t" << pass1 << "\n"
                                   << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
                                   << "\tb\t" << end << "\n"
@@ -145,8 +140,8 @@ void BinaryOperation::mipsPrintOp(int regRes, int regL, int regR){
   }
   else if(op == "||"){
     std::string nbrUNQ = getUNQLabel();
-    std::string end = "__end_||" + nbrUNQ;
-    std::string pass = "__pass_||" + nbrUNQ;
+    std::string end = "__end_L_OR" + nbrUNQ;
+    std::string pass = "__pass_L_OR" + nbrUNQ;
     *global_context->get_stream() << "\tbne\t$" << regL << ",\t$zero,\t" << pass << "\n"
                                   << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
                                   << "\tbne\t$" << regL << ",\t$zero,\t" << pass << "\n"
@@ -172,6 +167,49 @@ void BinaryOperation::mipsPrintOp(int regRes, int regL, int regR){
                                   << "\tslt\t$" << regRes << ",\t$" << regR << ",\t$" << regL << "\n";
   }
 }
-
+void BinaryOperation::mipsPrintOp(int regL, int regR){
+  if (op == "="){
+    *global_context->get_stream() << "\tmove\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if (op == "+="){
+    *global_context->get_stream() << "\taddu\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if (op == "-="){
+    *global_context->get_stream() << "\tsubu\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "<<"){
+    *global_context->get_stream() << "\tsllv\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == ">>"){
+    *global_context->get_stream() << "\tsrlv\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "&"){
+    *global_context->get_stream() << "\tand\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "|"){
+    *global_context->get_stream() << "\tor\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "^"){
+    *global_context->get_stream() << "\txor\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "*="){
+    *global_context->get_stream() << "\tmultu\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tmflo\t$" << regL << "\n"
+                                  << "\tnop\n"
+                                  << "\tnop\n";
+  }
+  else if(op == "/="){
+    *global_context->get_stream() << "\tdivu\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tmflo\t$" << regL << "\n"
+                                  << "\tnop\n"
+                                  << "\tnop\n";    
+  }
+  else if(op == "%="){
+    *global_context->get_stream() << "\tdivu\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tmfhi\t$" << regL << "\n"
+                                  << "\tnop\n"
+                                  << "\tnop\n";    
+  }
+}
 // SizeOfOp::SizeOfOp(NodePtr _exp) : exp(_exp){};
 // SizeOfOp::SizeOfOp(std::string *_n) : typeName(*_n) { delete _n; };
