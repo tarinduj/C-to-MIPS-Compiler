@@ -1,11 +1,7 @@
-int foo(int x, int y);
+int bar(int a, int b, int c, int d);
 int main(){
   int res = 0;
-  res += foo(1, 0);
-  res += foo(0, 1);
-  res += foo(1, 1);
-  res += foo(2, 1);
-  res += foo(1, 2);
-  res += foo(0, 0);
-  return res != 10;
+  res += bar(1, 2, 3, 4);
+  res += bar(0, 5, 7, 1);
+  return res;
 }

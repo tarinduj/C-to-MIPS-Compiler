@@ -29,7 +29,7 @@ void BinaryOperation::mipsPrint() {
     int regR = RHS->load();
 
     mipsPrintOp(regL, regR);
-    
+
     LHS->store();
     RHS->discard();
   }
@@ -177,19 +177,19 @@ void BinaryOperation::mipsPrintOp(int regL, int regR){
   else if (op == "-="){
     *global_context->get_stream() << "\tsubu\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
   }
-  else if(op == "<<"){
+  else if(op == "<<="){
     *global_context->get_stream() << "\tsllv\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
   }
-  else if(op == ">>"){
+  else if(op == ">>="){
     *global_context->get_stream() << "\tsrlv\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
   }
-  else if(op == "&"){
+  else if(op == "&="){
     *global_context->get_stream() << "\tand\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
   }
-  else if(op == "|"){
+  else if(op == "|="){
     *global_context->get_stream() << "\tor\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
   }
-  else if(op == "^"){
+  else if(op == "^="){
     *global_context->get_stream() << "\txor\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n";
   }
   else if(op == "*="){
