@@ -7,5 +7,5 @@ int main(){
   res += foo(2, 1);
   res += foo(1, 2);
   res += foo(0, 0);
-  return res;
+  return res != 10;
 }
