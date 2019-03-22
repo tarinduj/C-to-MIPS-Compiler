@@ -7,7 +7,7 @@ int collatz(int n){
 		} else {
 			n=3*n+1;
 		}
-		steps++;
+		steps+=1;
 	}
 	return steps;
 }

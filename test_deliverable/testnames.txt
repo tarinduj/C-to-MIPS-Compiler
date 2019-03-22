@@ -14,4 +14,4 @@ shadowing_function_arguments
 simple_do_while
 simple_fcall
 fibonnaci_rec
-collatz_while
+mutualy_rec_fcall

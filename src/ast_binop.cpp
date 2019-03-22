@@ -21,7 +21,7 @@ void BinaryOperation::pyPrint(std::ostream &os) {
   os << ")";
 }
 void BinaryOperation::mipsPrint() {
-  if (dynamic_cast<Variable *>(lExp) && !dynamic_cast<FunctionCall*>(rExp)) {
+  if (dynamic_cast<Variable *>(lExp)) {
     TypePtr integer_type = std::make_shared<PrimitiveType>();
     std::string assign_to = lExp->getName();
     auto LHS = global_context->resolve_chunk(assign_to);
@@ -37,9 +37,6 @@ void BinaryOperation::mipsPrint() {
 
     LHS->store();
     RHS->discard();
-  }
-  else if(dynamic_cast<Variable *>(lExp) && dynamic_cast<FunctionCall*>(rExp)){
-    rExp->mipsPrint();
   }
 }
 void BinaryOperation::mipsPrint(ChunkPtr res) {
