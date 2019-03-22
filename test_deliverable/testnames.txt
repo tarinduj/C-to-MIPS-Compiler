@@ -13,3 +13,4 @@ operators
 shadowing_function_arguments
 simple_do_while
 simple_fcall
+fibonnaci_rec
