@@ -12,7 +12,7 @@ private:
 public:
   WhileLoop(NodePtr _c, NodePtr _s);
   void pyPrint(std::ostream &_o);
-  void mipsPrint(std::ostream &_o) {} //;
+  void mipsPrint();
   void insert(NodePtr _n) {}
 };
 
