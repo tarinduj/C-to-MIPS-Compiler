@@ -44,7 +44,7 @@ void List::mipsPrint() {
   }
 }
 void List::passArguments(std::vector<ChunkPtr>& v){
-  if(type == ARG_EXP && elements.size() <= 4){
+  if(type == ARG_EXP){
     TypePtr integer_type = std::make_shared<PrimitiveType>();
     for(int i = 0; i < elements.size(); i++){
       LOG << "entered pass Arguments\n";
