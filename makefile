@@ -1,5 +1,7 @@
 CXXFLAGS += -std=c++17 -w -Wall -g
 CXXFLAGS += -I include
+#CXXFLAGS += -DNOFILEANDLINE
+
 CXX = g++-8
 
 OBJECT_FILES += obj/run.o obj/type.o obj/chunk.o obj/context.o obj/format.o obj/posix.o

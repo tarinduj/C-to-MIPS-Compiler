@@ -48,11 +48,13 @@ std::ostream *Context::get_stream() const { return os; }
 unsigned Context::get_scope_num() const { return chunk_table.size() - 1; }
 
 TypePtr Context::register_type(std::string identifier, TypePtr type) {
+  LOG << "TL{}= {}\n"_format(get_scope_num(),identifier);
   type_table.back()[identifier] = type;
   return type;
 }
 
 TypePtr Context::register_global_type(std::string identifier, TypePtr type) {
+  LOG << "TG= {}\n"_format(identifier);
   global_type_table[identifier] = type;
   return type;
 }
@@ -75,6 +77,7 @@ TypePtr Context::resolve_type(std::string identifier) const {
 }
 
 ChunkPtr Context::register_argument_chunk(std::string identifier, TypePtr type) {
+  LOG << "CA= {}\n"_format(identifier);
   auto localchunkptr = new LocalChunk(type, this);
   constexpr int args_offset = 2 * WORD_BYTES;
   localchunkptr->set_offset(-get_argument_stack_size()-args_offset);
@@ -99,6 +102,7 @@ unsigned Context::get_argument_stack_size() const {
 }
 
 ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
+  LOG << "CL{}= {}\n"_format(get_scope_num(),identifier);
   *get_stream() << "\t#registering chunk with offset {}($fp)\n"_format(
                        get_stack_size())
                 << "\taddiu\t$sp,$sp,-{}\n"_format(type->get_size());
@@ -108,6 +112,7 @@ ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
 }
 
 ChunkPtr Context::register_global_chunk(std::string identifier, TypePtr type) {
+  LOG << "CG= {}\n"_format(identifier);
   auto chunk = std::shared_ptr<Chunk>(new GlobalChunk(type, this, identifier));
   global_chunk_table[identifier] = chunk;
   return chunk;
@@ -136,11 +141,11 @@ ChunkPtr Context::resolve_chunk(std::string identifier) const {
 void Context::new_scope() {
   type_table.emplace_back();
   chunk_table.emplace_back();
-  MSG << ">>> New scope {}.\n"_format(get_scope_num());
+  CONTEXTLOG << ">>> New scope {}.\n"_format(get_scope_num());
 }
 
 void Context::del_scope() {
-  MSG << "<<< Deleting scope {}.\n"_format(get_scope_num());
+  CONTEXTLOG << "<<< Deleting scope {}.\n"_format(get_scope_num());
   *get_stream() << "\t#leaving scope no.{}\n"_format(get_scope_num())
                 << "\taddiu\t$sp,$sp,{}\n"_format(
                        get_scope_size(get_scope_num()));
@@ -149,7 +154,7 @@ void Context::del_scope() {
 }
 
 void Context::new_frame(){
-  MSG << "|<< Reseting this frame. {} deleted.\n"_format(get_scope_num());
+  CONTEXTLOG << "|<< Reseting this frame. {} deleted.\n"_format(get_scope_num());
   while(get_scope_num() != -1){
     del_scope();
   }
