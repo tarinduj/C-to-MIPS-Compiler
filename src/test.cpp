@@ -369,3 +369,13 @@ TEST_CASE("new_frame", "[Context]"){
 }
 
 
+TEST_CASE("new_frame without anything"){
+  std::stringstream ss;
+  Context context(&ss);
+  context.new_frame();
+  context.new_frame();
+  context.new_frame();
+  context.new_frame();
+  context.new_frame();
+  context.new_frame();
+}
