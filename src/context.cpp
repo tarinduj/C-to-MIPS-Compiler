@@ -76,6 +76,18 @@ TypePtr Context::resolve_type(std::string identifier) const {
   throw std::logic_error(message);
 }
 
+void Context::pass_args(std::vector<ChunkPtr> arguments){
+  int unique = 0;
+  for (auto chunk_it = arguments.begin(); chunk_it != arguments.end(); ++chunk_it){
+    auto to_chunk = register_chunk("__argument_{}"_format(unique++), (*chunk_it)->get_type());
+    to_chunk->copy_from(*chunk_it);
+  }
+  *get_stream() << "\tlw\t$4,4($sp)\n"
+                << "\tlw\t$5,8($sp)\n"
+                << "\tlw\t$6,12($sp)\n"
+                << "\tlw\t$7,16($sp)\n";
+}
+
 ChunkPtr Context::register_argument_chunk(std::string identifier, TypePtr type) {
   LOG << "CA= {}\n"_format(identifier);
   auto localchunkptr = new LocalChunk(type, this);

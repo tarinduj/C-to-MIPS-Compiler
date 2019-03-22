@@ -379,3 +379,17 @@ TEST_CASE("new_frame without anything"){
   context.new_frame();
   context.new_frame();
 }
+
+TEST_CASE("passing_argumets", "[pass_args]"){
+  std::stringstream ss;
+  Context context(&ss);
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  auto chunk1 = context.register_chunk("chunk1", type);
+  auto gchunk1  = context.register_global_chunk("gchunk1", type);
+  auto achunk1 = context.register_argument_chunk("achunk1", type);
+  auto chunk2 = context.register_chunk("chunk2", type);
+  auto gchunk2 = context.register_global_chunk("gchunk2", type);
+  auto chunk3 = context.register_chunk("chunk3", type);
+  context.pass_args({chunk1, gchunk1, achunk1, chunk2, gchunk2, chunk3});
+  std::cout << ss.str();
+}

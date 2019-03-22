@@ -9,6 +9,15 @@ TypePtr Chunk::get_type() const { return type; }
 
 int Chunk::get_offset() const { return 0; }
 
+void Chunk::copy_from(ChunkPtr other){
+	//TODO: this only works for primitives
+	auto my_reg = load();
+	auto other_reg = other->load();
+	*context->get_stream() << "\tmove\t${},${}\n"_format(my_reg, other_reg);
+	other->discard();
+	store();
+}
+
 LocalChunk::LocalChunk(TypePtr type, Context *context) : Chunk(type, context) {
   offset = context->get_stack_size();
 }

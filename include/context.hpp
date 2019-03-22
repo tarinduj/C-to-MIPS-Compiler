@@ -37,6 +37,7 @@ public:
   unsigned get_stack_size() const;
   ChunkPtr register_chunk(std::string, TypePtr);
   ChunkPtr register_global_chunk(std::string, TypePtr);
+  void pass_args(std::vector<ChunkPtr>);
   ChunkPtr register_argument_chunk(std::string, TypePtr);
   void normalize_argument_chunks() const;
   ChunkPtr resolve_chunk(std::string) const;

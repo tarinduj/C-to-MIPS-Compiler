@@ -26,6 +26,7 @@ public:
   virtual unsigned get_reg() const = 0;
   virtual unsigned load() = 0;
   virtual void discard() = 0;
+  virtual void copy_from(ChunkPtr other);
 };
 
 class GlobalChunk : public Chunk {
