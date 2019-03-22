@@ -143,6 +143,19 @@ void BinaryOperation::mipsPrintOp(int regRes, int regL, int regR){
                                   << "\taddiu\t${},\t$zero,\t1\n"_format(regRes)
                                   << end << ":\n";
   }
+   else if(op == "!="){
+    std::string nbrUNQ = getUNQLabel();
+    std::string end = "__end_neq" + nbrUNQ;
+    std::string eq = "__true_neq" + nbrUNQ;
+    *global_context->get_stream() << "\tsubu\t${},\t${},\t${}\n"_format(regL, regL, regR)
+                                  << "\tbne\t$zero,\t${},\t{}\n"_format(regL, eq)
+                                  << "\taddiu\t${},\t$zero,\t0\n"_format(regRes)
+                                  << "\tb\t" << end << "\n"
+                                  << "\tnop\n"
+                                  << eq << ":\n"
+                                  << "\taddiu\t${},\t$zero,\t1\n"_format(regRes)
+                                  << end << ":\n";
+  } 
   else if(op == "||"){
     std::string nbrUNQ = getUNQLabel();
     std::string end = "__end_L_OR" + nbrUNQ;

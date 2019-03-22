@@ -1,3 +1,5 @@
+int even(int number);
+int odd(int number);
 int odd(int number){
 	if (number==0) 
 		return 0;
