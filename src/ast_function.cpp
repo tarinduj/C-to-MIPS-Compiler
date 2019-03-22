@@ -18,11 +18,13 @@ void Function::pyPrint(std::ostream &os) {
 }
 void Function::mipsPrint() {
   std::string f_name = decl->getName();
-  //LOG << "entered function: " << returnType << " " << f_name << "\n";
+  decl->registerVariables();
+  LOG << "entered function: " << returnType << " " << f_name << "\n";
   printPreamble(f_name);
   //LOG << "finished preamble\n";
   if (returnType == "int" && statements) {
     // std::string fpChunkName = saveFP();
+    global_context->normalize_argument_chunks();
     statements->mipsPrint();
     // restoreFP(fpChunkName);
     //*global_context->get_stream() << "\tjr\t$31\n\tnop\n";

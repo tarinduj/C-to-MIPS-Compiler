@@ -26,3 +26,4 @@ void printIndent(std::ostream &os) { os << std::string(scopeCounter, '\t'); }
 void startELIF() { elif = 1; }
 void endELIF() { elif = 0; }
 std::string makeUNQ(std::string s) { return (s + std::to_string(unq++)); }
+std::string getUNQLabel() {return std::to_string(unq++);}

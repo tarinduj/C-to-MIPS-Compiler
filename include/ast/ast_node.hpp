@@ -46,6 +46,7 @@ extern bool elif;
 extern unsigned unq;
 extern bool registerGlobal;
 extern std::string makeUNQ(std::string s);
+extern std::string getUNQLabel();
 extern void addIndent();
 extern void delIndent();
 extern void printIndent(std::ostream &os);

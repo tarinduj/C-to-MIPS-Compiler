@@ -18,7 +18,7 @@ void DirectDeclarator::getGlobal(std::vector<std::string> &v) {
   }
 }
 std::string DirectDeclarator::getName() { return dirDec->getName(); }
-
+void DirectDeclarator::registerVariables(){ if(idList) idList->registerVariables(); }
 Declaration::Declaration(std::string *_spec, NodePtr _list)
     : decSpec(*_spec), initDecList(_list) {
   delete _spec;
@@ -115,4 +115,11 @@ ParamDeclaration::ParamDeclaration(std::string *_s, NodePtr _d)
 void ParamDeclaration::pyPrint(std::ostream &os) {
   if (declarator)
     declarator->pyPrint(os);
+}
+
+void ParamDeclaration::registerSingleVar(){
+  TypePtr parType = global_context->register_type(decSpec, std::shared_ptr<PrimitiveType>(new PrimitiveType()));
+  std::string parName = declarator->getName();
+  LOG << decSpec << " " << parName << " registered\n";
+  auto PAR = global_context->register_argument_chunk(parName, parType);
 }

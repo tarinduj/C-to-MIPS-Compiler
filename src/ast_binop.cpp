@@ -53,9 +53,7 @@ void BinaryOperation::mipsPrint(ChunkPtr res) {
   int regR = RHS->load();
   int regRes = res->load();
 
-  if (op == "+")
-    *global_context->get_stream()
-        << "\taddu\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  mipsPrintOp(regRes, regL, regR);
 
   LHS->discard();
   RHS->discard();
@@ -68,6 +66,110 @@ void BinaryOperation::pyPrintOp(std::ostream &os) {
     os << ") or (";
   } else {
     os << ") " << op << " (";
+  }
+}
+
+void BinaryOperation::mipsPrintOp(int regRes, int regL, int regR){
+  //arithmetic operators
+  if (op == "+"){
+    *global_context->get_stream() << "\taddu\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  } 
+  else if(op == "-"){
+    *global_context->get_stream() << "\tsubu\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "*"){
+    *global_context->get_stream() << "\tmultu\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tmflo\t$" << regRes << "\n"
+                                  << "\tnop\n"
+                                  << "\tnop\n";
+  }
+  else if(op == "/"){
+    *global_context->get_stream() << "\tdivu\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tmflo\t$" << regRes << "\n"
+                                  << "\tnop\n"
+                                  << "\tnop\n";    
+  }
+  else if(op == "%"){
+    *global_context->get_stream() << "\tdivu\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tmfhi\t$" << regRes << "\n"
+                                  << "\tnop\n"
+                                  << "\tnop\n";    
+  }
+  //bitwise operators
+  else if(op == "<<"){
+    *global_context->get_stream() << "\tsllv\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == ">>"){
+    *global_context->get_stream() << "\tsrlv\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "&"){
+    *global_context->get_stream() << "\tand\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "|"){
+    *global_context->get_stream() << "\tor\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == "^"){
+    *global_context->get_stream() << "\txor\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  //logical operators
+  else if(op == "&&"){
+    std::string nbrUNQ = getUNQLabel();
+    std::string end = "__end_&&" + nbrUNQ;
+    std::string pass1 = "__pass1_&&" + nbrUNQ;
+    std::string pass2 = "__pass2_&&" + nbrUNQ;
+    *global_context->get_stream() << "\tbne\t$" << regL << ",\t$zero,\t" << pass1 << "\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
+                                  << "\tb\t" << end << "\n"
+                                  << "\tnop\n"
+                                  << pass1 << ":\n"
+                                  << "\tbne\t$" << regR << ",\t$zero,\t" << pass2 << "\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
+                                  << "\tb\t" << end << "\n"
+                                  << "\tnop\n"
+                                  << pass2 << ":\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t1\n"
+                                  << end << ":\n";
+  }
+  else if(op == "=="){
+    std::string nbrUNQ = getUNQLabel();
+    std::string end = "__end_eq" + nbrUNQ;
+    std::string eq = "__true_eq" + nbrUNQ;
+    *global_context->get_stream() << "\tsubu\t$" << regL << ",\t$" << regL << ",\t$" << regR << "\n"
+                                  << "\tbeq\t$zero,\t$" << regL << ",\t" << eq << "\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
+                                  << "\tb\t" << end << "\n"
+                                  << "\tnop\n"
+                                  << eq << ":\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t1\n"
+                                  << end << ":\n";
+  }
+  else if(op == "||"){
+    std::string nbrUNQ = getUNQLabel();
+    std::string end = "__end_||" + nbrUNQ;
+    std::string pass = "__pass_||" + nbrUNQ;
+    *global_context->get_stream() << "\tbne\t$" << regL << ",\t$zero,\t" << pass << "\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
+                                  << "\tbne\t$" << regL << ",\t$zero,\t" << pass << "\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t0\n"
+                                  << "\tb\t" << end << "\n"
+                                  << "\tnop\n"
+                                  << pass << ":\n"
+                                  << "\taddiu\t$" << regRes << ",\t$zero,\t1\n"
+                                  << end << ":\n";
+  }  
+  else if(op == "<"){
+    *global_context->get_stream() << "\tslt\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == ">"){
+    *global_context->get_stream() << "\tslt\t$" << regRes << ",\t$" << regR << ",\t$" << regL << "\n";
+  }
+  else if(op == "<="){
+    *global_context->get_stream() << "\taddiu\t$" << regR << ",\t$" << regR << ",\t1\n"
+                                  << "\tslt\t$" << regRes << ",\t$" << regL << ",\t$" << regR << "\n";
+  }
+  else if(op == ">="){
+    *global_context->get_stream() << "\taddiu\t$" << regL << ",\t$" << regL << ",\t1\n"
+                                  << "\tslt\t$" << regRes << ",\t$" << regR << ",\t$" << regL << "\n";
   }
 }
 

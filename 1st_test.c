@@ -44,30 +44,35 @@
 // return;
 // }
 
-int main()
-{
-    return eliftest(2);
-}
+// int main()
+// {
+//     return eliftest(2);
+// }
 
-int eliftest(int x){
-  if(x == 1){
-    x = 69;
-    return 7;
-  } 
-  else if(x == 2){
-    if(x < 3) return x;
-    else if(x > 1 ) return x + 1;
-    else return 44;
-  } 
-  else if(x == 5){
-    return x + 5;
-  }
-  else{
-    x = 1488;
-    return 9;
-  } 
-  if(x){}
-  else{
-    return 5;
-  }
+// int eliftest(int x){
+//   if(x == 1){
+//     x = 69;
+//     return 7;
+//   } 
+//   else if(x == 2){
+//     if(x < 3) return x;
+//     else if(x > 1 ) return x + 1;
+//     else return 44;
+//   } 
+//   else if(x == 5){
+//     return x + 5;
+//   }
+//   else{
+//     x = 1488;
+//     return 9;
+//   } 
+//   if(x){}
+//   else{
+//     return 5;
+//   }
+// }
+
+int foo(int x, int y){
+  x += 1;
+  return x + y;
 }

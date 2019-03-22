@@ -293,8 +293,8 @@ direct_declarator
 	| T_LB declarator T_RB {$$ = $2;}
 	| direct_declarator T_LSB constant_expression T_RSB
 	| direct_declarator T_LSB T_RSB
-	| direct_declarator T_LB parameter_type_list T_RB {$$ = new DirectDeclarator($1, $3);}
-	| direct_declarator T_LB identifier_list T_RB {$$ = new DirectDeclarator($1, $3);} //maybe something with gettypes to ensure that $1 is a string
+	| direct_declarator T_LB parameter_type_list T_RB {$$ = new DirectDeclarator($1, $3);} //parameter type (int x)
+	| direct_declarator T_LB identifier_list T_RB {$$ = new DirectDeclarator($1, $3);} 
 	| direct_declarator T_LB T_RB {$$ = new DirectDeclarator($1, NULL);}
 	;
 

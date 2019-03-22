@@ -44,8 +44,9 @@ void IfStatement::pyPrintStatement(std::ostream &os, NodePtr s) {
 
 void IfStatement::mipsPrint(){
   TypePtr integer_type = std::make_shared<PrimitiveType>();
-  std::string elseLabel = makeUNQ("__elseIF");
-  std::string endLabel = makeUNQ("__endIF");
+  std::string nbrUNQ = getUNQLabel();
+  std::string elseLabel = "__elseIF" + nbrUNQ;
+  std::string endLabel = "__endIF" + nbrUNQ;
 
   auto CON = global_context->register_chunk(makeUNQ("__IFcondition"), integer_type);
   if(condition) condition->mipsPrint(CON);

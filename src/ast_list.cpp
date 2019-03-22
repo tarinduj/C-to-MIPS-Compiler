@@ -53,16 +53,21 @@ void List::registerVariables() {
   for (int i = 0; i < elements.size(); i++) {
     if (elements[i]) {
       switch (type) {
-      case INITDEC: {
-        LOG << "regVariables initdec list\n";
-        elements[i]->registerSingleVar();
-        break;
-      }
-      case DECL: {
-        LOG << "regVariables declaration list\n";
-        elements[i]->registerVariables();
-        break;
-      }
+        case INITDEC: {
+          LOG << "regVariables initdec list\n";
+          elements[i]->registerSingleVar();
+          break;
+        }
+        case DECL: {
+          LOG << "regVariables declaration list\n";
+          elements[i]->registerVariables();
+          break;
+        }
+        case PARAM: {
+          LOG << "regVariable parameter type list\n";
+          elements[i]->registerSingleVar();
+          break;
+        }
       }
     }
   }

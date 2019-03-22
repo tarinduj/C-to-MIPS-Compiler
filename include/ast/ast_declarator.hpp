@@ -20,12 +20,8 @@ public:
   void mipsPrint(std::ostream &os) {} //;
   void getGlobal(std::vector<std::string> &v);
   std::string getName();
+  void registerVariables();
 };
-
-// pseudo for getID
-// if decl->type = variable
-// id = variable.val
-// else decl->getID
 
 class Declaration : public Node {
 private:
@@ -66,6 +62,7 @@ public:
   void insert(NodePtr _n) {}
   void pyPrint(std::ostream &os);
   void mipsPrint(std::ostream &os) {}
+  void registerSingleVar();
 };
 
 #endif
