@@ -52,9 +52,22 @@ TypePtr Context::register_type(std::string identifier, TypePtr type) {
   return type;
 }
 
+TypePtr Context::register_global_type(std::string identifier, TypePtr type) {
+  global_type_table[identifier] = type;
+  return type;
+}
+
+
 TypePtr Context::resolve_type(std::string identifier) const {
   for (auto it = type_table.rbegin(); it != type_table.rend(); ++it) {
-    return it->find(identifier)->second;
+    auto identifier_type_pair = it->find(identifier);
+    if (identifier_type_pair != it->end()) {
+      return identifier_type_pair->second;
+    }
+  }
+  auto type = global_type_table.find(identifier);
+  if (type != global_type_table.end()) {
+    return type->second;
   }
   ERR << fmt::format("Cannot resolve type {}", identifier);
   std::string message = fmt::format("Cannot resolve type {}", identifier);

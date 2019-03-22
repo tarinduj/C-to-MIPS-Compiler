@@ -52,28 +52,39 @@ TEST_CASE("Register and resolve Chunk", "[Chunk][Type]") {
 }
 
 TEST_CASE("Scoping types", "[Scope][Type]") {
+  TypePtr global_type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   TypePtr type1 = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   TypePtr type2 = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   TypePtr type3 = std::shared_ptr<PrimitiveType>(new PrimitiveType());
   std::stringstream ss;
   Context context(&ss);
+  INFO("Scope Global");
+  context.register_global_type("type", global_type);
+  context.register_global_type("another_name_for_global_type", global_type);
+  CHECK(context.resolve_type("type") == global_type);
+  CHECK(context.resolve_type("another_name_for_global_type") == global_type);
   INFO("Scope 0");
   context.register_type("type", type1);
   CHECK(context.resolve_type("type") == type1);
+  CHECK(context.resolve_type("another_name_for_global_type") == global_type);
   context.new_scope();
   INFO("Scope 1");
   context.register_type("type", type2);
   CHECK(context.resolve_type("type") == type2);
+  CHECK(context.resolve_type("another_name_for_global_type") == global_type);
   context.new_scope();
   INFO("Scope 2");
   context.register_type("type", type3);
   CHECK(context.resolve_type("type") == type3);
+  CHECK(context.resolve_type("another_name_for_global_type") == global_type);
   context.del_scope();
   INFO("Scope 1");
   CHECK(context.resolve_type("type") == type2);
+  CHECK(context.resolve_type("another_name_for_global_type") == global_type);
   context.del_scope();
   INFO("Scope 0");
   CHECK(context.resolve_type("type") == type1);
+  CHECK(context.resolve_type("another_name_for_global_type") == global_type);
 }
 
 TEST_CASE("Scoping chunks", "[Scope][Chunk]") {
