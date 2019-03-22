@@ -46,6 +46,7 @@ private:
 
 public:
   LocalChunk(TypePtr, Context *);
+  virtual void set_offset(const int& in_offset);
   virtual int get_offset() const;
   virtual void store();
   virtual unsigned get_reg() const;

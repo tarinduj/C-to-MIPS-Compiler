@@ -1,5 +1,6 @@
 #include "context.hpp"
 #include "chunk.hpp"
+#include "constants.hpp"
 #include "fmt/format.h"
 #include "logger_macros.hpp"
 #include "run.hpp"
@@ -60,6 +61,30 @@ TypePtr Context::resolve_type(std::string identifier) const {
   throw std::logic_error(message);
 }
 
+ChunkPtr Context::register_argument_chunk(std::string identifier, TypePtr type) {
+  auto localchunkptr = new LocalChunk(type, this);
+  constexpr int args_offset = 2 * WORD_BYTES;
+  localchunkptr->set_offset(-get_argument_stack_size()-args_offset);
+  auto chunk = std::shared_ptr<Chunk>(localchunkptr);
+  argument_chunk_table[identifier] = chunk;
+  return chunk;
+}
+
+void Context::normalize_argument_chunks() const {
+  *get_stream() << "\tsw\t$4,8($fp)\n"
+                << "\tsw\t$5,12($fp)\n"
+                << "\tsw\t$6,16($fp)\n"
+                << "\tsw\t$7,20($fp)\n";
+}
+
+unsigned Context::get_argument_stack_size() const {
+  unsigned argument_stack_size = 0;
+  for (auto chunk_it = argument_chunk_table.begin(); chunk_it != argument_chunk_table.end(); ++chunk_it){
+    argument_stack_size += chunk_it->second->get_type()->get_size();
+  } 
+  return argument_stack_size;
+}
+
 ChunkPtr Context::register_chunk(std::string identifier, TypePtr type) {
   *get_stream() << "\t#registering chunk with offset {}($fp)\n"_format(
                        get_stack_size())
@@ -84,6 +109,10 @@ ChunkPtr Context::resolve_chunk(std::string identifier) const {
   }
   auto chunk = global_chunk_table.find(identifier);
   if (chunk != global_chunk_table.end()) {
+    return chunk->second;
+  }
+  chunk = argument_chunk_table.find(identifier);
+  if (chunk != argument_chunk_table.end()) {
     return chunk->second;
   }
   std::string message = fmt::format("Cannot resolve chunk {}", identifier);

@@ -303,3 +303,29 @@ TEST_CASE("Size of scope"){
   CHECK(context.get_scope_size(2) == 0 * WORD_BYTES);
   CHECK(context.get_scope_size(3) == 2 * WORD_BYTES);
 }
+
+
+TEST_CASE("Arguments", "[Arguments]"){
+  std::stringstream ss;
+  Context context(&ss);
+  TypePtr type = std::shared_ptr<PrimitiveType>(new PrimitiveType());
+  auto chunk_a = context.register_argument_chunk("a", type);
+  CHECK(chunk_a == context.resolve_chunk("a"));
+  CHECK(chunk_a->get_offset() == (-0-2)*WORD_BYTES);
+
+  auto chunk_b = context.register_argument_chunk("b", type);
+  CHECK(chunk_b == context.resolve_chunk("b"));
+  CHECK(chunk_b->get_offset() == (-1-2)*WORD_BYTES);
+
+  auto chunk_c = context.register_argument_chunk("c", type);
+  CHECK(chunk_c == context.resolve_chunk("c"));
+  CHECK(chunk_c->get_offset() == (-2-2)*WORD_BYTES);
+
+  auto chunk_d = context.register_argument_chunk("d", type);
+  CHECK(chunk_d == context.resolve_chunk("d"));
+  CHECK(chunk_d->get_offset() == (-3-2)*WORD_BYTES);
+
+  auto chunk_e = context.register_argument_chunk("e", type);
+  CHECK(chunk_e == context.resolve_chunk("e"));
+  CHECK(chunk_e->get_offset() == (-4-2)*WORD_BYTES);
+}
