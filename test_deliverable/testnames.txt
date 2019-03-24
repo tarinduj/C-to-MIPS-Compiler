@@ -21,3 +21,13 @@ fibonnaci_rec
 collatz_while
 mutualy_rec_fcall
 fifth_argument
+unary
+IF_T
+IF_F
+IF_ELSE_T
+IF_ELSE_F
+LOCAL_ARRAY
+SELF_RECURSION
+GLOBAL
+MAIN
+ATOF
