@@ -1,8 +1,8 @@
-int func1(int a, int b, int c, int d){
-	return (a + b -c)*d;
+int func1(int a, int b, int c, int d, int e){
+	return (a + b -c)*d/e;
 }
 
-int func2(int d, int b, int a, int c){
-	return (d + b -a)*c;
+int func2(int d, int b, int a, int c, int e){
+	return (d + b -a)*c/e;
 }
 

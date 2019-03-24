@@ -1,4 +1,5 @@
-int odd(int number);
+int odd(int);
+
 int main(){
-  return odd(5);
+  return odd(6);
 }
