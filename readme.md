@@ -7,8 +7,10 @@ Usage
 ------------------------------
 - build compiler `make bin/c_compiler`
 - build and run Catch2 unit testing `make test` or `make bin/test && bin/test [accepts catch2 options]`
-- run reference compilator on test cases `./test_ref`
-- run our compilator in test cases `.\test_our`
+- run test cases and output csv `./test ref|our`
+- run test cases and output in a table format `.\test_column ref|our`
+- option `ref` uses the _reference_ gcc compiler
+- optin `our` uses our compiler
 
 ### Using our compiler
 ```

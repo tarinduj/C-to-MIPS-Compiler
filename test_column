@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./test $1 | column -t -s','
+exit ${PIPESTATUS[0]}
