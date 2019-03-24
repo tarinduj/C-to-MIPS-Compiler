@@ -51,13 +51,13 @@ primary_expression
 
 postfix_expression
 	: primary_expression {$$ = $1;}
-	| postfix_expression T_LSB expression T_RSB //{$$ = new Array($1, $3);}
+	| postfix_expression T_LSB expression T_RSB
 	| postfix_expression T_LB T_RB {std::cout << "function call added\n";$$ = new FunctionCall($1, NULL);}
 	| postfix_expression T_LB argument_expression_list T_RB {$$ = new FunctionCall($1, $3);}
 	| postfix_expression T_DOT T_IDENTIFIER 
 	| postfix_expression T_ARROW T_IDENTIFIER 
-	| postfix_expression T_INC //{$$ = new PostFixExpression($1, $2)}
-	| postfix_expression T_DEC //{$$ = new PostFixExpression($1, $2)}
+	| postfix_expression T_INC {$$ = new PostFixExpression($1, $2);}
+	| postfix_expression T_DEC {$$ = new PostFixExpression($1, $2);}
 	;
 
 argument_expression_list

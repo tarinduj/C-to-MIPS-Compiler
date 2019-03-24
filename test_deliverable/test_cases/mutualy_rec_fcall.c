@@ -1,14 +1,16 @@
-int even(int number);
-int odd(int number);
 int odd(int number){
+	int ret;
 	if (number==0) 
-		return 0;
+		ret = 0;
 	else
-		return even(number-1);
+		ret = even(number-1);
+	return ret;
 }
 int even(int number){
+	int ret;
 	if(number==0) 
-		return 1;
-	else{
-		return odd(number-1);
+		ret = 1;
+	else
+		ret = odd(number-1);
+	return ret;
   }
