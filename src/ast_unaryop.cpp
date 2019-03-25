@@ -1,4 +1,5 @@
 #include "ast/ast_unaryop.hpp"
+#include "ast/ast_variable.hpp"
 
 UnaryOperation::UnaryOperation(std::string *_op, NodePtr _exp)
     : op(*_op), expression(_exp) {
@@ -20,7 +21,14 @@ void UnaryOperation::mipsPrint(){
 
 void UnaryOperation::mipsPrint(ChunkPtr res){
   LOG << "entered unary mipsprint with chunk\n";
-  auto EXP = global_context->resolve_chunk(expression->getName());
+  ChunkPtr EXP;
+  TypePtr integer_type = std::make_shared<PrimitiveType>();
+
+  if(dynamic_cast<Variable*>(expression)) EXP = global_context->resolve_chunk(expression->getName());
+  else{
+    EXP = global_context->register_chunk(makeUNQ("__unary"), integer_type);
+  } 
+  //auto EXP = global_context->resolve_chunk(expression->getName());
   if(expression) expression->mipsPrint(EXP);
   int regExp = EXP->load();
   int regRes = res->load();

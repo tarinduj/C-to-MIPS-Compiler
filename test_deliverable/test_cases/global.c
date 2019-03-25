@@ -1,5 +1,6 @@
-int global = 42;
+extern int test_file_int;
+int driver_file_int = 47;
 
-int global_func(){
-	return global;
+int get_test_file_int(){
+	return test_file_int;
 }

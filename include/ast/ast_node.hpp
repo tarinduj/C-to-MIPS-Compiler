@@ -45,6 +45,8 @@ extern std::vector<std::string> globalVarNames;
 extern bool elif;
 extern unsigned unq;
 extern bool registerGlobal;
+extern std::string return_to;
+extern bool function_scope;
 extern std::string makeUNQ(std::string s);
 extern std::string getUNQLabel();
 extern void addIndent();

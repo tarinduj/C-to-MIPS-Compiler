@@ -103,12 +103,26 @@ void Scope::pyPrint(std::ostream &os) {
   delIndent();
 }
 void Scope::mipsPrint() {
+  bool f_scope = function_scope;
+  function_scope = 0;
   global_context->new_scope();
+  int scope_nbr = global_context->get_scope_num();
   if (decList)
     decList->registerVariables();
   if (statList)
     statList->mipsPrint();
-  global_context->del_scope();
+
+
+  //if(global_context->get_scope_num() - 1 == scope_nbr) global_context->del_scope();
+  if(f_scope){
+    *global_context->get_stream() << return_to <<":\n";
+    while(global_context->get_scope_num() != 0){
+      //LOG << global_context->get_scope_num() << "\n";
+      global_context->del_scope();
+    }
+  } else {
+    global_context->del_scope();
+  }
 }
 
 IdentifierList::IdentifierList(){};

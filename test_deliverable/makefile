@@ -15,7 +15,9 @@ our/%: test_cases/%_driver.c test_cases/%.c
 	mkdir -p -m a=rwx our
 	$(COMPILER) test_cases/$*.c -o tmp_our/$*.s
 	$(GCC_MIPS) $(GCC_MIPS_FLAGS) -c test_cases/$*_driver.c -o tmp_our/$*_driver.o 
-	$(GCC_MIPS) $(GCC_MIPS_FLAGS) tmp_our/$*.s tmp_our/$*_driver.o -o our/$* 
+	$(GCC_MIPS) $(GCC_MIPS_FLAGS) tmp_our/$*.s tmp_our/$*_driver.o -o our/$*
+	#$(GCC_MIPS) $(GCC_MIPS_FLAGS) -o tmp_our/$*.o - c tmp_our/$*.s
+	#$(GCC_MIPS) $(GCC_MIPS_FLAGS) -o our/$* tmp_our/$*.o test_cases/$*_driver.c
 
 ref/%: test_cases/%_driver.c test_cases/%.c
 	mkdir -p -m a=rwx tmp_ref

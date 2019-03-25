@@ -1,10 +1,8 @@
-#include <stdlib.h> 
-
 int unary_plus();
 int unary_minus();
 int unary_not();
-int unary_tilde();
-int unary_address_of();
+/*int unary_tilde();
+int unary_address_of();*/
 
 
 int main()
@@ -15,10 +13,10 @@ int main()
 		return 2;
 	} else if (unary_not() != 0) {
 		return 3;
-	} else if (unary_tilde() != -70) {
+	} /*else if (unary_tilde() != -70) {
 		return 4;
 	} else if (unary_address_of() && 0) {
 		return 5;
-	}
+	}*/
 	return 0;
 }

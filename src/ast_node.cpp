@@ -20,6 +20,8 @@ std::vector<std::string> globalVarNames;
 bool elif = 0;
 unsigned unq = 0;
 bool registerGlobal = 1;
+std::string return_to = "";
+bool function_scope;
 void addIndent() { scopeCounter++; }
 void delIndent() { scopeCounter--; }
 void printIndent(std::ostream &os) { os << std::string(scopeCounter, '\t'); }

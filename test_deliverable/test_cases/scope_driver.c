@@ -1,5 +1,5 @@
 int func();
 
 int main(){
-	return func() == 56;
+	return !(func() == 52);
 }

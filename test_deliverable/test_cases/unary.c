@@ -10,12 +10,12 @@ int unary_not(){
 	return !47;
 }
 
-int unary_tilde(){
+/*int unary_tilde(){
 	return ~69;
 }
 
 int unary_address_of(){
 	int a = 555;
 	return &a;
-}
+}*/
 

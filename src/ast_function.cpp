@@ -19,17 +19,16 @@ void Function::pyPrint(std::ostream &os) {
 }
 void Function::mipsPrint() {
   std::string f_name = decl->getName();
-  decl->registerVariables();
+  return_to = "__ret_" + f_name;
+  //decl->registerVariables();
   LOG << "entered function: " << returnType << " " << f_name << "\n";
   printPreamble(f_name);
-  //LOG << "finished preamble\n";
+  decl->registerVariables();
+
   if (statements) {
-    // std::string fpChunkName = saveFP();
+    function_scope = 1;
     global_context->normalize_argument_chunks();
     statements->mipsPrint();
-    // restoreFP(fpChunkName);
-    //*global_context->get_stream() << "\tjr\t$31\n\tnop\n";
-
   }
   printEnd(f_name);
   global_context->new_frame();
