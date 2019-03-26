@@ -1,33 +1,45 @@
 [![Build Status](https://travis-ci.com/adamurban98/langproc-2018-cw-4b825dc642cb6eb9a060e54bf8d69288fbee4904.svg?token=qLnpjKRfRdRW4ZVxWv9Q&branch=master)](https://travis-ci.com/adamurban98/langproc-2018-cw-4b825dc642cb6eb9a060e54bf8d69288fbee4904)
 
-2018/2019 Compilers Coursework
+C89 to MIPS compiler
 ==============================
 
-There is a single assessed code deliverable, which is due on Tue 26 March at 23:59. This deliverable contains three components:
+Usage
+------------------------------
+- build compiler `make bin/c_compiler`
+- build and run Catch2 unit testing `make test` or `make bin/test && bin/test [accepts catch2 options]`
+- run test cases and output csv `./test ref|our`
+- run test cases and output in a table format `.\test_column ref|our`
+- option `ref` uses the _reference_ gcc compiler
+- optin `our` uses our compiler
 
-- [*Test suite*](c_test_suite.md) (14.3%): Each submission must contain a set of test programs which are able to determine whether a given compiler implements certain C language features correctly.
+### Using our compiler
+```
+usage:
+  c_compiler <input> options
 
-- [*C-translator*](c_translator.md) (28.6%): Your compiler will be able to translate a sub-set of C into equivalent Python. This allows each submission to demonstrate lexing and parsing functionality, even if the code generation is weak.
+where options are:
+  -?, -h, --help       display usage information
+  -c, -S, --compile    compile from C98 to MIPS
+  -t, --translate      translate from C89 to Python
+  -o <output>          place the output into <file>
 
-- [*C-compiler*](c_compiler.md) (42.8%): This is a compiler from C to MIPS assembly.
-  
-In all cases, the source language is pre-processed C90. The target environment is Ubuntu 16.04, so the lab Ubuntu distribution, or equivalently an Ubuntu 16.04 VM as configured in the attached Vagrantfile.
+```
 
-Associated with all deliverables is a
+### Explanation of logs
+```
+[MSG] Important messages, even for the user.
+[CON] Messages from the the context manager, mostly internal.
+[LOG] Internal logs.
+[ERR] Error messages.
+```
 
-- [time-tracking/project management component](management.md) (14.3%).
+External libraries
+---------------------
+- Unit testing [Catch2](https://github.com/catchorg/Catch2)
+- Command line options parsing [Clara](https://github.com/catchorg/Clara)
+- Console coloring [rang](https://github.com/agauniyal/rang)
+- String formatting [{fmt}](https://github.com/fmtlib/fmt)
 
-This will be updated as you go along, but the final version is due on Fri 29 March at 23:59, then will be assessed orally at the start of Summer term.
-
-
-Repositories
-============
-
-Each group gets a bare private repository. It is up to you if you want to clone the master specification, or to start from scratch.
-
-Submission
-==========
-
-Submission will be via GitHub (code) and Blackboard (commit hash), as in the lab.
-
-All submissions will be tested functionally, and won't be modified if they don't correctly compile, or if they produce output in the wrong place or format.
+Footnotes
+--------------------
+This is a C89 to MIPS / Python compiler which. It was written as the coursework to the second year EIE module Language Processors at the department of [EEE Imperial College London](https://www.imperial.ac.uk/electrical-engineering) 

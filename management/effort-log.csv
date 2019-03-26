@@ -1,1 +1,25 @@
-Date,Effort,Developers,Milestones
+Date,Effort,Developers,Milestones,Description
+24th Feb,1,AK,LEX,created simple lexer
+24th Feb,4,AK,PAR,first approach at parser creation. thought about classes needed for the AST. 
+24th Feb,3,AK,AST,added top node and statements skeleton + first implementation
+3rd Mar,2,AK,PAR,changed parser design to be fully compliant with C90 spec. first compilation of parser
+3rd Mar,5,AK,AST,changed classes structure - added new definitions of classes
+10th Mar,4,AK,PAR,improvements in parser and AST interactions
+10th Mar,30,AK,AST,implemented most crucial classes (not full implementation) such as functions primitives variables scope list in order to be able to parse a simple function
+17th Mar,15,AK,AST,implemented more classes to be able to start to work on python. started pyPrint
+17th Mar,22,AK,PY,python translation. each class has pyPrint. worked on indentation. global variables work. translator begins to function properly
+17th Mar,3,AK,LEX,added full lexer to conform C90 spec
+24th Mar,5,AK,PY,added advanced features to python. python printing is done. elif implemented. indentation works. workaroud to binary operation 
+24th Mar,20,AK,AST,added classes for more complex features such as if statements function calls loops negative numbers. started implementing mipsPrint
+24th Mar,35,AK,MIPS,started basic MIPS generation with help of utilities provided by Adam - Context & Chunk. functions assignment scopes ifs loops work postfix expressions
+26th Mar,20,AK,MIPS,advanced features such as function calls;more arguments;multiple returns;full implementations of binary operators;global variables. DEBUGGING...
+24th Feb,5,AU,RSTD,Get dragon book from library. Skim trough and gain understandning. Also skim trugh K
+3rd Mar,5,AU,SWARCH,Finalise basic work division and define the system of Stack objects. This is a major step. Also Implement a trial version but throw it away.
+10th Mar,5,AU,CI,"Set up travis CI, add Catch2 unit testing, add CLI"
+17th Mar,18,AU,TYPE,Implement basic scoping and context
+17th Mar,21,AU,STACK,Implement chunk loading and storing
+17th Mar,10,AU,BACK,Add full unit testing of context and ensure good reliability. Interoberability between chunks and types
+24th Mar,10,AU,MERGE,Merge with frontend
+24th Mar,16,AU,INT,"Implement various features, duch as global and argument passing"
+24th Mar,10,AU,ADV,Mainly function calling and argument passing
+26th Mar,30,AU,,Debuggung and CI/CT

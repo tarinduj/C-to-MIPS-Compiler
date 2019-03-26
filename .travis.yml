@@ -1,2 +1,14 @@
+dist: trusty
+sudo: false
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-8
+
 script:
-- true
+- make bin/test
+- bin/test
