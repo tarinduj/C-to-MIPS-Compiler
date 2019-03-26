@@ -59,7 +59,7 @@ void UnaryOperation::mipsPrintOp(int regExp, const std::string& nbr){
   }
   if(op == "!"){
     std::string end = "__unary_end" + nbr;
-    std::string gtz = "unary_gtz" + nbr;
+    std::string gtz = "__unary_gtz" + nbr;
     *global_context->get_stream() << "\tbne\t$" <<regExp << ",\t$zero,\t" << gtz << "\n"
                                   << "\tnop\n" //16?
                                   << "\taddiu\t$" <<regExp << ",\t$zero,\t1\n"

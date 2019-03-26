@@ -4,6 +4,8 @@ int fib(int n){
 	} else if (n == 1) {
 		return 1;
 	} else {
-		return fib(n-1) + fib(n-2);
+		int res = fib(n-1);
+		res += fib(n-2);
+		return res;
 	}
 }

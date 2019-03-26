@@ -11,12 +11,12 @@ int six(int a, int b, int c, int d, int e, int f){
 }
 
 int caller(){
-	int a = 1;
-	int b = 2;
-	int c = 3;
-	int d = 4;
-	int e = 5;
-	int f = 6;
+	// int a = 1;
+	// int b = 2;
+	// int c = 3;
+	// int d = 4;
+	// int e = 5;
+	// int f = 6;
 	if ( four(1,2,3,4) < 4 ) {
 		return 1;
 	} else if ( five(1,2,3,4,5) < 5 ) {

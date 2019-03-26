@@ -69,11 +69,20 @@ void FunctionCall::mipsPrint(){
   std::cout<<"entered mipsPrint for fcall\n";
   std::string f_name = functionName->getName();
   LOG << "entered function call for: " << f_name << "\n";
+  TypePtr integer_type = std::make_shared<PrimitiveType>();
+  auto res = global_context->register_chunk(makeUNQ("__fcall"), integer_type);
+  int resReg = res->load();
+  *global_context->get_stream() << "\tmove\t$"<<resReg<<",\t$31\n";
+  res->store();
   std::vector<ChunkPtr> v;
   if(dynamic_cast<List*>(arguments)) (dynamic_cast<List*>(arguments))->passArguments(v);
   global_context->pass_args(v);
   *global_context->get_stream() << "\tjal\t" << f_name << "\n"
                                 << "\tnop\n";
+  resReg = res->load();
+  *global_context->get_stream() << "\tmove\t$31,\t$"<<resReg<<"\n";
+  *global_context->get_stream() << "\tmove\t$"<<resReg<<",\t$2\n";
+  res->store();
 }
 
 void FunctionCall::mipsPrint(ChunkPtr res){

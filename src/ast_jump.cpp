@@ -14,7 +14,7 @@ void Return::mipsPrint() {
     returnExp->mipsPrint(RET);
     int retReg = RET->load();
     *global_context->get_stream() << "\tmove\t$2,\t$" << retReg << "\n";
-    RET->discard();
+    RET->store();
   }
   *global_context->get_stream() << "\tb\t" << return_to << "\n"
                                 << "\tnop\n";
