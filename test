@@ -2,6 +2,7 @@
 
 make bin/c_compiler
 cd test_deliverable
+make endings > /dev/null 2> /dev/null
 
 bad=0;
 

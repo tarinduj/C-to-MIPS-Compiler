@@ -1,4 +1,5 @@
 call_5_arguments
+void
 postfix
 precedence_test
 negative_test

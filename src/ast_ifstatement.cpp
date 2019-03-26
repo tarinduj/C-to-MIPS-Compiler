@@ -51,7 +51,8 @@ void IfStatement::mipsPrint(){
   auto CON = global_context->register_chunk(makeUNQ("__IFcondition"), integer_type);
   if(condition) condition->mipsPrint(CON);
   int regCON = CON->load();
-  *global_context->get_stream() << "\tbeq\t$" << regCON << ",\t$0,\t" << elseLabel << "\n";
+  *global_context->get_stream() << "\tbeq\t$" << regCON << ",\t$0,\t" << elseLabel << "\n"
+                                << "\tnop\n";
   CON->discard();
   if(trueStatement) trueStatement->mipsPrint();
   *global_context->get_stream() << "\tj\t" << endLabel << "\n";

@@ -1,5 +1,5 @@
 int fun(int n){
-	if (n != 0){
+	if (n){
 		return fun(n-1);
 	} else {
 		return n;

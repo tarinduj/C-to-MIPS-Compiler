@@ -28,8 +28,8 @@ void LocalChunk::set_offset(const int& in_offset) { offset = in_offset; }
 
 void LocalChunk::store() {
   context->regs[*reg] = true;
-  *context->get_stream() << "\tsw\t${}, {}($fp)\n"_format(*reg, -get_offset())
-                         << "\tnop\n";
+  *context->get_stream() << "\tsw\t${}, {}($fp)\n"_format(*reg, -get_offset());
+                         //<< "\tnop\n";
   reg.reset();
 }
 

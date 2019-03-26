@@ -33,7 +33,9 @@ void UnaryOperation::mipsPrint(ChunkPtr res){
   int regExp = EXP->load();
   int regRes = res->load();
   mipsPrintOp(regExp);
-  *global_context->get_stream() << "\tmove\t$" << regRes << ",\t$" << regExp << "\n";
+  //*global_context->get_stream() << "\tmove\t$" << regRes << ",\t$" << regExp << "\n";
+  *global_context->get_stream() << "\taddu\t$" << regRes << "\t,$zero,\t$" << regExp << "\n";
+ 
   res->store();
   EXP->store();
 }
@@ -60,7 +62,7 @@ void UnaryOperation::mipsPrintOp(int regExp){
   //idk
   }
   if(op == "~"){
-    //xor?
+    *global_context->get_stream() << "\tnot\t$" <<regExp << ",\t$" << regExp << "\n";
   }
 }
 

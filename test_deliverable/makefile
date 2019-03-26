@@ -1,6 +1,6 @@
 GCC_MIPS = mips-linux-gnu-gcc
 COMPILER = ../bin/c_compiler -c
-GCC_MIPS_FLAGS = -static -pedantic -ansi 
+GCC_MIPS_FLAGS = -mfp32 -static -pedantic -ansi 
 EMULATOR = qemu-mips
 
 clean:
@@ -34,4 +34,6 @@ test_%:
 	@$(EMULATOR) ref/$* || echo TEST $* IS BAD
 	@$(EMULATOR) our/$* || echo TEST $* FAILED
 	
-
+endings:
+	@dos2unix testnames.txt
+	@dos2unix test_cases/*
