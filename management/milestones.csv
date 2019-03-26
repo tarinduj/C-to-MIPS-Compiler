@@ -8,6 +8,7 @@ BACK,STACK,15,AU,,Backend complete
 LEX,SWARCH,5,AK,,Lexing
 PAR,LEX,15,AK,,Parsing
 PY,PAR,15,AK,,Python printing
+MIPS,AST,50,AK,,MIPS assembly generation
 AST,LP,15,AK,,Frontend AST
 CI,0,2,AU,,Add continuous integration
 MERGE,"AST,BACK",10,joint,,Merging frontend and backend and compile
