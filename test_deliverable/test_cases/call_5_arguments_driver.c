@@ -1,4 +1,4 @@
 int foo();
 int main(){
-  return foo();
+  return foo() != 4;
 }
