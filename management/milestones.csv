@@ -1,16 +1,16 @@
 MilestoneID,Dependencies,EstimatedEffort,Lead,Completed,Description
-RSTD,0,12,AU,,Research std compiler design
-RC,0,15,AK,,Research C
-SWARCH,"RSTD,RC",20,joint,,Come up with a rough SW design archtecture
-TYPE,SWARCH,10,AU,,Backend types
-STACK,TYPE,15,AU,,Backend stack management
-BACK,STACK,15,AU,,Backend complete
-LEX,SWARCH,5,AK,,Lexing
-PAR,LEX,15,AK,,Parsing
-PY,PAR,15,AK,,Python printing
-MIPS,AST,50,AK,,MIPS assembly generation
-AST,LP,15,AK,,Frontend AST
-CI,0,2,AU,,Add continuous integration
-MERGE,"AST,BACK",10,joint,,Merging frontend and backend and compile
-INT,MERGE,10,joint,,Make work for ints
-ADV,INT,10,joint,,Advanced features
+RSTD,0,12,AU,YES,Research std compiler design
+RC,0,15,AK,YES,Research C
+SWARCH,"RSTD,RC",20,joint,YES,Come up with a rough SW design archtecture
+TYPE,SWARCH,10,AU,YES,Backend types
+STACK,TYPE,15,AU,YES,Backend stack management
+BACK,STACK,15,AU,YES,Backend complete
+LEX,SWARCH,5,AK,YES,Lexing
+PAR,LEX,15,AK,YES,Parsing
+PY,PAR,15,AK,YES,Python printing
+MIPS,AST,50,AK,YES,MIPS assembly generation
+AST,LP,15,AK,YES,Frontend AST
+CI,0,2,AU,YES,Add continuous integration
+MERGE,"AST,BACK",10,joint,YES,Merging frontend and backend and compile
+INT,MERGE,10,joint,YES,Make work for ints
+ADV,INT,10,joint,PARTIAL,Advanced features
