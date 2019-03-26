@@ -1,2 +1,15 @@
-MilestoneID,             Dependencies, EstimatedEffort, Lead,  Completed, Description
-DefineInitialMilestones,             ,               1,    ?,           , Come up with initial milestones for getting started
+MilestoneID,Dependencies,EstimatedEffort,Lead,Completed,Description
+RSTD,0,12,AU,,Research std compiler design
+RC,0,15,AK,,Research C
+SWARCH,"RSTD,RC",20,joint,,Come up with a rough SW design archtecture
+TYPE,SWARCH,10,AU,,Backend types
+STACK,TYPE,15,AU,,Backend stack management
+BACK,STACK,15,AU,,Backend complete
+LEX,SWARCH,5,AK,,Lexing
+PAR,LEX,15,AK,,Parsing
+PY,PAR,15,AK,,Python printing
+AST,LP,15,AK,,Frontend AST
+CI,0,2,AU,,Add continuous integration
+MERGE,"AST,BACK",10,joint,,Merging frontend and backend and compile
+INT,MERGE,10,joint,,Make work for ints
+ADV,INT,10,joint,,Advanced features
