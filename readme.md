@@ -5,6 +5,7 @@ C89 to MIPS compiler
 
 Usage
 ------------------------------
+- use provided Vagrantfile to create a desired environment
 - build compiler `make bin/c_compiler`
 - build and run Catch2 unit testing `make test` or `make bin/test && bin/test [accepts catch2 options]`
 - run test cases and output csv `./test ref|our`
