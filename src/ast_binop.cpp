@@ -229,5 +229,9 @@ void BinaryOperation::mipsPrintOp(int regL, int regR){
                                   << "\tnop\n";    
   }
 }
-// SizeOfOp::SizeOfOp(NodePtr _exp) : exp(_exp){};
-// SizeOfOp::SizeOfOp(std::string *_n) : typeName(*_n) { delete _n; };
+SizeOfOp::SizeOfOp(){};
+void SizeOfOp::mipsPrint(ChunkPtr res){
+  int regRes = res->load();
+  *global_context->get_stream() << "\taddiu\t${},\t${},\t{}\n"_format(regRes,"zero",4);
+  res->store();
+}

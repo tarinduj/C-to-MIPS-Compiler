@@ -11,18 +11,24 @@ int six(int a, int b, int c, int d, int e, int f){
 }
 
 int caller(){
-	// int a = 1;
-	// int b = 2;
-	// int c = 3;
-	// int d = 4;
-	// int e = 5;
-	// int f = 6;
-	if ( four(1,2,3,4) < 4 ) {
+
+	int fo = four(1,2,3,4);
+	int fo2 = four(1,2,3,4);
+	int fi = five(1,2,3,4,5);
+	int fi2 = five(1,2,3,4,5);
+	int si = six(1,2,3,4,5,6);
+	int si2 = six(1,2,3,4,5,6);
+	if(fo != 4 && fi != 5 && si != 6 && fo2 != 4 && fi2 != 5 && si2 != 6){
 		return 1;
-	} else if ( five(1,2,3,4,5) < 5 ) {
-		return 2;
-	} else if ( six(1,2,3,4,5,6) < 6 ) {
-		return 3;
+	} else {
+		return six(1,2,3,4,5,6);
 	}
-	return 0;
+	// if ( four(1,2,3,4) < 4 ) {
+	// 	return 1;
+	// } else if ( five(1,2,3,4,5) < 5 ) {
+	// 	return 2;
+	// } else if ( six(1,2,3,4,5,6) < 6 ) {
+	// 	return 3;
+	// }
+	// return 0;
 }

@@ -1,3 +1,6 @@
+conditional
+sizeof
+scoped_f_call
 call_gcc
 call_5_arguments
 void

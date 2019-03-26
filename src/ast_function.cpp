@@ -99,7 +99,10 @@ void FunctionCall::mipsPrint(ChunkPtr res){
   resReg = res->load();
   *global_context->get_stream() << "\tmove\t$31,\t$"<<resReg<<"\n";
   *global_context->get_stream() << "\tmove\t$"<<resReg<<",\t$2\n";
+
   res->store();
+  *global_context->get_stream() << "\taddiu\t$sp,\t$sp,\t-4\n";
+
 }
 // 1. calculate size in bytes
 // 2. sp = sp - size

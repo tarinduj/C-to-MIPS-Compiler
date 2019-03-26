@@ -13,6 +13,7 @@
 #include "ast/ast_translation.hpp"
 #include "ast/ast_unaryop.hpp"
 #include "ast/ast_variable.hpp"
+#include "ast/ast_conditional.hpp"
 
 extern NodePtr parseAST(std::string name);
 

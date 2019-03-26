@@ -70,8 +70,8 @@ unary_expression
 	| T_INC unary_expression {$$ = new UnaryOperation($1, $2);}
 	| T_DEC unary_expression {$$ = new UnaryOperation($1, $2);}
 	| unary_operator cast_expression {$$ = new UnaryOperation($1, $2);}
-	| T_SIZEOF unary_expression //{$$ = new SizeOfOp($2);}
-	| T_SIZEOF T_LB type_name T_RB //{$$ = new SizeOfOp($3);}
+	| T_SIZEOF unary_expression {$$ = new SizeOfOp();}
+	| T_SIZEOF T_LB type_name T_RB {$$ = new SizeOfOp();}
 	;
 
 unary_operator
@@ -148,7 +148,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression {$$ = $1;}
-	| logical_or_expression T_QUEST expression T_COL conditional_expression //{$$ = new ConditionalOperation()} //TODO
+	| logical_or_expression T_QUEST expression T_COL conditional_expression {$$ = new ConditionalOperation($1, $3, $5);}
 	;
 
 assignment_expression

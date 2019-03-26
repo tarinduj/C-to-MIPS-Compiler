@@ -20,18 +20,11 @@ public:
   void insert(NodePtr _n) {} //;
 };
 
-// class SizeOfOp : public Node {
-// private:
-//   int size;
-//   NodePtr exp;
-//   std::string typeName;
-
-// public:
-//   SizeOfOp(NodePtr _exp);
-//   SizeOfOp(std::string *_n);
-//   virtual void pyPrint(std::ostream &_o) {}
-//   virtual void mipsPrint(std::ostream &_o) {} //;
-//   virtual void insert(NodePtr _n) {}          //;
-// };
+class SizeOfOp : public Node {
+public:
+  SizeOfOp();
+  virtual void pyPrint(std::ostream &_o) {}
+  virtual void mipsPrint(ChunkPtr res);       //;
+};
 
 #endif

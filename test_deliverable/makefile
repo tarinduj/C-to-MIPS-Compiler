@@ -1,5 +1,5 @@
 GCC_MIPS = mips-linux-gnu-gcc
-COMPILER = ../bin/c_compiler -c
+COMPILER = ../bin/c_compiler -S
 GCC_MIPS_FLAGS = -mfp32 -static -pedantic -ansi 
 EMULATOR = qemu-mips
 
