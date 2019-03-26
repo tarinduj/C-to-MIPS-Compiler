@@ -1,20 +1,19 @@
-int unary_plus(){
-	return +42;
-}
-int unary_minus(){
-	int a = 47;
-	int b = 0 - a;
-	int c = -47;
-	if(b == c){
-		return 15;
-	}
-	return 55;
-}
-
 int unary_not(){
-	return !47;
+	int x = 47;
+	return !x + !47;
 }
 
 int unary_tilde(){
-	return ~69;
+	int x = 69;
+	return ~x + ~69;
+}
+
+int unary_plus(){
+	int x = 5;
+	return +5 + +x;
+}
+
+int unary_minus(){
+	int x = 7;
+	return -7 + -x;
 }

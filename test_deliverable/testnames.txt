@@ -1,3 +1,4 @@
+call_gcc
 call_5_arguments
 void
 postfix
@@ -5,7 +6,6 @@ precedence_test
 negative_test
 unary_test
 first_test
-global
 simple
 many_functions
 many_globals_and_locals

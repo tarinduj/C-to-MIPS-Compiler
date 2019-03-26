@@ -29,7 +29,10 @@ void Declaration::pyPrint(std::ostream &os) {
   }
 }
 void Declaration::mipsPrint() {
-  if (decSpec == "int" && initDecList) {
+  std::size_t found = decSpec.find("extern");
+  bool externalDeclaration = found != std::string::npos;
+  LOG << "found: " << found << ", " << externalDeclaration << "\n";
+  if (initDecList && !externalDeclaration) {
     initDecList->mipsPrint();
   }
 }
@@ -57,19 +60,33 @@ void InitDeclarator::pyPrint(std::ostream &os) {
 }
 
 void InitDeclarator::mipsPrint() {
-  std::string var_name;
-  int val;
-  if (dynamic_cast<Variable *>(declarator))
+  // std::string var_name;
+  // int val = 0;
+  // if (dynamic_cast<Variable *>(declarator))
+  //   var_name = declarator->getName();
+  // if (dynamic_cast<IntConst *>(initializer))
+  //   val = initializer->getVal();
+  // *global_context->get_stream() << "\t.globl  " << var_name << "\n"
+  //                               << "\t.data\n"
+  //                               << "\t.align  2\n"
+  //                               << "\t.type   " << var_name << ", @object\n"
+  //                               << "\t.size   " << var_name << ", 4\n"
+  //                               << var_name << ":\n"
+  //                               << "\t.word " << val << "\n";
+  if (dynamic_cast<Variable*>(declarator)){
+    std::string var_name;
+    int val = 0;
     var_name = declarator->getName();
-  if (dynamic_cast<IntConst *>(initializer))
-    val = initializer->getVal();
-  *global_context->get_stream() << "\t.globl  " << var_name << "\n"
-                                << "\t.data\n"
-                                << "\t.align  2\n"
-                                << "\t.type   " << var_name << ", @object\n"
-                                << "\t.size   " << var_name << ", 4\n"
-                                << var_name << ":\n"
-                                << "\t.word " << val << "\n";
+    if (dynamic_cast<IntConst *>(initializer))
+      val = initializer->getVal();
+    *global_context->get_stream() << "\t.globl  " << var_name << "\n"
+                                  << "\t.data\n"
+                                  << "\t.align  2\n"
+                                  << "\t.type   " << var_name << ", @object\n"
+                                  << "\t.size   " << var_name << ", 4\n"
+                                  << var_name << ":\n"
+                                  << "\t.word " << val << "\n";
+  }
 }
 
 void InitDeclarator::getGlobal(std::vector<std::string> &v) {
@@ -80,6 +97,7 @@ void InitDeclarator::registerSingleVar() {
   std::string var_name = declarator->getName();
   TypePtr integer_type = std::make_shared<PrimitiveType>();
   ChunkPtr init;
+  LOG << "entered register single var\n";
   if (dynamic_cast<Variable *>(declarator) &&
       dynamic_cast<IntConst *>(initializer)) {
     int var_val = initializer->getVal();
@@ -98,6 +116,9 @@ void InitDeclarator::registerSingleVar() {
       init = global_context->register_global_chunk(var_name, integer_type);
     else
       init = global_context->register_chunk(var_name, integer_type);
+  } else if (dynamic_cast<DirectDeclarator *>(declarator)){
+    LOG << "entered register single var for function -> do nothing\n";
+
   } else {
     init = global_context->register_chunk(var_name, integer_type);
     initializer->mipsPrint(init);

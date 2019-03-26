@@ -6,7 +6,7 @@ class UnaryOperation : public Node {
 private:
   std::string op;
   NodePtr expression;
-  void mipsPrintOp(int regExp);
+  void mipsPrintOp(int regExp, const std::string& end);
 
 public:
   UnaryOperation(std::string *_op, NodePtr _exp);

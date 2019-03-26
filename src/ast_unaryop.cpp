@@ -13,9 +13,15 @@ void UnaryOperation::pyPrint(std::ostream &os) {
 }
 void UnaryOperation::mipsPrint(){
   LOG << "entered unary mipsprint without chunk\n";
-  auto EXP = global_context->resolve_chunk(expression->getName());  if(expression) expression->mipsPrint(EXP);
+  ChunkPtr EXP;
+  TypePtr integer_type = std::make_shared<PrimitiveType>();
+  std::string nbr = getUNQLabel();
+  if(dynamic_cast<Variable*>(expression)) EXP = global_context->resolve_chunk(expression->getName());
+  else EXP = global_context->register_chunk("__unary"+nbr, integer_type);
+  //auto EXP = global_context->resolve_chunk(expression->getName());  if(expression) expression->mipsPrint(EXP);
+  if(expression) expression->mipsPrint(EXP);
   int regExp = EXP->load();
-  mipsPrintOp(regExp);
+  mipsPrintOp(regExp, nbr);
   EXP->store();
 }
 
@@ -23,16 +29,14 @@ void UnaryOperation::mipsPrint(ChunkPtr res){
   LOG << "entered unary mipsprint with chunk\n";
   ChunkPtr EXP;
   TypePtr integer_type = std::make_shared<PrimitiveType>();
-
+  std::string nbr = getUNQLabel();
   if(dynamic_cast<Variable*>(expression)) EXP = global_context->resolve_chunk(expression->getName());
-  else{
-    EXP = global_context->register_chunk(makeUNQ("__unary"), integer_type);
-  } 
+  else EXP = global_context->register_chunk("__unary"+nbr, integer_type);
   //auto EXP = global_context->resolve_chunk(expression->getName());
   if(expression) expression->mipsPrint(EXP);
   int regExp = EXP->load();
   int regRes = res->load();
-  mipsPrintOp(regExp);
+  mipsPrintOp(regExp, nbr);
   //*global_context->get_stream() << "\tmove\t$" << regRes << ",\t$" << regExp << "\n";
   *global_context->get_stream() << "\taddu\t$" << regRes << "\t,$zero,\t$" << regExp << "\n";
  
@@ -40,7 +44,7 @@ void UnaryOperation::mipsPrint(ChunkPtr res){
   EXP->store();
 }
 
-void UnaryOperation::mipsPrintOp(int regExp){
+void UnaryOperation::mipsPrintOp(int regExp, const std::string& nbr){
   if(op == "++"){
     *global_context->get_stream() << "\taddiu\t$" <<regExp << ",\t$" << regExp << ",\t1\n";
   }
@@ -54,12 +58,15 @@ void UnaryOperation::mipsPrintOp(int regExp){
     *global_context->get_stream() << "\tsubu\t$" <<regExp << ",\t$zero,\t$" << regExp << "\n";
   }
   if(op == "!"){
-    *global_context->get_stream() << "\tbne\t$" <<regExp << ",\t$zero,\t12\n" //16?
+    std::string end = "__unary_end" + nbr;
+    std::string gtz = "unary_gtz" + nbr;
+    *global_context->get_stream() << "\tbne\t$" <<regExp << ",\t$zero,\t" << gtz << "\n"
+                                  << "\tnop\n" //16?
                                   << "\taddiu\t$" <<regExp << ",\t$zero,\t1\n"
-                                  << "\tb\t8\n" //4?
+                                  << "\tb\t" << end << "\n"
                                   << "\tnop\n"
-                                  << "\taddiu\t$" <<regExp << ",\t$zero,\t0\n";
-  //idk
+                                  << gtz <<":\taddu\t$" <<regExp << ",\t$zero,\t$zero\n"
+                                  << end << ":\n";
   }
   if(op == "~"){
     *global_context->get_stream() << "\tnot\t$" <<regExp << ",\t$" << regExp << "\n";

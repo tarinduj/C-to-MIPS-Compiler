@@ -52,7 +52,7 @@ primary_expression
 postfix_expression
 	: primary_expression {$$ = $1;}
 	| postfix_expression T_LSB expression T_RSB
-	| postfix_expression T_LB T_RB {std::cout << "function call added\n";$$ = new FunctionCall($1, NULL);}
+	| postfix_expression T_LB T_RB {$$ = new FunctionCall($1, NULL);}
 	| postfix_expression T_LB argument_expression_list T_RB {$$ = new FunctionCall($1, $3);}
 	| postfix_expression T_DOT T_IDENTIFIER 
 	| postfix_expression T_ARROW T_IDENTIFIER 
@@ -148,7 +148,7 @@ logical_or_expression
 
 conditional_expression
 	: logical_or_expression {$$ = $1;}
-	| logical_or_expression T_QUEST expression T_COL conditional_expression {;} //TODO
+	| logical_or_expression T_QUEST expression T_COL conditional_expression //{$$ = new ConditionalOperation()} //TODO
 	;
 
 assignment_expression
@@ -202,11 +202,11 @@ init_declarator
 	;
 
 storage_class_specifier
-	: T_TYPEDEF {$$ = $1;}
+	: T_TYPEDEF
 	| T_EXTERN {$$ = $1;}
-	| T_STATIC {$$ = $1;}
-	| T_AUTO {$$ = $1;}
-	| T_REGISTER {$$ = $1;}
+	| T_STATIC
+	| T_AUTO
+	| T_REGISTER
 	;
 
 type_specifier
@@ -403,7 +403,7 @@ expression_statement
 	;
 
 selection_statement
-	: T_IF T_LB expression T_RB statement  {$$ = new IfStatement($3, $5, NULL); /*%prec "then"*/}
+	: T_IF T_LB expression T_RB statement  {$$ = new IfStatement($3, $5, NULL);}
 	| T_IF T_LB expression T_RB statement T_ELSE statement {$$ = new IfStatement($3, $5, $7);}
 	| T_SWITCH T_LB expression T_RB statement
 	;
