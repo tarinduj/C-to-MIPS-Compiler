@@ -412,7 +412,7 @@ iteration_statement
 	: T_WHILE T_LB expression T_RB statement {$$ = new WhileLoop($3, $5);}
 	| T_DO statement T_WHILE T_LB expression T_RB T_SEMI {$$ = new DoWhileLoop($2, $5);}
 	| T_FOR T_LB expression_statement expression_statement T_RB statement
-	| T_FOR T_LB expression_statement expression_statement expression T_RB statement {$$ = new ForLoop($3, $3, $5, $7);}
+	| T_FOR T_LB expression_statement expression_statement expression T_RB statement {$$ = new ForLoop($3, $4, $5, $7);}
 	;
 
 jump_statement

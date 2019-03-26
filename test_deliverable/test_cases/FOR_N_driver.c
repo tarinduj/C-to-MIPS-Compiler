@@ -2,5 +2,5 @@ int fun();
 
 int main()
 {
-	return fun();
+	return !(fun() == 120);
 }

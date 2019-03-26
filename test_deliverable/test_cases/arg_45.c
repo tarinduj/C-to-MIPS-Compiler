@@ -21,14 +21,6 @@ int caller(){
 	if(fo != 4 && fi != 5 && si != 6 && fo2 != 4 && fi2 != 5 && si2 != 6){
 		return 1;
 	} else {
-		return six(1,2,3,4,5,6);
+		return 0;
 	}
-	// if ( four(1,2,3,4) < 4 ) {
-	// 	return 1;
-	// } else if ( five(1,2,3,4,5) < 5 ) {
-	// 	return 2;
-	// } else if ( six(1,2,3,4,5,6) < 6 ) {
-	// 	return 3;
-	// }
-	// return 0;
 }

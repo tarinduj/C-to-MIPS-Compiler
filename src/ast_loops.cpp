@@ -61,7 +61,6 @@ void ForLoop::mipsPrint(){
   std::string begin = "__beginFOR" + nbrUNQ;
   std::string end = "__endFOR" + nbrUNQ;
   
-  //auto CTR = global_context->register_chunk(makeUNQ("__FORcontrol"), type);
   auto CON = global_context->register_chunk(makeUNQ("__FORcondition"), type);
   if(expressionL) expressionL->mipsPrint();
   *global_context->get_stream() << "\tb\t" << end <<"\n"
