@@ -25,6 +25,7 @@ mutualy_rec_fcall
 fifth_argument
 unary
 arg_45
+ping_pong_with_many_args
 IF_T
 IF_F
 IF_ELSE_T
