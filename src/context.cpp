@@ -79,14 +79,15 @@ TypePtr Context::resolve_type(std::string identifier) const {
 
 void Context::pass_args(std::vector<ChunkPtr> arguments){
   int unique = 0;
-  for (auto chunk_it = arguments.begin(); chunk_it != arguments.end(); ++chunk_it){
+  for (auto chunk_it = arguments.rbegin(); chunk_it != arguments.rend(); ++chunk_it){
     auto to_chunk = register_chunk("__argument_{}"_format(unique++), (*chunk_it)->get_type());
     to_chunk->copy_from(*chunk_it);
   }
   *get_stream() << "\tlw\t$4,4($sp)\n"
                 << "\tlw\t$5,8($sp)\n"
                 << "\tlw\t$6,12($sp)\n"
-                << "\tlw\t$7,16($sp)\n";
+                << "\tlw\t$7,16($sp)\n"
+                << "\taddiu\t$sp,$sp,4\n";
 }
 
 ChunkPtr Context::register_argument_chunk(std::string identifier, TypePtr type) {
