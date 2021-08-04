@@ -65,3 +65,5 @@ add_executable(c-to-mips
 )
 
 target_link_libraries(c-to-mips PRIVATE compiler)
+
+add_subdirectory(fuzzer)
