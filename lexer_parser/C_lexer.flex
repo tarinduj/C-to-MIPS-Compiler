@@ -2,8 +2,8 @@
 %option yylineno
 
 %{
-#include "C_parser.tab.hpp"
-#include <string>
+#include "parser.hpp"
+	 #include <string>
 #include <iostream>
 #include <sstream>
 extern FILE *yyin;
