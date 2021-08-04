@@ -124,9 +124,11 @@ L?\"(\\.|[^\\"])*\"	{return makeToken(T_STRINGLIT);}
 [ \t\v\n\f]             {;}
 . {yyerror(yytext);}
 %%
+int flex_errors = 0;
 void yyerror (char const* s){
     fprintf (stderr, "Flex Error on line: %i\n", yylineno); /* s is the text that wasn't matched */
-    exit(1);}
+    flex_errors++;
+    }
 int makeToken (int T){
     yylval.string = new std::string(yytext);
     printToken();

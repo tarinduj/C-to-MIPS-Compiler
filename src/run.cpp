@@ -11,6 +11,8 @@
 
 Context *global_context;
 
+extern int flex_errors;
+
 int run(int argc, char const *argv[]) {
   bool compile = false;
   bool translate = false;
@@ -40,6 +42,9 @@ int run(int argc, char const *argv[]) {
     ERR << "Error messages.\n";
   } else if (compile) {
     NodePtr ast = parseAST(input_file);
+    if (flex_errors != 0) {
+      return 1;
+    }
     MSG << fmt::format("I am gonna compile from {} to {}\n", input_file,
                        output_file);
     ast->mipsPrint();
