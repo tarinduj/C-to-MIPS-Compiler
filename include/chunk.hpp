@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <optional>
-#include <string>
 
 class Chunk;
 typedef std::shared_ptr<Chunk> ChunkPtr;
