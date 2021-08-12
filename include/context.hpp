@@ -6,6 +6,7 @@
 #include <map>
 #include <ostream>
 #include <vector>
+#include <array>
 
 class Chunk;
 class LocalChunk;
