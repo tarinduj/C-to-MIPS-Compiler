@@ -14,13 +14,15 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
   //  then invoke the `run` method of the compile with `args`
   const char* compiler_path = "/mnt/disks/data/tarindu/fuzz/build/c-to-mips";
+  const char* compile_flag = "-c";
   const char* argv[] = {
     (const char*)compiler_path,
     (const char*)input_file,
+    (const char*)compile_flag,
     NULL
   };
 
-  run(2, argv);
+  run(3, argv);
 
   return 0;
 }
