@@ -39,6 +39,14 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
 extern "C" size_t LLVMFuzzerCustomMutator(uint8_t *data, size_t size,
                                           size_t max_size, unsigned int seed) {
+  // /////// DEBUG CODE ////////
+  // size_t new_data_length = ReplaceIdentifierWithInteger(data, size, max_size, seed);
+  // // write data to a temporary file here to check whether data was changed
+  // FILE *file = fopen("_data_caller.c", "w");
+  // fwrite(data, sizeof(uint8_t), new_data_length, file);
+  // fclose(file);
+  // exit(0);
+  
   // use switch to select mutations with equal probability
   srand(seed);
   switch (rand() % 5)
@@ -146,7 +154,7 @@ size_t SwapRegion(uint8_t *data, size_t size, size_t max_size, unsigned int seed
   std::vector<uint8_t> new_data_vector(new_string.begin(), new_string.end());
   new_string.clear();
 
-  data = &new_data_vector[0];
+  memcpy(data, &new_data_vector[0], new_data_length);
 
   // // write data to a temporary file
   // FILE *file = fopen("_data.c", "w");
@@ -232,7 +240,7 @@ size_t DeleteRegion(uint8_t *data, size_t size, size_t max_size, unsigned int se
   std::vector<uint8_t> new_data_vector(new_string.begin(), new_string.end());
   new_string.clear();
 
-  data = &new_data_vector[0];
+  memcpy(data, &new_data_vector[0], new_data_length);
 
   // // write data to a temporary file
   // FILE *file = fopen("_data.c", "w");
@@ -277,9 +285,9 @@ size_t ReplaceIdentifierWithInteger(uint8_t *data, size_t size, size_t max_size,
 
   std::size_t new_data_length = new_data_str.length();
   std::vector<uint8_t> new_data_vector(new_data_str.begin(), new_data_str.end());
-  data = &new_data_vector[0];
-
-  // // write data to a temporary file
+  memcpy(data, &new_data_vector[0], new_data_length);
+  
+  // write data to a temporary file
   // FILE *file = fopen("_data.c", "w");
   // fwrite(data, sizeof(uint8_t), new_data_length, file);
   // fclose(file);
@@ -330,7 +338,7 @@ size_t ReplaceIdentifierWithString(uint8_t *data, size_t size, size_t max_size, 
 
   std::size_t new_data_length = new_data_str.length();
   std::vector<uint8_t> new_data_vector(new_data_str.begin(), new_data_str.end());
-  data = &new_data_vector[0];
+  memcpy(data, &new_data_vector[0], new_data_length);
 
   // // write data to a temporary file
   // FILE *file = fopen("_data.c", "w");
@@ -376,7 +384,7 @@ size_t ReplaceIntegerWithInteger(uint8_t *data, size_t size, size_t max_size, un
 
   std::size_t new_data_length = new_data_str.length();
   std::vector<uint8_t> new_data_vector(new_data_str.begin(), new_data_str.end());
-  data = &new_data_vector[0];
+  memcpy(data, &new_data_vector[0], new_data_length);
 
   // // write data to a temporary file
   // FILE *file = fopen("_data.c", "w");
