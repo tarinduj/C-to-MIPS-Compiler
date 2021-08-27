@@ -14,6 +14,9 @@ extern "C" size_t LLVMFuzzerCustomMutator(uint8_t *data, size_t size,
 size_t SwapRegion(uint8_t *data, size_t size, size_t max_size, unsigned int seed);
 size_t DeleteRegion(uint8_t *data, size_t size, size_t max_size, unsigned int seed);
 size_t ReplaceIdentifierWithInteger(uint8_t *data, size_t size, size_t max_size, unsigned int seed);
+size_t ReplaceIdentifierWithString(uint8_t *data, size_t size, size_t max_size, unsigned int seed);
+size_t ReplaceIntegerWithInteger(uint8_t *data, size_t size, size_t max_size, unsigned int seed);
+
 
 // depreciated
 extern "C" size_t SwapRegionC(uint8_t *data, size_t size, size_t max_size, unsigned int seed);
@@ -38,7 +41,7 @@ extern "C" size_t LLVMFuzzerCustomMutator(uint8_t *data, size_t size,
                                           size_t max_size, unsigned int seed) {
   // use switch to select mutations with equal probability
   srand(seed);
-  switch (rand() % 3)
+  switch (rand() % 5)
   {
   case 0:
     // printf("########### SWAP\n");
@@ -49,8 +52,16 @@ extern "C" size_t LLVMFuzzerCustomMutator(uint8_t *data, size_t size,
     return DeleteRegion(data, size, max_size, seed);
     break;
   case 2:
-    // printf("########### REPLACE WITH INT\n");
+    // printf("########### REPLACE ID WITH INT\n");
     return ReplaceIdentifierWithInteger(data, size, max_size, seed);
+    break;
+  case 3:
+    // printf("########### REPLACE ID WITH STRING\n");
+    return ReplaceIdentifierWithString(data, size, max_size, seed);
+    break;
+  case 4:
+    // printf("########### REPLACE INT WITH INT\n");
+    return ReplaceIntegerWithInteger(data, size, max_size, seed);
     break;
   default:
     return size;
@@ -260,20 +271,123 @@ size_t ReplaceIdentifierWithInteger(uint8_t *data, size_t size, size_t max_size,
   // RANDOM REFGEX : both alphanumeric or numberic -> two replace functions
   int rand_int = rand();
   
-  std::regex long_word_regex(match_str);
-  std::string new_data_str = std::regex_replace(data_str, long_word_regex, std::to_string(rand_int));
+  std::regex match_regex(match_str);
+  std::string new_data_str = std::regex_replace(data_str, match_regex, std::to_string(rand_int));
   // std::cout << "NEW DATA STR: " << new_data_str << '\n';
 
   std::size_t new_data_length = new_data_str.length();
   std::vector<uint8_t> new_data_vector(new_data_str.begin(), new_data_str.end());
   data = &new_data_vector[0];
 
+  // // write data to a temporary file
   // FILE *file = fopen("_data.c", "w");
   // fwrite(data, sizeof(uint8_t), new_data_length, file);
   // fclose(file);
 
   return new_data_length;
 }
+
+size_t ReplaceIdentifierWithString(uint8_t *data, size_t size, size_t max_size, unsigned int seed) {
+  // make sure the data is not empty
+  if (size < 1)
+    return size;
+
+  std::string data_str(data, data+size);
+  // std::cout << "DATA STR: " <<data_str << "\n";
+
+  // regex iterator to find identifier
+  std::regex identfier_regex("[_a-zA-Z][_a-zA-Z0-9]{0,30}");
+  auto words_begin = std::sregex_iterator(data_str.begin(), data_str.end(), identfier_regex);
+  auto words_end = std::sregex_iterator();
+
+  // return if no identifiers found
+  if (std::distance(words_begin, words_end) < 1)
+    return size;
+
+  // select a random identifier
+  srand (seed);
+  int x = rand() % std::distance(words_begin, words_end);
+  std::sregex_iterator i = words_begin;
+  std::advance(i, x);
+  std::smatch match = *i;
+  std::string match_str = match.str();
+  // std::cout << "Random ID:  " << match_str << '\n';
+
+  // replace using random strings
+  std::string rand_string;
+  static const char alpha[] =   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                "abcdefghijklmnopqrstuvwxyz";
+
+  // generate strings of length {1,31}
+  int length = 1 + rand() % 31;
+  for (int i = 0; i < length; ++i) {
+    rand_string += alpha[rand() % (sizeof(alpha)-1)];
+  }
+  
+  std::regex match_regex(match_str);
+  std::string new_data_str = std::regex_replace(data_str, match_regex, rand_string);
+  // std::cout << "NEW DATA STR: " << new_data_str << '\n';
+
+  std::size_t new_data_length = new_data_str.length();
+  std::vector<uint8_t> new_data_vector(new_data_str.begin(), new_data_str.end());
+  data = &new_data_vector[0];
+
+  // // write data to a temporary file
+  // FILE *file = fopen("_data.c", "w");
+  // fwrite(data, sizeof(uint8_t), new_data_length, file);
+  // fclose(file);
+
+  return new_data_length;
+}
+
+// replaces all occurences of a random integer
+size_t ReplaceIntegerWithInteger(uint8_t *data, size_t size, size_t max_size, unsigned int seed) {
+  // make sure the data is not empty
+  if (size < 1)
+    return size;
+
+  std::string data_str(data, data+size);
+  // std::cout << "DATA STR: " <<data_str << "\n";
+
+  // regex iterator to find identifier
+  std::regex identfier_regex("[0-9]+");
+  auto words_begin = std::sregex_iterator(data_str.begin(), data_str.end(), identfier_regex);
+  auto words_end = std::sregex_iterator();
+
+  // return if no identifiers found
+  if (std::distance(words_begin, words_end) < 1)
+    return size;
+
+  // select a random identifier
+  srand (seed);
+  int x = rand() % std::distance(words_begin, words_end);
+  std::sregex_iterator i = words_begin;
+  std::advance(i, x);
+  std::smatch match = *i;
+  std::string match_str = match.str();
+  // std::cout << "Random ID:  " << match_str << '\n';
+
+  // RANDOM REFGEX : both alphanumeric or numberic -> two replace functions
+  int rand_int = rand();
+  
+  std::regex match_regex(match_str);
+  std::string new_data_str = std::regex_replace(data_str, match_regex, std::to_string(rand_int));
+  // std::cout << "NEW DATA STR: " << new_data_str << '\n';
+
+  std::size_t new_data_length = new_data_str.length();
+  std::vector<uint8_t> new_data_vector(new_data_str.begin(), new_data_str.end());
+  data = &new_data_vector[0];
+
+  // // write data to a temporary file
+  // FILE *file = fopen("_data.c", "w");
+  // fwrite(data, sizeof(uint8_t), new_data_length, file);
+  // fclose(file);
+
+  return new_data_length;
+}
+
+
+// depreciated
 
 extern "C" size_t SwapRegionC(uint8_t *data, size_t size, size_t max_size, unsigned int seed){
   // make sure the data is not empty
